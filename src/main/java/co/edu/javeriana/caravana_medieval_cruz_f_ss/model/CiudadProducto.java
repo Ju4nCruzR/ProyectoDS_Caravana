@@ -5,8 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import jakarta.persistence.*;
-
 @Entity
 public class CiudadProducto {
 
@@ -15,6 +13,30 @@ public class CiudadProducto {
     private long id;
 
     private int stockProducto;
+
+    public CiudadProducto() {
+    }
+
+    public CiudadProducto(long id, int stockProducto) {
+        this.id = id;
+        this.stockProducto = stockProducto;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getStockProducto() {
+        return stockProducto;
+    }
+
+    public void setStockProducto(int stockProducto) {
+        this.stockProducto = stockProducto;
+    }
 
 
 }
