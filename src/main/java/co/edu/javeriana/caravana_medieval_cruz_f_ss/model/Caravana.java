@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import jakarta.persistence.*;
+
 @Entity
 public class Caravana {
 
@@ -76,7 +78,5 @@ public class Caravana {
 
     public void setPuntosDeVidaCaravana(int puntosDeVidaCaravana) {
         this.puntosDeVidaCaravana = puntosDeVidaCaravana;
-    }
-
-    
+    }  
 }
