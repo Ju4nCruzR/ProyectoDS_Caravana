@@ -1,11 +1,14 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Servicio {
@@ -19,20 +22,16 @@ public class Servicio {
 
     private double precioServicio;
 
-    public enum TipoServicio {
-        REPARAR,
-        MEJORAR_CAPACIDAD,
-        MEJORAR_VELOCIDAD,
-        GUARDIAS
-    }
+    @OneToMany(mappedBy = "servicio")
+    private List<CiudadServicio> ciudades;
 
     public Servicio() {
     }
 
-    public Servicio(long id, TipoServicio tipo, double precioServicio) {
-        this.id = id;
-        this.tipo = tipo;
+    public Servicio(List ciudades, double precioServicio, TipoServicio tipo) {
+        this.ciudades = ciudades;
         this.precioServicio = precioServicio;
+        this.tipo = tipo;
     }
 
     public long getId() {
@@ -57,6 +56,20 @@ public class Servicio {
 
     public void setPrecioServicio(double precioServicio) {
         this.precioServicio = precioServicio;
-    }  
-    
+    }
+
+    public List getCiudades() {
+        return ciudades;
+    }
+
+    public void setCiudades(List ciudades) {
+        this.ciudades = ciudades;
+    }
+
+    public enum TipoServicio {
+        REPARAR,
+        MEJORAR_CAPACIDAD,
+        MEJORAR_VELOCIDAD,
+        GUARDIAS
+    }
 }

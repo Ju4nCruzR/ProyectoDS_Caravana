@@ -1,9 +1,14 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Caravana {
@@ -18,16 +23,33 @@ public class Caravana {
     private double dineroDisponibleCaravana;
     private int puntosDeVidaCaravana;
 
+    @ManyToOne
+    private Ciudad ciudadActual;
+
+    @OneToMany(mappedBy = "caravana")
+    private List<CaravanaProducto> productos;
+
+
+    @OneToMany(mappedBy = "caravana")
+    private List<Jugador> jugadores;
+
+
+    @ManyToMany
+    private List<Ruta> rutasRecorridas; 
+    
     public Caravana() {
     }
 
-    public Caravana(long id, String nombreCaravana, double velocidadCaravana, double capacidadMaximaCargaCaravana, double dineroDisponibleCaravana, int puntosDeVidaCaravana) {
-        this.id = id;
-        this.nombreCaravana = nombreCaravana;
-        this.velocidadCaravana = velocidadCaravana;
+    public Caravana(double capacidadMaximaCargaCaravana, Ciudad ciudadActual, double dineroDisponibleCaravana, List<Jugador> jugadores, String nombreCaravana, List<CaravanaProducto> productos, int puntosDeVidaCaravana, List<Ruta> rutasRecorridas, double velocidadCaravana) {
         this.capacidadMaximaCargaCaravana = capacidadMaximaCargaCaravana;
+        this.ciudadActual = ciudadActual;
         this.dineroDisponibleCaravana = dineroDisponibleCaravana;
+        this.jugadores = jugadores;
+        this.nombreCaravana = nombreCaravana;
+        this.productos = productos;
         this.puntosDeVidaCaravana = puntosDeVidaCaravana;
+        this.rutasRecorridas = rutasRecorridas;
+        this.velocidadCaravana = velocidadCaravana;
     }
 
     public long getId() {
@@ -76,5 +98,39 @@ public class Caravana {
 
     public void setPuntosDeVidaCaravana(int puntosDeVidaCaravana) {
         this.puntosDeVidaCaravana = puntosDeVidaCaravana;
-    }  
+    }
+
+    public Ciudad getCiudadActual() {
+        return ciudadActual;
+    }
+
+    public void setCiudadActual(Ciudad ciudadActual) {
+        this.ciudadActual = ciudadActual;
+    }
+
+    public List<CaravanaProducto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<CaravanaProducto> productos) {
+        this.productos = productos;
+    }
+
+    public List<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(List<Jugador> jugadores) {
+        this.jugadores = jugadores;
+    }
+
+    public List<Ruta> getRutasRecorridas() {
+        return rutasRecorridas;
+    }
+
+    public void setRutasRecorridas(List<Ruta> rutasRecorridas) {
+        this.rutasRecorridas = rutasRecorridas;
+    }
+
+    
 }

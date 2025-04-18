@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Ruta {
@@ -16,14 +17,21 @@ public class Ruta {
     private boolean esSeguraRuta;
     private int danoRuta;
     
+    @ManyToOne
+    private Ciudad ciudadOrigen;
+
+    @ManyToOne
+    private Ciudad ciudadDestino;
+
     public Ruta() {
     }
 
-    public Ruta(long id, double distanciaRuta, boolean esSeguraRuta, int danoRuta) {
-        this.id = id;
+    public Ruta(Ciudad ciudadDestino, Ciudad ciudadOrigen, int danoRuta, double distanciaRuta, boolean esSeguraRuta) {
+        this.ciudadDestino = ciudadDestino;
+        this.ciudadOrigen = ciudadOrigen;
+        this.danoRuta = danoRuta;
         this.distanciaRuta = distanciaRuta;
         this.esSeguraRuta = esSeguraRuta;
-        this.danoRuta = danoRuta;
     }
 
     public long getId() {
@@ -56,6 +64,22 @@ public class Ruta {
 
     public void setDanoRuta(int danoRuta) {
         this.danoRuta = danoRuta;
+    }
+
+    public Ciudad getCiudadOrigen() {
+        return ciudadOrigen;
+    }
+
+    public void setCiudadOrigen(Ciudad ciudadOrigen) {
+        this.ciudadOrigen = ciudadOrigen;
+    }
+
+    public Ciudad getCiudadDestino() {
+        return ciudadDestino;
+    }
+
+    public void setCiudadDestino(Ciudad ciudadDestino) {
+        this.ciudadDestino = ciudadDestino;
     }
 
 }

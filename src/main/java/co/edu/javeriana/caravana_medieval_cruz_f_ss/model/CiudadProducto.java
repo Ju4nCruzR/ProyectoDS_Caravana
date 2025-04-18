@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class CiudadProducto {
@@ -14,11 +15,18 @@ public class CiudadProducto {
 
     private int stockProducto;
 
+    @ManyToOne
+    private Ciudad ciudad;
+
+    @ManyToOne
+    private Producto producto;
+
     public CiudadProducto() {
     }
 
-    public CiudadProducto(long id, int stockProducto) {
-        this.id = id;
+    public CiudadProducto(Ciudad ciudad, Producto producto, int stockProducto) {
+        this.ciudad = ciudad;
+        this.producto = producto;
         this.stockProducto = stockProducto;
     }
 
@@ -38,5 +46,21 @@ public class CiudadProducto {
         this.stockProducto = stockProducto;
     }
 
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
 
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    
 }

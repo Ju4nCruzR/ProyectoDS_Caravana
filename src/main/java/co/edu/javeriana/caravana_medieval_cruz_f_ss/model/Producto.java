@@ -1,9 +1,12 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Producto {
@@ -16,14 +19,22 @@ public class Producto {
     private double factorOfertaProducto;
     private double factorDemandaProducto;
     
+    @OneToMany(mappedBy = "producto")
+    private List<CaravanaProducto> enCaravanas;
+
+    @OneToMany(mappedBy = "producto")
+    private List<CiudadProducto> enCiudades;
+
+
     public Producto() {
     }
 
-    public Producto(long id, String nombreProducto, double factorOfertaProducto, double factorDemandaProducto) {
-        this.id = id;
-        this.nombreProducto = nombreProducto;
-        this.factorOfertaProducto = factorOfertaProducto;
+    public Producto(List<CaravanaProducto> enCaravanas, List<CiudadProducto> enCiudades, double factorDemandaProducto, double factorOfertaProducto, String nombreProducto) {
+        this.enCaravanas = enCaravanas;
+        this.enCiudades = enCiudades;
         this.factorDemandaProducto = factorDemandaProducto;
+        this.factorOfertaProducto = factorOfertaProducto;
+        this.nombreProducto = nombreProducto;
     }
 
     public long getId() {
@@ -56,6 +67,22 @@ public class Producto {
 
     public void setFactorDemandaProducto(double factorDemandaProducto) {
         this.factorDemandaProducto = factorDemandaProducto;
+    }
+
+    public List<CaravanaProducto> getEnCaravanas() {
+        return enCaravanas;
+    }
+
+    public void setEnCaravanas(List<CaravanaProducto> enCaravanas) {
+        this.enCaravanas = enCaravanas;
+    }
+
+    public List<CiudadProducto> getEnCiudades() {
+        return enCiudades;
+    }
+
+    public void setEnCiudades(List<CiudadProducto> enCiudades) {
+        this.enCiudades = enCiudades;
     }
 
     

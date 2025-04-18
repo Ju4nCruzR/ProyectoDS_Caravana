@@ -6,6 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Jugador {
@@ -16,19 +17,17 @@ public class Jugador {
     
     private String nombreJugador;
 
+    @ManyToOne
+    private Caravana caravana;
+
     @Enumerated(EnumType.STRING)
     private Rol rolJugador;
-
-    public enum Rol {
-        COMERCIANTE,
-        CARAVANERO
-    }
 
     public Jugador() {
     }
 
-    public Jugador(long id, String nombreJugador, Rol rolJugador) {
-        this.id = id;
+    public Jugador(Caravana caravana, String nombreJugador, Rol rolJugador) {
+        this.caravana = caravana;
         this.nombreJugador = nombreJugador;
         this.rolJugador = rolJugador;
     }
@@ -49,6 +48,14 @@ public class Jugador {
         this.nombreJugador = nombreJugador;
     }
 
+    public Caravana getCaravana() {
+        return caravana;
+    }
+
+    public void setCaravana(Caravana caravana) {
+        this.caravana = caravana;
+    }
+
     public Rol getRolJugador() {
         return rolJugador;
     }
@@ -56,6 +63,10 @@ public class Jugador {
     public void setRolJugador(Rol rolJugador) {
         this.rolJugador = rolJugador;
     }
-    
-    
+
+    public enum Rol {
+        COMERCIANTE,
+        CARAVANERO
+    }    
+
 }
