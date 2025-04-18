@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicar Servicio</title>
+</head>
+<body>
+    <h1 th:text="'Aplicar Servicio - Caravana: ' + ${caravana.nombreCaravana}"></h1>
+
+    <form th:action="@{'/caravana/' + ${caravana.id} + '/servicio'}" method="post">
+        <label for="servicioId">Selecciona servicio:</label>
+        <select name="servicioId" id="servicioId" required>
+            <option th:each="cs : ${serviciosDisponibles}"
+                    th:value="${cs.servicio.id}"
+                    th:text="${cs.servicio.tipo + ' ($' + cs.servicio.precioServicio + ')'}">
+            </option>
+        </select>
+        <br/><br/>
+
+        <button type="submit">Aplicar Servicio</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a la lista</a>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,5 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
 @Repository
 public interface CiudadServicioRepository extends JpaRepository<CiudadServicio, Long> {
     Optional<CiudadServicio> findByCiudadAndServicio_Id(Ciudad ciudad, Long servicioId);
+    List<CiudadServicio> findByCiudad(Ciudad ciudad);
 }

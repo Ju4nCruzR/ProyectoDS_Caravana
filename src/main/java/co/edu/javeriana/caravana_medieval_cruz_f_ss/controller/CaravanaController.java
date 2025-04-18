@@ -12,9 +12,11 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CaravanaProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadProducto;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CaravanaService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,9 @@ public class CaravanaController {
 
     @Autowired
     private CiudadProductoRepository ciudadProductoRepository;
+
+    @Autowired
+    private CiudadServicioRepository ciudadServicioRepository;
 
     // Caso 1: crear caravana
     @GetMapping("/nueva")
@@ -132,6 +137,21 @@ public class CaravanaController {
         return "redirect:/caravana/" + id;
     }
 
+    @GetMapping("/{id}/servicio")
+    public ModelAndView mostrarFormularioServicio(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        List<CiudadServicio> serviciosDisponibles = ciudadServicioRepository
+                .findByCiudad(caravana.getCiudadActual());
+
+        ModelAndView modelAndView = new ModelAndView("caravana-servicio");
+        modelAndView.addObject("caravana", caravana);
+        modelAndView.addObject("serviciosDisponibles", serviciosDisponibles);
+
+        return modelAndView;
+    }
+
     // Caso 8: obtener productos
     @GetMapping("/{id}/productos")
     @ResponseBody
@@ -154,4 +174,14 @@ public class CaravanaController {
         caravanaService.agregarJugador(id, nombre, rol);
         return "redirect:/caravana/" + id;
     }
+
+    @GetMapping("/{id}/jugadores")
+    public ModelAndView mostrarFormularioJugador(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        return new ModelAndView("caravana-jugador")
+                .addObject("caravana", caravana);
+    }
+
 }
