@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario Global de Caravanas</title>
+</head>
+<body>
+    <h1>Inventario Global de Productos en Caravanas</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Caravana</th>
+                <th>Producto</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cp : ${productos}">
+                <td th:text="${cp.id}"></td>
+                <td th:text="${cp.caravana.nombreCaravana}"></td>
+                <td th:text="${cp.producto.nombreProducto}"></td>
+                <td th:text="${cp.stockEnCaravana}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a lista de caravanas</a>
+</body>
+</html>

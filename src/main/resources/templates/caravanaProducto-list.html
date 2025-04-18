@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario de Caravana</title>
+</head>
+<body>
+    <h1 th:text="'Inventario de la Caravana: ' + ${caravana.nombreCaravana}"></h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cp : ${productos}">
+                <td th:text="${cp.producto.nombreProducto}"></td>
+                <td th:text="${cp.stockEnCaravana}"></td>
+                <td>
+                    <!-- Aquí podrías agregar botones para editar stock o eliminar -->
+                    <form th:action="@{'/caravana-producto/' + ${cp.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a la lista de caravanas</a>
+</body>
+</html>

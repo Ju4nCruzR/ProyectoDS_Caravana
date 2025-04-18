@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Producto a Caravana</title>
+</head>
+<body>
+    <h1>Agregar Producto a Caravana</h1>
+
+    <form th:action="@{/caravana-producto/crear}" method="post">
+        <label for="caravanaId">Caravana:</label>
+        <select name="caravanaId" id="caravanaId" required>
+            <option th:each="c : ${caravanas}" th:value="${c.id}" th:text="${c.nombreCaravana}"></option>
+        </select>
+        <br/><br/>
+
+        <label for="productoId">Producto:</label>
+        <select name="productoId" id="productoId" required>
+            <option th:each="p : ${productos}" th:value="${p.id}" th:text="${p.nombreProducto}"></option>
+        </select>
+        <br/><br/>
+
+        <label for="stock">Stock inicial:</label>
+        <input type="number" name="stock" id="stock" min="1" required />
+        <br/><br/>
+
+        <button type="submit">Agregar</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a la lista de caravanas</a>
+</body>
+</html>
