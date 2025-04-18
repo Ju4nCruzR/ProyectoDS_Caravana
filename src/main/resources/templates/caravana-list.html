@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Caravanas</title>
+</head>
+<body>
+    <h1>Lista de Caravanas</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Velocidad</th>
+                <th>Capacidad Máxima de Carga</th>
+                <th>Dinero Disponible</th>
+                <th>Puntos de Vida</th>
+                <th>Ciudad Actual</th>
+                <th>Productos</th>
+                <th>Jugadores</th>
+                <th>Rutas Recorridas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="caravana : ${listaCaravanas}">
+                <td th:text="${caravana.id}"></td>
+                <td th:text="${caravana.nombreCaravana}"></td>
+                <td th:text="${caravana.velocidadCaravana}"></td>
+                <td th:text="${caravana.capacidadMaximaCargaCaravana}"></td>
+                <td th:text="${caravana.dineroDisponibleCaravana}"></td>
+                <td th:text="${caravana.puntosDeVidaCaravana}"></td>
+                <td th:text="${caravana.ciudadActual != null ? caravana.ciudadActual.nombreCiudad : 'Sin ciudad'}"></td>
+                
+                <!-- Mostrar nombres de productos -->
+                <td>
+                    <ul>
+                        <li th:each="cp : ${caravana.productos}" th:text="${cp.producto.nombreProducto + ' (Stock: ' + cp.stockEnCaravana + ')'}"></li>
+                    </ul>
+                </td>
+
+                <!-- Mostrar nombres de jugadores -->
+                <td>
+                    <ul>
+                        <li th:each="jugador : ${caravana.jugadores}" th:text="${jugador.nombreJugador + ' (' + jugador.rolJugador + ')'}"></li>
+                    </ul>
+                </td>
+
+                <!-- Mostrar ciudades destino de rutas recorridas -->
+                <td>
+                    <ul>
+                        <li th:each="ruta : ${caravana.rutasRecorridas}" th:text="${'→ ' + ruta.ciudadDestino.nombreCiudad}"></li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
