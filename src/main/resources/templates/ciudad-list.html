@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Ciudades</title>
+</head>
+<body>
+    <h1>Ciudades Registradas</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Impuestos de Entrada</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ciudad : ${ciudades}">
+                <td th:text="${ciudad.id}"></td>
+                <td th:text="${ciudad.nombreCiudad}"></td>
+                <td th:text="${ciudad.impuestosDeEntradaCiudad}"></td>
+                <td>
+                    <a th:href="@{'/ciudad/' + ${ciudad.id}}">Ver</a> |
+                    <a th:href="@{'/ciudad/' + ${ciudad.id} + '/editar'}">Editar</a> |
+                    <form th:action="@{'/ciudad/' + ${ciudad.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/ciudad/crear}">Crear nueva ciudad</a>
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a caravanas</a>
+</body>
+</html>

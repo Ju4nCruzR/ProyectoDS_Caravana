@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Nueva Ciudad</title>
+</head>
+<body>
+    <h1>Crear Nueva Ciudad</h1>
+
+    <form th:action="@{/ciudad/crear}" method="post" th:object="${ciudad}">
+        <label for="nombreCiudad">Nombre:</label>
+        <input type="text" id="nombreCiudad" name="nombreCiudad" th:field="*{nombreCiudad}" required />
+        <br/><br/>
+
+        <label for="impuestosDeEntradaCiudad">Impuestos de Entrada:</label>
+        <input type="number" id="impuestosDeEntradaCiudad" name="impuestosDeEntradaCiudad" th:field="*{impuestosDeEntradaCiudad}" step="0.01" required />
+        <br/><br/>
+
+        <button type="submit">Crear</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/ciudad/list}">Volver a la lista de ciudades</a>
+</body>
+</html>

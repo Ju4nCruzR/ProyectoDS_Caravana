@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Ciudad</title>
+</head>
+<body>
+    <h1 th:text="'Detalles de la Ciudad: ' + ${ciudad.nombreCiudad}"></h1>
+
+    <p><strong>ID:</strong> <span th:text="${ciudad.id}"></span></p>
+    <p><strong>Impuestos de Entrada:</strong> <span th:text="${ciudad.impuestosDeEntradaCiudad}"></span></p>
+
+    <hr/>
+
+    <h2>Productos Disponibles</h2>
+    <ul>
+        <li th:each="cp : ${ciudad.productosDisponibles}" 
+            th:text="${cp.producto.nombreProducto + ' (Stock: ' + cp.stockProducto + ')'}">
+        </li>
+    </ul>
+
+    <h2>Servicios Disponibles</h2>
+    <ul>
+        <li th:each="cs : ${ciudad.serviciosDisponibles}" 
+            th:text="${cs.servicio.tipo + ' - $' + cs.servicio.precioServicio}">
+        </li>
+    </ul>
+
+    <h2>Rutas que Salen de la Ciudad</h2>
+    <ul>
+        <li th:each="cr : ${ciudad.rutasAsociadas}" 
+            th:text="${'→ ' + cr.ruta.ciudadDestino.nombreCiudad + ' (Distancia: ' + cr.ruta.distanciaRuta + ')'}">
+        </li>
+    </ul>
+
+    <h2>Rutas que Llegan a la Ciudad</h2>
+    <ul>
+        <li th:each="r : ${ciudad.rutasDestino}" 
+            th:text="${'← Desde ' + r.ciudadOrigen.nombreCiudad + ' (Distancia: ' + r.distanciaRuta + ')'}">
+        </li>
+    </ul>
+
+    <br/>
+    <a th:href="@{/ciudad/list}">Volver a la lista de ciudades</a>
+</body>
+</html>
