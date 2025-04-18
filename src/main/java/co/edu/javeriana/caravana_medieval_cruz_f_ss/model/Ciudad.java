@@ -33,14 +33,14 @@ public class Ciudad {
     public Ciudad() {
     }
 
-    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad, List productosDisponibles, List rutasDestino, List rutasOrigen, List serviciosDisponibles) {
+    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad, List<CiudadProducto> productosDisponibles, List<Ruta> rutasDestino, List<Ruta> rutasOrigen, List<CiudadServicio> serviciosDisponibles) {
         this.impuestosDeEntradaCiudad = impuestosDeEntradaCiudad;
-        this.nombreCiudad = nombreCiudad;
+        this.nombreCiudad = nombreCiudad;    
         this.productosDisponibles = productosDisponibles;
-        this.rutasDestino = rutasDestino;
+        this.rutasDestino = rutasDestino;    
         this.rutasOrigen = rutasOrigen;
         this.serviciosDisponibles = serviciosDisponibles;
-    }
+}
 
     public long getId() {
         return id;

@@ -28,7 +28,7 @@ public class Servicio {
     public Servicio() {
     }
 
-    public Servicio(List ciudades, double precioServicio, TipoServicio tipo) {
+    public Servicio(List<CiudadServicio> ciudades, double precioServicio, TipoServicio tipo) {
         this.ciudades = ciudades;
         this.precioServicio = precioServicio;
         this.tipo = tipo;
@@ -58,11 +58,11 @@ public class Servicio {
         this.precioServicio = precioServicio;
     }
 
-    public List getCiudades() {
+    public List<CiudadServicio> getCiudades() {
         return ciudades;
     }
 
-    public void setCiudades(List ciudades) {
+    public void setCiudades(List<CiudadServicio> ciudades) {
         this.ciudades = ciudades;
     }
 

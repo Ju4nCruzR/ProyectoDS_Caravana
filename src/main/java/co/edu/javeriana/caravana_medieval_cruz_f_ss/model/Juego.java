@@ -29,13 +29,13 @@ public class Juego {
     public Juego() {
     }
 
-    public Juego(List caravanas, List jugadores, double nivelMinimoGananciasJuego, int tiempoLimiteDeJuego, int tiempoTranscurridoDeJuego) {
+    public Juego(List<Caravana> caravanas, List<Jugador> jugadores, double nivelMinimoGananciasJuego, int tiempoLimiteDeJuego, int tiempoTranscurridoDeJuego) {
         this.caravanas = caravanas;
         this.jugadores = jugadores;
         this.nivelMinimoGananciasJuego = nivelMinimoGananciasJuego;
         this.tiempoLimiteDeJuego = tiempoLimiteDeJuego;
         this.tiempoTranscurridoDeJuego = tiempoTranscurridoDeJuego;
-    }
+}
 
     public long getId() {
         return id;
@@ -69,19 +69,19 @@ public class Juego {
         this.nivelMinimoGananciasJuego = nivelMinimoGananciasJuego;
     }
 
-    public List getCaravanas() {
+    public List<Caravana> getCaravanas() {
         return caravanas;
     }
 
-    public void setCaravanas(List caravanas) {
+    public void setCaravanas(List<Caravana> caravanas) {
         this.caravanas = caravanas;
     }
 
-    public List getJugadores() {
+    public List<Jugador> getJugadores() {
         return jugadores;
     }
 
-    public void setJugadores(List jugadores) {
+    public void setJugadores(List<Jugador> jugadores) {
         this.jugadores = jugadores;
     }
 
