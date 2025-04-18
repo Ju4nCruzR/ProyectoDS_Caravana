@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vender Producto</title>
+</head>
+<body>
+    <h1 th:text="'Vender producto - Caravana: ' + ${caravana.nombreCaravana}"></h1>
+
+    <form th:action="@{'/caravana/' + ${caravana.id} + '/vender'}" method="post">
+        <label for="productoId">Selecciona producto:</label>
+        <select name="productoId" id="productoId" required>
+            <option th:each="cp : ${productosEnCaravana}"
+                    th:value="${cp.producto.id}"
+                    th:text="${cp.producto.nombreProducto + ' (Stock: ' + cp.stockEnCaravana + ')'}">
+            </option>
+        </select>
+        <br/><br/>
+
+        <label for="cantidad">Cantidad a vender:</label>
+        <input type="number" name="cantidad" id="cantidad" min="1" required />
+        <br/><br/>
+
+        <button type="submit">Vender</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a la lista</a>
+</body>
+</html>

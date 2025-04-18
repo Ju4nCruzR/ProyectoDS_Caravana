@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mover Caravana</title>
+</head>
+<body>
+    <h1 th:text="'Mover Caravana: ' + ${caravana.nombreCaravana}"></h1>
+
+    <form th:action="@{'/caravana/' + ${caravana.id} + '/mover'}" method="post">
+        <label for="ciudadId">Selecciona nueva ciudad:</label>
+        <select name="ciudadId" id="ciudadId" required>
+            <option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombreCiudad}"></option>
+        </select>
+        <br/><br/>
+        <button type="submit">Mover</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a la lista</a>
+</body>
+</html>

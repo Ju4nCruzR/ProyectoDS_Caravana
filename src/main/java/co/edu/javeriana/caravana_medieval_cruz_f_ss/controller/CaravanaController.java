@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CaravanaProducto;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CaravanaService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +26,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class CaravanaController {
     @Autowired
     private CaravanaService caravanaService;
+
+    @Autowired
+    private CiudadRepository ciudadRepository;
+
+    @Autowired
+    private CiudadProductoRepository ciudadProductoRepository;
 
     // Caso 1: crear caravana
     @GetMapping("/nueva")
@@ -53,6 +63,20 @@ public class CaravanaController {
         return "redirect:/caravana/" + id;
     }
 
+    @GetMapping("/{id}/mover")
+    public ModelAndView mostrarFormularioMover(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        List<Ciudad> ciudades = ciudadRepository.findAll();
+
+        ModelAndView modelAndView = new ModelAndView("caravana-mover");
+        modelAndView.addObject("caravana", caravana);
+        modelAndView.addObject("ciudades", ciudades);
+
+        return modelAndView;
+    }
+
     // Caso 5: comprar producto
     @PostMapping("/{id}/comprar")
     public String comprarProducto(@PathVariable Long id,
@@ -60,6 +84,21 @@ public class CaravanaController {
             @RequestParam int cantidad) {
         caravanaService.comprarProducto(id, productoId, cantidad);
         return "redirect:/caravana/" + id;
+    }
+
+    @GetMapping("/{id}/comprar")
+    public ModelAndView mostrarFormularioComprar(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        List<CiudadProducto> productosDisponibles = ciudadProductoRepository
+                .findByCiudad(caravana.getCiudadActual());
+
+        ModelAndView modelAndView = new ModelAndView("caravana-comprar");
+        modelAndView.addObject("caravana", caravana);
+        modelAndView.addObject("productosDisponibles", productosDisponibles);
+
+        return modelAndView;
     }
 
     // Caso 6: vender producto
@@ -71,6 +110,20 @@ public class CaravanaController {
         return "redirect:/caravana/" + id;
     }
 
+    @GetMapping("/{id}/vender")
+    public ModelAndView mostrarFormularioVender(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        List<CaravanaProducto> productosEnCaravana = caravana.getProductos();
+
+        ModelAndView modelAndView = new ModelAndView("caravana-vender");
+        modelAndView.addObject("caravana", caravana);
+        modelAndView.addObject("productosEnCaravana", productosEnCaravana);
+
+        return modelAndView;
+    }
+
     // Caso 7: aplicar servicio
     @PostMapping("/{id}/servicio")
     public String aplicarServicio(@PathVariable Long id,
@@ -79,7 +132,7 @@ public class CaravanaController {
         return "redirect:/caravana/" + id;
     }
 
-    // Caso 8: obtener productos (retorno parcial como JSON)
+    // Caso 8: obtener productos
     @GetMapping("/{id}/productos")
     @ResponseBody
     public List<CaravanaProducto> obtenerProductos(@PathVariable Long id) {
