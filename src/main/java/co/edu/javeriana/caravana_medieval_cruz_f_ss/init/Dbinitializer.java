@@ -1,14 +1,34 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.init;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.*;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.*;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CaravanaProducto;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadProducto;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadRuta;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Juego;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Producto;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Servicio;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaProductoRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRutaRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JuegoRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JugadorRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.ProductoRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.RutaRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.ServicioRepository;
 
 @Component
 public class DbInitializer implements CommandLineRunner {
@@ -47,7 +67,7 @@ public class DbInitializer implements CommandLineRunner {
     private JuegoRepository juegoRepository;
 
     @Override
-public void run(String... args) throws Exception {
+    public void run(String... args) throws Exception {
 
     List<Producto> productos = new ArrayList<>();
     productos.add(productoRepository.save(new Producto(null, null, 1.5, 2.0, "Especias del dragón")));
@@ -65,12 +85,12 @@ public void run(String... args) throws Exception {
     servicios.add(servicioRepository.save(new Servicio(new ArrayList<>(), 400, Servicio.TipoServicio.GUARDIAS)));
 
     List<Ciudad> ciudades = new ArrayList<>();
-    ciudades.add(ciudadRepository.save(new Ciudad(2500, "Bogotown", new ArrayList<CiudadProducto>(),
-    new ArrayList<Ruta>(), new ArrayList<Ruta>(), new ArrayList<CiudadServicio>(), new ArrayList<CiudadRuta>())));
-    ciudades.add(ciudadRepository.save(new Ciudad(1500, "LazyTown", new ArrayList<CiudadProducto>(),
-    new ArrayList<Ruta>(), new ArrayList<Ruta>(), new ArrayList<CiudadServicio>(), new ArrayList<CiudadRuta>())));
+    ciudades.add(ciudadRepository.save(new Ciudad(2500, "Bogotown", new ArrayList<>(),
+    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>())));
+    ciudades.add(ciudadRepository.save(new Ciudad(1500, "LazyTown", new ArrayList<>(),
+    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>())));
     for (int i = 0; i < 98; i++) {
-        Ciudad ciudad = new Ciudad(1000 + i, "Cali" + i, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Ciudad ciudad = new Ciudad(1000 + i, "Cali" + i, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new ArrayList<>(), new ArrayList<>());
         ciudades.add(ciudadRepository.save(ciudad));
     }
 
