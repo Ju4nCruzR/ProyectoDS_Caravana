@@ -30,16 +30,21 @@ public class Ciudad {
     @OneToMany(mappedBy = "ciudadDestino")
     private List<Ruta> rutasDestino;
 
+    @OneToMany(mappedBy = "ciudad")
+    private List<CiudadRuta> rutasAsociadas;
+
+
     public Ciudad() {
     }
 
-    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad, List<CiudadProducto> productosDisponibles, List<Ruta> rutasDestino, List<Ruta> rutasOrigen, List<CiudadServicio> serviciosDisponibles) {
+    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad, List<CiudadProducto> productosDisponibles, List<Ruta> rutasDestino, List<Ruta> rutasOrigen, List<CiudadServicio> serviciosDisponibles, List<CiudadRuta> rutasAsociadas) {
         this.impuestosDeEntradaCiudad = impuestosDeEntradaCiudad;
         this.nombreCiudad = nombreCiudad;    
         this.productosDisponibles = productosDisponibles;
         this.rutasDestino = rutasDestino;    
         this.rutasOrigen = rutasOrigen;
         this.serviciosDisponibles = serviciosDisponibles;
+        this.rutasAsociadas = rutasAsociadas;
 }
 
     public long getId() {
@@ -97,5 +102,14 @@ public class Ciudad {
     public void setRutasDestino(List<Ruta> rutasDestino) {
         this.rutasDestino = rutasDestino;
     }
+
+    public List<CiudadRuta> getRutasAsociadas() {
+        return rutasAsociadas;
+    }
+
+    public void setRutasAsociadas(List<CiudadRuta> rutasAsociadas) {
+        this.rutasAsociadas = rutasAsociadas;
+    }
+
 
 }
