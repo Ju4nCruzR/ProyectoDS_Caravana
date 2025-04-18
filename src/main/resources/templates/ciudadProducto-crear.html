@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Producto a Ciudad</title>
+</head>
+<body>
+    <h1>Agregar Producto a una Ciudad</h1>
+
+    <form th:action="@{/ciudad-producto/crear}" method="post">
+        <label for="ciudadId">Ciudad:</label>
+        <select name="ciudadId" id="ciudadId" required>
+            <option th:each="c : ${ciudades}" th:value="${c.id}" th:text="${c.nombreCiudad}"></option>
+        </select>
+        <br/><br/>
+
+        <label for="productoId">Producto:</label>
+        <select name="productoId" id="productoId" required>
+            <option th:each="p : ${productos}" th:value="${p.id}" th:text="${p.nombreProducto}"></option>
+        </select>
+        <br/><br/>
+
+        <label for="stock">Stock inicial:</label>
+        <input type="number" name="stock" id="stock" min="1" required />
+        <br/><br/>
+
+        <button type="submit">Agregar</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/ciudad-producto/list}">Ver inventario global</a>
+</body>
+</html>

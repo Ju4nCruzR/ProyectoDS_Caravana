@@ -62,5 +62,4 @@ public class CiudadProducto {
         this.producto = producto;
     }
 
-    
 }

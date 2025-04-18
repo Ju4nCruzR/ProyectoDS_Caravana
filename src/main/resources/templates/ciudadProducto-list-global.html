@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario Global de Ciudades</title>
+</head>
+<body>
+    <h1>Inventario Global de Productos en Todas las Ciudades</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ciudad</th>
+                <th>Producto</th>
+                <th>Stock Disponible</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cp : ${productos}">
+                <td th:text="${cp.id}"></td>
+                <td th:text="${cp.ciudad.nombreCiudad}"></td>
+                <td th:text="${cp.producto.nombreProducto}"></td>
+                <td th:text="${cp.stockProducto}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/ciudad-producto/crear}">Agregar producto a ciudad</a>
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a caravanas</a>
+</body>
+</html>

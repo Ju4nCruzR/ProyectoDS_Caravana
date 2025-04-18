@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos en Ciudad</title>
+</head>
+<body>
+    <h1 th:text="'Inventario de la Ciudad: ' + ${ciudad.nombreCiudad}"></h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Stock Disponible</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cp : ${productos}">
+                <td th:text="${cp.producto.nombreProducto}"></td>
+                <td th:text="${cp.stockProducto}"></td>
+                <td>
+                    <!-- Botón para eliminar -->
+                    <form th:action="@{'/ciudad-producto/' + ${cp.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/ciudad-producto/crear}">Agregar nuevo producto a esta ciudad</a>
+    <br/>
+    <a th:href="@{/caravana/list}">Volver a la lista de caravanas</a>
+</body>
+</html>
