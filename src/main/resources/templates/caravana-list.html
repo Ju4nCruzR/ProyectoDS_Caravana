@@ -20,6 +20,7 @@
                 <th>Productos</th>
                 <th>Jugadores</th>
                 <th>Rutas Recorridas</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +32,6 @@
                 <td th:text="${caravana.dineroDisponibleCaravana}"></td>
                 <td th:text="${caravana.puntosDeVidaCaravana}"></td>
                 <td th:text="${caravana.ciudadActual != null ? caravana.ciudadActual.nombreCiudad : 'Sin ciudad'}"></td>
-                
                 <!-- Mostrar nombres de productos -->
                 <td>
                     <ul>
@@ -52,8 +52,20 @@
                         <li th:each="ruta : ${caravana.rutasRecorridas}" th:text="${'→ ' + ruta.ciudadDestino.nombreCiudad}"></li>
                     </ul>
                 </td>
+
+                <td>
+                    <a th:href="@{'/caravana/' + ${caravana.id}}">Ver</a> |
+                    <a th:href="@{'/caravana/' + ${caravana.id} + '/editar'}">Editar</a> |
+                    <form th:action="@{'/caravana/' + ${caravana.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
+    
+    <br/>
+    <a th:href="@{/caravana/nueva}">Crear nueva caravana</a>
+    <br/>
 </body>
 </html>

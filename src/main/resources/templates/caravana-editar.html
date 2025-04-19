@@ -24,13 +24,14 @@
         <input type="number" th:field="*{puntosDeVidaCaravana}" /><br>
 
         <label>Ciudad Actual:</label>
-        <select th:field="*{ciudadActual.id}">
+        <select th:field="*{ciudadActual}">
             <option th:each="ciudad : ${ciudades}"
-                    th:value="${ciudad.id}"
+                    th:value="${ciudad}"
                     th:text="${ciudad.nombreCiudad}"
-                    th:selected="${caravana.ciudadActual != null and ciudad.id == caravana.ciudadActual.id}">
+                    th:selected="${ciudad.equals(caravana.ciudadActual)}">
             </option>
-        </select><br>
+        </select>
+        <br>
 
         <button type="submit">Guardar Cambios</button>
     </form>

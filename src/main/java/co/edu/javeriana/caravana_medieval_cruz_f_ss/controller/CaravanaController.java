@@ -45,6 +45,13 @@ public class CaravanaController {
         return new ModelAndView("caravana-form").addObject("caravana", new Caravana());
     }
 
+    // Caso 1 (POST): procesar creación de caravana
+    @PostMapping("/nueva")
+    public String crearCaravana(@ModelAttribute Caravana caravana) {
+        caravanaService.crearCaravana(caravana);
+        return "redirect:/caravana/list";
+    }
+
     // Caso 2: consultar caravana por ID
     @GetMapping("/{id}")
     public ModelAndView verCaravana(@PathVariable Long id) {
@@ -186,23 +193,23 @@ public class CaravanaController {
     }
 
     // Caso 11: Mostrar formulario de edición
-@GetMapping("/{id}/editar")
-public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
-    Caravana caravana = caravanaService.buscarCaravanaPorId(id)
-            .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+    @GetMapping("/{id}/editar")
+    public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
-    List<Ciudad> ciudades = ciudadRepository.findAll();
+        List<Ciudad> ciudades = ciudadRepository.findAll();
 
-    return new ModelAndView("caravana-editar")
-            .addObject("caravana", caravana)
-            .addObject("ciudades", ciudades);
-}
+        return new ModelAndView("caravana-editar")
+                .addObject("caravana", caravana)
+                .addObject("ciudades", ciudades);
+    }
 
-// Caso 11 (POST): Actualizar caravana
-@PostMapping("/{id}/editar")
-public String actualizarCaravana(@PathVariable Long id, @ModelAttribute Caravana caravana) {
-    caravanaService.actualizarCaravana(id, caravana);
-    return "redirect:/caravana/" + id;
-}
+    // Caso 11 (POST): Actualizar caravana
+    @PostMapping("/{id}/editar")
+    public String actualizarCaravana(@PathVariable Long id, @ModelAttribute Caravana caravana) {
+        caravanaService.actualizarCaravana(id, caravana);
+        return "redirect:/caravana/" + id;
+    }
 
 }

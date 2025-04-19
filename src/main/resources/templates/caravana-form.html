@@ -7,7 +7,7 @@
 <body>
     <h1>Crear Nueva Caravana</h1>
 
-    <form th:action="@{/caravana/crear}" th:object="${caravana}" method="post">
+    <form th:action="@{/caravana/nueva}" th:object="${caravana}" method="post">
         <label for="nombreCaravana">Nombre:</label>
         <input type="text" id="nombreCaravana" th:field="*{nombreCaravana}" required />
         <br/>
