@@ -115,27 +115,34 @@ public class CaravanaController {
     }
 
     // Caso 6: vender producto
-    @PostMapping("/{id}/vender")
-    public String venderProducto(@PathVariable Long id,
-            @RequestParam Long productoId,
-            @RequestParam int cantidad) {
-        caravanaService.venderProducto(id, productoId, cantidad);
-        return "redirect:/caravana/" + id;
-    }
-
     @GetMapping("/{id}/vender")
-    public ModelAndView mostrarFormularioVender(@PathVariable Long id) {
-        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
-                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+public ModelAndView mostrarFormularioVender(@PathVariable Long id,
+                                            @RequestParam(value = "error", required = false) String error) {
+    Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+            .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
-        List<CaravanaProducto> productosEnCaravana = caravana.getProductos();
+    List<CaravanaProducto> productosEnCaravana = caravana.getProductos();
 
-        ModelAndView modelAndView = new ModelAndView("caravana-vender");
-        modelAndView.addObject("caravana", caravana);
-        modelAndView.addObject("productosEnCaravana", productosEnCaravana);
+    ModelAndView modelAndView = new ModelAndView("caravana-vender");
+    modelAndView.addObject("caravana", caravana);
+    modelAndView.addObject("productosEnCaravana", productosEnCaravana);
+    modelAndView.addObject("error", error);
 
-        return modelAndView;
+    return modelAndView;
+}
+
+@PostMapping("/{id}/vender")
+public String venderProducto(@PathVariable Long id,
+                             @RequestParam Long productoId,
+                             @RequestParam int cantidad) {
+    try {
+        caravanaService.venderProducto(id, productoId, cantidad);
+    } catch (IllegalArgumentException e) {
+        return "redirect:/caravana/" + id + "/vender?error=" + e.getMessage().replace(" ", "+");
     }
+
+    return "redirect:/caravana/" + id;
+}
 
     // Caso 7: aplicar servicio
     @PostMapping("/{id}/servicio")

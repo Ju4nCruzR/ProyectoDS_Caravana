@@ -109,28 +109,37 @@ public class CaravanaService {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         Ciudad ciudad = caravana.getCiudadActual();
-
+    
         CaravanaProducto cp = caravanaProductoRepository.findByCaravanaAndProducto(caravana, producto)
                 .orElseThrow(() -> new RuntimeException("Producto no está en la caravana"));
+    
+        if (cp.getStockEnCaravana() < cantidad) {
+            throw new IllegalArgumentException("Stock insuficiente en la caravana para vender.");
+        }
+        
+        double precioTotal = producto.getPrecioBaseProducto() * cantidad;
 
-        if (cp.getStockEnCaravana() < cantidad)
-            throw new RuntimeException("Stock insuficiente en caravana");
-
+        // Aumentar el dinero de la caravana
+        caravana.setDineroDisponibleCaravana(caravana.getDineroDisponibleCaravana() + precioTotal);
+    
+        // Reducir stock en caravana
+        cp.setStockEnCaravana(cp.getStockEnCaravana() - cantidad);
+    
+        // Aumentar stock en ciudad
         CiudadProducto ciudadProducto = ciudadProductoRepository.findByCiudadAndProducto(ciudad, producto)
                 .orElse(null);
-
+    
         if (ciudadProducto == null) {
             ciudadProducto = new CiudadProducto(ciudad, producto, cantidad);
         } else {
             ciudadProducto.setStockProducto(ciudadProducto.getStockProducto() + cantidad);
         }
-
-        cp.setStockEnCaravana(cp.getStockEnCaravana() - cantidad);
-
+    
         ciudadProductoRepository.save(ciudadProducto);
         caravanaProductoRepository.save(cp);
+        caravanaRepository.save(caravana);
     }
-
+    
     public void aplicarServicio(Long caravanaId, Long servicioId) {
         Caravana caravana = caravanaRepository.findById(caravanaId)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));

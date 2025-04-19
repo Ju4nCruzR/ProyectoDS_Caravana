@@ -69,15 +69,32 @@ public class DbInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-    List<Producto> productos = new ArrayList<>();
-    productos.add(productoRepository.save(new Producto(null, null, 1.5, 2.0, "Especias del dragón")));
-    productos.add(productoRepository.save(new Producto(null, null, 2.0, 3.5, "Tela")));
-    productos.add(productoRepository.save(new Producto(null, null, 0.8, 1.0, "Martillo")));
-    for (int i = 4; i <= 50; i++) {
-        Producto producto = new Producto(null, null, 1.0 + (i % 3), 1.0 + (i % 2), "Producto" + i);
-        productos.add(productoRepository.save(producto));
-    }
+        List<Producto> productos = new ArrayList<>();
 
+        productos.add(productoRepository.save(
+            new Producto("Especias del dragón", 1.5, 2.0, 10.0, new ArrayList<>(), new ArrayList<>())
+        ));
+        
+        productos.add(productoRepository.save(
+            new Producto("Tela", 2.0, 3.5, 8.0, new ArrayList<>(), new ArrayList<>())
+        ));
+        
+        productos.add(productoRepository.save(
+            new Producto("Martillo", 0.8, 1.0, 5.0, new ArrayList<>(), new ArrayList<>())
+        ));
+        
+        for (int i = 4; i <= 50; i++) {
+            Producto producto = new Producto(
+                "Producto" + i,
+                1.0 + (i % 3),
+                1.0 + (i % 2),
+                4.0 + (i % 5),
+                new ArrayList<>(),
+                new ArrayList<>()
+            );
+            productos.add(productoRepository.save(producto));
+        }
+        
     List<Servicio> servicios = new ArrayList<>();
     servicios.add(servicioRepository.save(new Servicio(new ArrayList<>(), 300, Servicio.TipoServicio.REPARAR)));
     servicios.add(servicioRepository.save(new Servicio(new ArrayList<>(), 500, Servicio.TipoServicio.MEJORAR_CAPACIDAD)));
