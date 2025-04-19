@@ -132,5 +132,9 @@ public class Caravana {
         this.rutasRecorridas = rutasRecorridas;
     }
 
-    
+    public double calcularPesoActual(Caravana caravana) {
+        return caravana.getProductos().stream()
+            .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
+            .sum();
+    }    
 }

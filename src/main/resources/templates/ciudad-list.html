@@ -8,7 +8,7 @@
     <h1>Ciudades Registradas</h1>
 
     <br/>
-    <a th:href="@{/ciudad/crear}">Crear nueva ciudad</a>
+    <a th:href="@{/ciudad/crear}">➕ Crear nueva ciudad</a>
     <br/>
 
     <table border="1">
@@ -26,8 +26,8 @@
                 <td th:text="${ciudad.nombreCiudad}"></td>
                 <td th:text="${ciudad.impuestosDeEntradaCiudad}"></td>
                 <td>
-                    <a th:href="@{'/ciudad/' + ${ciudad.id}}">Ver</a> |
-                    <a th:href="@{'/ciudad/' + ${ciudad.id} + '/editar'}">Editar</a> |
+                    <a th:href="@{'/ciudad/' + ${ciudad.id}}">👁 Ver</a> |
+                    <a th:href="@{'/ciudad/' + ${ciudad.id} + '/editar'}">✏️ Editar</a> |
                     <form th:action="@{'/ciudad/' + ${ciudad.id} + '/eliminar'}" method="post" style="display:inline;">
                         <button type="submit">Eliminar</button>
                     </form>

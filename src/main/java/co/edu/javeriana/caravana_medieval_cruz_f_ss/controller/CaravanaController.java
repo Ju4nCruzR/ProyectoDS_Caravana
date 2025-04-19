@@ -57,13 +57,20 @@ public class CaravanaController {
     public ModelAndView verCaravana(@PathVariable Long id) {
         Caravana caravana = caravanaService.buscarCaravanaPorId(id)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
-        return new ModelAndView("caravana-detalle").addObject("caravana", caravana);
+
+        double pesoActual = caravana.calcularPesoActual(caravana);
+
+        return new ModelAndView("caravana-detalle")
+                .addObject("caravana", caravana)
+                .addObject("pesoActualCargado", pesoActual);
     }
 
     // Caso 3: listar todas las caravanas
     @GetMapping("/list")
     public ModelAndView listarCaravanas() {
         List<Caravana> caravanas = caravanaService.listarCaravanas();
+
+        caravanas.forEach(c -> c.getProductos().size());
         ModelAndView modelAndView = new ModelAndView("caravana-list");
         modelAndView.addObject("listaCaravanas", caravanas);
         return modelAndView;
@@ -102,7 +109,7 @@ public class CaravanaController {
             Caravana caravana = caravanaService.buscarCaravanaPorId(id)
                     .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
-                    double pesoActual = caravana.getProductos().stream()
+            double pesoActual = caravana.getProductos().stream()
                     .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
                     .sum();
 
@@ -125,7 +132,7 @@ public class CaravanaController {
         List<CiudadProducto> productosDisponibles = ciudadProductoRepository
                 .findByCiudad(caravana.getCiudadActual());
 
-                double pesoActual = caravana.getProductos().stream()
+        double pesoActual = caravana.getProductos().stream()
                 .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
                 .sum();
 
@@ -133,7 +140,6 @@ public class CaravanaController {
         modelAndView.addObject("caravana", caravana);
         modelAndView.addObject("productosDisponibles", productosDisponibles);
         modelAndView.addObject("pesoActual", pesoActual);
-
 
         return modelAndView;
     }

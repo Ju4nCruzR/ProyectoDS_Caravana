@@ -9,10 +9,10 @@
 
     <p th:if="${error}" th:text="${error}" style="color: red;"></p>
 
-    <h2 th:text="'Dinero disponible: $' + ${caravana.dineroDisponibleCaravana}"></h2>
+    <h2 th:text="'Dinero disponible: $' + ${caravana.dineroDisponibleCaravana} + ' CaravaCoins'"></h2>
 
-    <p th:text="'Peso actual de la caravana: ' + ${pesoActual} + ' unidades'"></p>
-    <p th:text="'Capacidad máxima: ' + ${caravana.capacidadMaximaCargaCaravana} + ' unidades'"></p>    
+    <p th:text="'Peso actual de la caravana: ' + ${pesoActual} + ' kg'"></p>
+    <p th:text="'Capacidad máxima: ' + ${caravana.capacidadMaximaCargaCaravana} + ' kg'"></p>    
 
     <form th:action="@{'/caravana/' + ${caravana.id} + '/comprar'}" method="post">
         <label for="productoId">Selecciona producto:</label>

@@ -6,7 +6,10 @@
 </head>
 <body>
     <h1 th:text="'Vender producto - Caravana: ' + ${caravana.nombreCaravana}"></h1>
-    <p th:text="'Dinero disponible: $' + ${caravana.dineroDisponibleCaravana}"></p>
+    <p th:text="'Dinero disponible: $' + ${caravana.dineroDisponibleCaravana} + ' CaravaCoins'"></p>
+
+    <p th:text="'Peso actual de la caravana: ' + ${pesoActual} + ' kg'"></p>
+    <p th:text="'Capacidad máxima: ' + ${caravana.capacidadMaximaCargaCaravana} + ' kg'"></p>
 
     <div th:if="${error}">
         <p style="color:red;" th:text="${error}"></p>

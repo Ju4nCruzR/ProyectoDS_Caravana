@@ -8,11 +8,11 @@
     <h1 th:text="'Detalle de Caravana: ' + ${caravana.nombreCaravana}"></h1>
 
     <p><strong>ID:</strong> <span th:text="${caravana.id}"></span></p>
-    <p><strong>Velocidad:</strong> <span th:text="${caravana.velocidadCaravana}"></span></p>
-    <p><strong>Capacidad Máxima de Carga:</strong> <span th:text="${caravana.capacidadMaximaCargaCaravana}"></span></p>
-    <p><strong>Peso actual de la caravana:</strong> <span th:text="${pesoActual} + ' unidades'"></span></p>
-    <p><strong>Dinero Disponible:</strong> <span th:text="${caravana.dineroDisponibleCaravana}"></span></p>
-    <p><strong>Puntos de Vida:</strong> <span th:text="${caravana.puntosDeVidaCaravana}"></span></p>
+    <p><strong>Velocidad:</strong> <span th:text="${caravana.velocidadCaravana} + ' km/h'"></span></p>
+    <p><strong>Capacidad Máxima de Carga:</strong> <span th:text="${caravana.capacidadMaximaCargaCaravana} + ' kg'"></span></p>
+    <p><strong>Peso actual cargado:</strong> <span th:text="${pesoActualCargado} + ' kg'"></span></p>
+    <p><strong>Dinero Disponible:</strong> <span th:text="${caravana.dineroDisponibleCaravana} + ' CaravaCoins'"></span></p>
+    <p><strong>Puntos de Vida:</strong> <span th:text="${caravana.puntosDeVidaCaravana} + ' hp'"></span></p>
     <p><strong>Ciudad Actual:</strong> 
         <span th:text="${caravana.ciudadActual != null ? caravana.ciudadActual.nombreCiudad : 'Sin ciudad'}"></span>
     </p>
