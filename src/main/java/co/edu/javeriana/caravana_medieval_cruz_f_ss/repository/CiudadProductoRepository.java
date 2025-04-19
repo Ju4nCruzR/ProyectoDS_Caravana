@@ -14,5 +14,5 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Producto;
 public interface CiudadProductoRepository extends JpaRepository<CiudadProducto, Long>{
     Optional<CiudadProducto> findByCiudadAndProducto(Ciudad ciudad, Producto producto);
     List<CiudadProducto> findByCiudad(Ciudad ciudad);
-
+    List<CiudadProducto> findByProducto(Producto producto);
 }
