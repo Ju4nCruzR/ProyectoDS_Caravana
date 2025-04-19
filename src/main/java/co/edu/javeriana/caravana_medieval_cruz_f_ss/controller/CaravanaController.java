@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
@@ -215,9 +214,15 @@ public class CaravanaController {
 
     // Caso 8: obtener productos
     @GetMapping("/{id}/productos")
-    @ResponseBody
-    public List<CaravanaProducto> obtenerProductos(@PathVariable Long id) {
-        return caravanaService.obtenerProductos(id);
+    public ModelAndView verProductos(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        List<CaravanaProducto> productos = caravana.getProductos();
+
+        return new ModelAndView("caravana-productos")
+                .addObject("caravana", caravana)
+                .addObject("productos", productos);
     }
 
     // Caso 9: eliminar caravana
