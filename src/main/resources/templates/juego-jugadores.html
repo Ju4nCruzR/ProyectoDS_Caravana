@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jugadores del Juego</title>
+</head>
+<body>
+    <h1>Jugadores en este Juego</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Caravana</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jugador : ${jugadores}">
+                <td th:text="${jugador.id}"></td>
+                <td th:text="${jugador.nombreJugador}"></td>
+                <td th:text="${jugador.rolJugador}"></td>
+                <td th:text="${jugador.caravana != null ? jugador.caravana.nombreCaravana : 'Sin caravana'}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/juego/list}">Volver a lista de juegos</a>
+</body>
+</html>

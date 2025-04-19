@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Juego</title>
+</head>
+<body>
+    <h1>Editar Juego</h1>
+
+    <form th:action="@{'/juego/' + ${juego.id} + '/editar'}" method="post" th:object="${juego}">
+        <p><strong>ID:</strong> <span th:text="${juego.id}"></span></p>
+
+        <label for="tiempoLimiteDeJuego">Tiempo Límite (min):</label>
+        <input type="number" id="tiempoLimiteDeJuego" th:field="*{tiempoLimiteDeJuego}" required />
+        <br/><br/>
+
+        <label for="nivelMinimoGananciasJuego">Ganancia Mínima:</label>
+        <input type="number" step="0.01" id="nivelMinimoGananciasJuego" th:field="*{nivelMinimoGananciasJuego}" required />
+        <br/><br/>
+
+        <!-- tiempoTranscurrido no se edita aquí, se gestiona por separado -->
+        <button type="submit">Guardar Cambios</button>
+    </form>
+
+    <br/>
+    <a th:href="@{'/juego/' + ${juego.id}}">Volver al detalle del juego</a>
+</body>
+</html>

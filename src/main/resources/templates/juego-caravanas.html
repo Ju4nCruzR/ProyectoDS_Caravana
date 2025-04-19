@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Caravanas del Juego</title>
+</head>
+<body>
+    <h1>Caravanas en este Juego</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Ciudad Actual</th>
+                <th>Dinero</th>
+                <th>Velocidad</th>
+                <th>Capacidad</th>
+                <th>Puntos de Vida</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="caravana : ${caravanas}">
+                <td th:text="${caravana.id}"></td>
+                <td th:text="${caravana.nombreCaravana}"></td>
+                <td th:text="${caravana.ciudadActual != null ? caravana.ciudadActual.nombreCiudad : 'Sin ciudad'}"></td>
+                <td th:text="${caravana.dineroDisponibleCaravana}"></td>
+                <td th:text="${caravana.velocidadCaravana}"></td>
+                <td th:text="${caravana.capacidadMaximaCargaCaravana}"></td>
+                <td th:text="${caravana.puntosDeVidaCaravana}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/juego/list}">Volver a lista de juegos</a>
+</body>
+</html>
