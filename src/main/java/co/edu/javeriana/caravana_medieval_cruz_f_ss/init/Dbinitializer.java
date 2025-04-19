@@ -72,15 +72,15 @@ public class DbInitializer implements CommandLineRunner {
         List<Producto> productos = new ArrayList<>();
 
         productos.add(productoRepository.save(
-            new Producto("Especias del dragón", 1.5, 2.0, 10.0, new ArrayList<>(), new ArrayList<>())
+            new Producto("Especias del dragón", 1.5, 2.0, 10.0, 2.5, new ArrayList<>(), new ArrayList<>())
         ));
         
         productos.add(productoRepository.save(
-            new Producto("Tela", 2.0, 3.5, 8.0, new ArrayList<>(), new ArrayList<>())
+            new Producto("Tela", 2.0, 3.5, 8.0, 4.0, new ArrayList<>(), new ArrayList<>())
         ));
         
         productos.add(productoRepository.save(
-            new Producto("Martillo", 0.8, 1.0, 5.0, new ArrayList<>(), new ArrayList<>())
+            new Producto("Martillo", 0.8, 1.0, 5.0, 1.8, new ArrayList<>(), new ArrayList<>())
         ));
         
         for (int i = 4; i <= 50; i++) {
@@ -89,6 +89,7 @@ public class DbInitializer implements CommandLineRunner {
                 1.0 + (i % 3),
                 1.0 + (i % 2),
                 4.0 + (i % 5),
+                5.0 + (i % 6),
                 new ArrayList<>(),
                 new ArrayList<>()
             );

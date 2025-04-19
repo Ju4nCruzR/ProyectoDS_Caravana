@@ -16,6 +16,8 @@
                 <th>Nombre</th>
                 <th>Factor Oferta</th>
                 <th>Factor Demanda</th>
+                <th>Precio Base</th>
+                <th>Peso Producto</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -25,6 +27,8 @@
                 <td th:text="${producto.nombreProducto}">Nombre</td>
                 <td th:text="${producto.factorOfertaProducto}">Oferta</td>
                 <td th:text="${producto.factorDemandaProducto}">Demanda</td>
+                <td th:text="${producto.precioBaseProducto}">Precio Base</td>
+                <td th:text="${producto.pesoProducto}">Peso</td>
                 <td>
                     <a th:href="@{'/producto/' + ${producto.id}}">👁 Ver</a> |
                     <a th:href="@{'/producto/' + ${producto.id} + '/editar'}">✏️ Editar</a> |

@@ -19,6 +19,7 @@ public class Producto {
     private double factorOfertaProducto;
     private double factorDemandaProducto;
     private double precioBaseProducto;
+    private double pesoProducto;
     
     @OneToMany(mappedBy = "producto")
     private List<CaravanaProducto> enCaravanas;
@@ -30,11 +31,12 @@ public class Producto {
     }
     
     public Producto(String nombreProducto, double factorOfertaProducto, double factorDemandaProducto,
-            double precioBaseProducto, List<CaravanaProducto> enCaravanas, List<CiudadProducto> enCiudades) {
+            double precioBaseProducto, double pesoProducto, List<CaravanaProducto> enCaravanas, List<CiudadProducto> enCiudades) {
         this.nombreProducto = nombreProducto;
         this.factorOfertaProducto = factorOfertaProducto;
         this.factorDemandaProducto = factorDemandaProducto;
         this.precioBaseProducto = precioBaseProducto;
+        this.pesoProducto = pesoProducto;
         this.enCaravanas = enCaravanas;
         this.enCiudades = enCiudades;
     }
@@ -79,6 +81,14 @@ public class Producto {
         this.precioBaseProducto = precioBaseProducto;
     }
     
+    public double getPesoProducto() {
+        return pesoProducto;
+    }
+
+    public void setPesoProducto(double pesoProducto) {
+        this.pesoProducto = pesoProducto;
+    }
+
     public List<CaravanaProducto> getEnCaravanas() {
         return enCaravanas;
     }

@@ -92,11 +92,29 @@ public class CaravanaController {
 
     // Caso 5: comprar producto
     @PostMapping("/{id}/comprar")
-    public String comprarProducto(@PathVariable Long id,
+    public ModelAndView comprarProducto(@PathVariable Long id,
             @RequestParam Long productoId,
             @RequestParam int cantidad) {
-        caravanaService.comprarProducto(id, productoId, cantidad);
-        return "redirect:/caravana/" + id;
+        try {
+            caravanaService.comprarProducto(id, productoId, cantidad);
+            return new ModelAndView("redirect:/caravana/" + id);
+        } catch (RuntimeException e) {
+            Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                    .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+                    double pesoActual = caravana.getProductos().stream()
+                    .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
+                    .sum();
+
+            List<CiudadProducto> productosDisponibles = ciudadProductoRepository
+                    .findByCiudad(caravana.getCiudadActual());
+
+            return new ModelAndView("caravana-comprar")
+                    .addObject("caravana", caravana)
+                    .addObject("productosDisponibles", productosDisponibles)
+                    .addObject("pesoActual", pesoActual)
+                    .addObject("error", e.getMessage());
+        }
     }
 
     @GetMapping("/{id}/comprar")
@@ -107,42 +125,48 @@ public class CaravanaController {
         List<CiudadProducto> productosDisponibles = ciudadProductoRepository
                 .findByCiudad(caravana.getCiudadActual());
 
+                double pesoActual = caravana.getProductos().stream()
+                .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
+                .sum();
+
         ModelAndView modelAndView = new ModelAndView("caravana-comprar");
         modelAndView.addObject("caravana", caravana);
         modelAndView.addObject("productosDisponibles", productosDisponibles);
+        modelAndView.addObject("pesoActual", pesoActual);
+
 
         return modelAndView;
     }
 
     // Caso 6: vender producto
     @GetMapping("/{id}/vender")
-public ModelAndView mostrarFormularioVender(@PathVariable Long id,
-                                            @RequestParam(value = "error", required = false) String error) {
-    Caravana caravana = caravanaService.buscarCaravanaPorId(id)
-            .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+    public ModelAndView mostrarFormularioVender(@PathVariable Long id,
+            @RequestParam(value = "error", required = false) String error) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
-    List<CaravanaProducto> productosEnCaravana = caravana.getProductos();
+        List<CaravanaProducto> productosEnCaravana = caravana.getProductos();
 
-    ModelAndView modelAndView = new ModelAndView("caravana-vender");
-    modelAndView.addObject("caravana", caravana);
-    modelAndView.addObject("productosEnCaravana", productosEnCaravana);
-    modelAndView.addObject("error", error);
+        ModelAndView modelAndView = new ModelAndView("caravana-vender");
+        modelAndView.addObject("caravana", caravana);
+        modelAndView.addObject("productosEnCaravana", productosEnCaravana);
+        modelAndView.addObject("error", error);
 
-    return modelAndView;
-}
-
-@PostMapping("/{id}/vender")
-public String venderProducto(@PathVariable Long id,
-                             @RequestParam Long productoId,
-                             @RequestParam int cantidad) {
-    try {
-        caravanaService.venderProducto(id, productoId, cantidad);
-    } catch (IllegalArgumentException e) {
-        return "redirect:/caravana/" + id + "/vender?error=" + e.getMessage().replace(" ", "+");
+        return modelAndView;
     }
 
-    return "redirect:/caravana/" + id;
-}
+    @PostMapping("/{id}/vender")
+    public String venderProducto(@PathVariable Long id,
+            @RequestParam Long productoId,
+            @RequestParam int cantidad) {
+        try {
+            caravanaService.venderProducto(id, productoId, cantidad);
+        } catch (IllegalArgumentException e) {
+            return "redirect:/caravana/" + id + "/vender?error=" + e.getMessage().replace(" ", "+");
+        }
+
+        return "redirect:/caravana/" + id;
+    }
 
     // Caso 7: aplicar servicio
     @PostMapping("/{id}/servicio")

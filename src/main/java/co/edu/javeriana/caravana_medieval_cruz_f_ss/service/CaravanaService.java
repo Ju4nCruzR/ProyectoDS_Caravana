@@ -86,6 +86,17 @@ public class CaravanaService {
         if (caravana.getDineroDisponibleCaravana() < precioTotal)
             throw new RuntimeException("Dinero insuficiente");
     
+        // Verificación de capacidad de carga
+        double pesoActual = caravana.getProductos().stream()
+                .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
+                .sum();
+    
+        double pesoProducto = producto.getPesoProducto() * cantidad;
+        double nuevaCarga = pesoActual + pesoProducto;
+    
+        if (nuevaCarga > caravana.getCapacidadMaximaCargaCaravana())
+            throw new RuntimeException("La caravana no puede cargar más peso");
+    
         CaravanaProducto existente = caravanaProductoRepository.findByCaravanaAndProducto(caravana, producto)
                 .orElse(null);
     
@@ -100,7 +111,7 @@ public class CaravanaService {
     
         ciudadProductoRepository.save(cp);
         caravanaProductoRepository.save(existente);
-        caravanaRepository.save(caravana); // guardar los cambios de dinero
+        caravanaRepository.save(caravana);
     }
 
     public void venderProducto(Long caravanaId, Long productoId, int cantidad) {
@@ -116,11 +127,13 @@ public class CaravanaService {
         if (cp.getStockEnCaravana() < cantidad) {
             throw new IllegalArgumentException("Stock insuficiente en la caravana para vender.");
         }
-        
+    
         double precioTotal = producto.getPrecioBaseProducto() * cantidad;
-
+    
         // Aumentar el dinero de la caravana
-        caravana.setDineroDisponibleCaravana(caravana.getDineroDisponibleCaravana() + precioTotal);
+        caravana.setDineroDisponibleCaravana(
+            caravana.getDineroDisponibleCaravana() + precioTotal
+        );
     
         // Reducir stock en caravana
         cp.setStockEnCaravana(cp.getStockEnCaravana() - cantidad);
@@ -139,6 +152,7 @@ public class CaravanaService {
         caravanaProductoRepository.save(cp);
         caravanaRepository.save(caravana);
     }
+    
     
     public void aplicarServicio(Long caravanaId, Long servicioId) {
         Caravana caravana = caravanaRepository.findById(caravanaId)
