@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Jugador</title>
+</head>
+<body>
+    <h1>Crear Nuevo Jugador</h1>
+
+    <form th:action="@{/jugador/crear}" method="post" th:object="${jugador}">
+        <label for="nombreJugador">Nombre:</label>
+        <input type="text" id="nombreJugador" th:field="*{nombreJugador}" required />
+        <br/><br/>
+
+        <label for="rolJugador">Rol:</label>
+        <select id="rolJugador" th:field="*{rolJugador}">
+            <option th:value="COMERCIANTE">Comerciante</option>
+            <option th:value="CARAVANERO">Caravanero</option>
+        </select>
+        <br/><br/>
+
+        <label for="caravana">Caravana:</label>
+        <select id="caravana" th:field="*{caravana.id}">
+            <option th:each="caravana : ${caravanas}"
+                    th:value="${caravana.id}"
+                    th:text="${caravana.nombreCaravana}">
+            </option>
+        </select>
+        <br/><br/>
+
+        <button type="submit">Crear</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/jugador/list}">Volver a la lista de jugadores</a>
+</body>
+</html>

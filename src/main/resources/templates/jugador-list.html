@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Jugadores</title>
+</head>
+<body>
+    <h1>Lista de Jugadores</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Caravana</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jugador : ${jugadores}">
+                <td th:text="${jugador.id}"></td>
+                <td th:text="${jugador.nombreJugador}"></td>
+                <td th:text="${jugador.rolJugador}"></td>
+                <td th:text="${jugador.caravana != null ? jugador.caravana.nombreCaravana : 'Sin caravana'}"></td>
+                <td>
+                    <a th:href="@{'/jugador/' + ${jugador.id}}">Ver</a> |
+                    <a th:href="@{'/jugador/' + ${jugador.id} + '/editar'}">Editar</a> |
+                    <form th:action="@{'/jugador/' + ${jugador.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/jugador/crear}">Crear nuevo jugador</a>
+</body>
+</html>
