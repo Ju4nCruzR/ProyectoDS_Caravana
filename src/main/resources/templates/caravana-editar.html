@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Caravana</title>
+</head>
+<body>
+    <h1>Editar Caravana</h1>
+
+    <form th:action="@{'/caravana/' + ${caravana.id} + '/editar'}" th:object="${caravana}" method="post">
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombreCaravana}" /><br>
+
+        <label>Velocidad:</label>
+        <input type="number" th:field="*{velocidadCaravana}" step="0.1" /><br>
+
+        <label>Capacidad Máxima de Carga:</label>
+        <input type="number" th:field="*{capacidadMaximaCargaCaravana}" step="0.1" /><br>
+
+        <label>Dinero Disponible:</label>
+        <input type="number" th:field="*{dineroDisponibleCaravana}" step="0.01" /><br>
+
+        <label>Puntos de Vida:</label>
+        <input type="number" th:field="*{puntosDeVidaCaravana}" /><br>
+
+        <label>Ciudad Actual:</label>
+        <select th:field="*{ciudadActual.id}">
+            <option th:each="ciudad : ${ciudades}"
+                    th:value="${ciudad.id}"
+                    th:text="${ciudad.nombreCiudad}"
+                    th:selected="${caravana.ciudadActual != null and ciudad.id == caravana.ciudadActual.id}">
+            </option>
+        </select><br>
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+
+    <a th:href="@{/caravana/list}">Volver a la lista</a>
+</body>
+</html>

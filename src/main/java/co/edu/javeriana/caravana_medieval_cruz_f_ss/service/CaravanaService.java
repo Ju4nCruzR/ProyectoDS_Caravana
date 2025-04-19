@@ -42,6 +42,9 @@ public class CaravanaService {
     @Autowired
     private CiudadServicioRepository ciudadServicioRepository;
 
+    @Autowired
+    private JugadorRepository jugadorRepository;
+
     public Caravana crearCaravana(Caravana caravana) {
         return caravanaRepository.save(caravana);
     }
@@ -132,19 +135,14 @@ public class CaravanaService {
         Servicio servicio = cs.getServicio();
 
         switch (servicio.getTipo()) {
-            case REPARAR:
-                caravana.setPuntosDeVidaCaravana(100);
-                break;
-            case MEJORAR_CAPACIDAD:
-                caravana.setCapacidadMaximaCargaCaravana(caravana.getCapacidadMaximaCargaCaravana() + 50);
-                break;
-            case MEJORAR_VELOCIDAD:
-                caravana.setVelocidadCaravana(caravana.getVelocidadCaravana() + 10);
-                break;
-            case GUARDIAS:
-                // Podrías activar un flag o mejorar defensa (lógica extra)
-                break;
-        }
+            case REPARAR -> caravana.setPuntosDeVidaCaravana(100);
+            case MEJORAR_CAPACIDAD -> caravana.setCapacidadMaximaCargaCaravana(caravana.getCapacidadMaximaCargaCaravana() + 50);
+            case MEJORAR_VELOCIDAD -> caravana.setVelocidadCaravana(caravana.getVelocidadCaravana() + 10);
+            case GUARDIAS -> {
+                int nuevosPuntos = Math.min(100, caravana.getPuntosDeVidaCaravana() + 20);
+                caravana.setPuntosDeVidaCaravana(nuevosPuntos);
+            }
+        }        
 
         caravanaRepository.save(caravana);
     }
@@ -159,15 +157,26 @@ public class CaravanaService {
         caravanaRepository.deleteById(id);
     }
 
-    @Autowired
-    private JugadorRepository jugadorRepository;
-
     public Jugador agregarJugador(Long caravanaId, String nombre, Jugador.Rol rol) {
         Caravana caravana = caravanaRepository.findById(caravanaId)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
         Jugador jugador = new Jugador(caravana, nombre, rol);
         return jugadorRepository.save(jugador);
+    }
+
+    public Caravana actualizarCaravana(Long id, Caravana datos) {
+        Caravana caravana = caravanaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        caravana.setNombreCaravana(datos.getNombreCaravana());
+        caravana.setVelocidadCaravana(datos.getVelocidadCaravana());
+        caravana.setCapacidadMaximaCargaCaravana(datos.getCapacidadMaximaCargaCaravana());
+        caravana.setDineroDisponibleCaravana(datos.getDineroDisponibleCaravana());
+        caravana.setPuntosDeVidaCaravana(datos.getPuntosDeVidaCaravana());
+        caravana.setCiudadActual(datos.getCiudadActual());
+
+        return caravanaRepository.save(caravana);
     }
 
 }

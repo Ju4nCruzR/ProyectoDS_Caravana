@@ -1,13 +1,16 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
@@ -20,8 +23,6 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRep
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CaravanaService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/caravana")
@@ -183,5 +184,25 @@ public class CaravanaController {
         return new ModelAndView("caravana-jugador")
                 .addObject("caravana", caravana);
     }
+
+    // Caso 11: Mostrar formulario de edición
+@GetMapping("/{id}/editar")
+public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
+    Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+            .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+    List<Ciudad> ciudades = ciudadRepository.findAll();
+
+    return new ModelAndView("caravana-editar")
+            .addObject("caravana", caravana)
+            .addObject("ciudades", ciudades);
+}
+
+// Caso 11 (POST): Actualizar caravana
+@PostMapping("/{id}/editar")
+public String actualizarCaravana(@PathVariable Long id, @ModelAttribute Caravana caravana) {
+    caravanaService.actualizarCaravana(id, caravana);
+    return "redirect:/caravana/" + id;
+}
 
 }
