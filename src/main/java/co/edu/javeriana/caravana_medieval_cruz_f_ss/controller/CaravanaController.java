@@ -19,6 +19,7 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
@@ -88,13 +89,16 @@ public class CaravanaController {
         Caravana caravana = caravanaService.buscarCaravanaPorId(id)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
-        List<Ciudad> ciudades = ciudadRepository.findAll();
+        Ciudad ciudadActual = caravana.getCiudadActual();
 
-        ModelAndView modelAndView = new ModelAndView("caravana-mover");
-        modelAndView.addObject("caravana", caravana);
-        modelAndView.addObject("ciudades", ciudades);
+        List<Ciudad> destinosDisponibles = ciudadActual.getRutasOrigen().stream()
+                .map(Ruta::getCiudadDestino)
+                .distinct()
+                .toList();
 
-        return modelAndView;
+        return new ModelAndView("caravana-mover")
+                .addObject("caravana", caravana)
+                .addObject("ciudades", destinosDisponibles);
     }
 
     // Caso 5: comprar producto
@@ -176,10 +180,22 @@ public class CaravanaController {
 
     // Caso 7: aplicar servicio
     @PostMapping("/{id}/servicio")
-    public String aplicarServicio(@PathVariable Long id,
-            @RequestParam Long servicioId) {
-        caravanaService.aplicarServicio(id, servicioId);
-        return "redirect:/caravana/" + id;
+    public ModelAndView aplicarServicio(@PathVariable Long id, @RequestParam Long servicioId) {
+        try {
+            caravanaService.aplicarServicio(id, servicioId);
+            return new ModelAndView("redirect:/caravana/" + id);
+        } catch (RuntimeException e) {
+            Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                    .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+            List<CiudadServicio> serviciosDisponibles = ciudadServicioRepository
+                    .findByCiudad(caravana.getCiudadActual());
+
+            return new ModelAndView("caravana-servicio")
+                    .addObject("caravana", caravana)
+                    .addObject("serviciosDisponibles", serviciosDisponibles)
+                    .addObject("error", e.getMessage());
+        }
     }
 
     @GetMapping("/{id}/servicio")

@@ -3,6 +3,7 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.model;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,21 +11,21 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Ciudad {
-   
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String nombreCiudad;
     private double impuestosDeEntradaCiudad;
-    
+
     @OneToMany(mappedBy = "ciudad")
     private List<CiudadProducto> productosDisponibles;
 
     @OneToMany(mappedBy = "ciudad")
     private List<CiudadServicio> serviciosDisponibles;
 
-    @OneToMany(mappedBy = "ciudadOrigen")
+    @OneToMany(mappedBy = "ciudadOrigen", fetch = FetchType.EAGER)
     private List<Ruta> rutasOrigen;
 
     @OneToMany(mappedBy = "ciudadDestino")
@@ -33,19 +34,20 @@ public class Ciudad {
     @OneToMany(mappedBy = "ciudad")
     private List<CiudadRuta> rutasAsociadas;
 
-
     public Ciudad() {
     }
 
-    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad, List<CiudadProducto> productosDisponibles, List<Ruta> rutasDestino, List<Ruta> rutasOrigen, List<CiudadServicio> serviciosDisponibles, List<CiudadRuta> rutasAsociadas) {
+    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad, List<CiudadProducto> productosDisponibles,
+            List<Ruta> rutasDestino, List<Ruta> rutasOrigen, List<CiudadServicio> serviciosDisponibles,
+            List<CiudadRuta> rutasAsociadas) {
         this.impuestosDeEntradaCiudad = impuestosDeEntradaCiudad;
-        this.nombreCiudad = nombreCiudad;    
+        this.nombreCiudad = nombreCiudad;
         this.productosDisponibles = productosDisponibles;
-        this.rutasDestino = rutasDestino;    
+        this.rutasDestino = rutasDestino;
         this.rutasOrigen = rutasOrigen;
         this.serviciosDisponibles = serviciosDisponibles;
         this.rutasAsociadas = rutasAsociadas;
-}
+    }
 
     public long getId() {
         return id;
@@ -110,6 +112,5 @@ public class Ciudad {
     public void setRutasAsociadas(List<CiudadRuta> rutasAsociadas) {
         this.rutasAsociadas = rutasAsociadas;
     }
-
 
 }

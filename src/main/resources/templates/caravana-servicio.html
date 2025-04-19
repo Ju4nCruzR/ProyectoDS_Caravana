@@ -7,6 +7,10 @@
 <body>
     <h1 th:text="'Aplicar Servicio - Caravana: ' + ${caravana.nombreCaravana}"></h1>
 
+    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+    <h2 th:text="'Dinero disponible: $' + ${caravana.dineroDisponibleCaravana} + ' CaravaCoins'"></h2>
+
     <form th:action="@{'/caravana/' + ${caravana.id} + '/servicio'}" method="post">
         <label for="servicioId">Selecciona servicio:</label>
         <select name="servicioId" id="servicioId" required>
