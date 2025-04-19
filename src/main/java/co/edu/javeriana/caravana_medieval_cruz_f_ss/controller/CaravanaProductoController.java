@@ -45,7 +45,7 @@ public class CaravanaProductoController {
                                 .addObject("productos", productos);
         }
 
-        // Caso 2: Ver detalle de producto en caravana
+        // Caso 2: Formulario para ver detalle de producto en caravana
         @GetMapping("/detalle")
         @ResponseBody
         public CaravanaProducto detalle(@RequestParam Long caravanaId, @RequestParam Long productoId) {
@@ -58,6 +58,7 @@ public class CaravanaProductoController {
                                 .orElseThrow(() -> new RuntimeException("No encontrado"));
         }
 
+        // Caso 2: Ver detalle de producto en caravana
         @PostMapping("/detalle")
         public ModelAndView detallePost(@RequestParam Long caravanaId, @RequestParam Long productoId) {
                 Caravana caravana = caravanaRepository.findById(caravanaId)
@@ -72,7 +73,7 @@ public class CaravanaProductoController {
                                 .addObject("caravanaProducto", cp);
         }
 
-        // Caso 3: Actualizar stock
+        // Caso 3: Formulario para actualizar stock
         @GetMapping("/{id}/actualizar")
         public ModelAndView mostrarFormularioActualizar(@PathVariable Long id) {
                 CaravanaProducto cp = caravanaProductoService.buscarPorId(id)
@@ -82,6 +83,7 @@ public class CaravanaProductoController {
                                 .addObject("caravanaProducto", cp);
         }
 
+         // Caso 3: Actualizar stock
         @PostMapping("/{id}/actualizar")
         public String actualizarStock(@PathVariable Long id, @RequestParam int nuevoStock) {
                 CaravanaProducto cp = caravanaProductoService.buscarPorId(id)
@@ -93,7 +95,7 @@ public class CaravanaProductoController {
                 return "redirect:/caravana/" + cp.getCaravana().getId(); // o redirige a donde prefieras
         }
 
-        // Caso 4: Eliminar
+        // Caso 4: Formulario para eliminar
         @GetMapping("/{id}/eliminar")
         public ModelAndView confirmarEliminacion(@PathVariable Long id) {
                 CaravanaProducto cp = caravanaProductoService.buscarPorId(id)
@@ -103,13 +105,14 @@ public class CaravanaProductoController {
                                 .addObject("caravanaProducto", cp);
         }
 
+         // Caso 4: Eliminar
         @PostMapping("/{id}/eliminar")
         public String eliminar(@PathVariable Long id) {
                 caravanaProductoService.eliminarPorId(id);
                 return "redirect:/caravana-producto/list";
         }
 
-        // Caso 5: Crear nuevo
+        // Caso 5: Formulario para crear nuevo
         @GetMapping("/crear")
         public ModelAndView mostrarFormularioCrear() {
                 ModelAndView modelAndView = new ModelAndView("caravanaProducto-crear");
@@ -118,6 +121,7 @@ public class CaravanaProductoController {
                 return modelAndView;
         }
 
+        // Caso 5: Crear nuevo
         @PostMapping("/crear")
         public String crear(@RequestParam Long caravanaId,
                         @RequestParam Long productoId,
