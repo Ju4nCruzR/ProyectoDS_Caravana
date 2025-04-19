@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Asociar Ruta a Ciudad</title>
+</head>
+<body>
+    <h1>Asociar Ruta a Ciudad</h1>
+
+    <form th:action="@{/ciudad-ruta/crear}" method="post">
+        <label for="ciudadId">Ciudad de Origen:</label>
+        <select id="ciudadId" name="ciudadId" required>
+            <option value="">--Seleccionar Ciudad--</option>
+            <option th:each="ciudad : ${ciudades}" 
+                    th:value="${ciudad.id}" 
+                    th:text="${ciudad.nombreCiudad}"></option>
+        </select>
+        <br/><br/>
+
+        <label for="rutaId">Ruta a Asociar:</label>
+        <select id="rutaId" name="rutaId" required>
+            <option value="">--Seleccionar Ruta--</option>
+            <option th:each="ruta : ${rutas}" 
+                    th:value="${ruta.id}" 
+                    th:text="${'Hacia ' + ruta.ciudadDestino.nombreCiudad + ' - ' + ruta.distanciaRuta + ' km'}"></option>
+        </select>
+        <br/><br/>
+
+        <button type="submit">Asociar Ruta</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/ciudad-ruta/list}">Volver a lista de asociaciones</a>
+</body>
+</html>

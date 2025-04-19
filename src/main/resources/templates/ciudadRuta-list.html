@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rutas por Ciudad</title>
+</head>
+<body>
+    <h1>Asociaciones Ciudad - Ruta</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ciudad Origen</th>
+                <th>Ciudad Destino</th>
+                <th>Distancia</th>
+                <th>Segura</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cr : ${asociaciones}">
+                <td th:text="${cr.id}"></td>
+                <td th:text="${cr.ciudad.nombreCiudad}"></td>
+                <td th:text="${cr.ruta.ciudadDestino.nombreCiudad}"></td>
+                <td th:text="${cr.ruta.distanciaRuta} + ' km'"></td>
+                <td th:text="${cr.ruta.esSeguraRuta ? 'Sí' : 'No'}"></td>
+                <td>
+                    <a th:href="@{'/ciudad-ruta/' + ${cr.id}}">Ver</a> |
+                    <form th:action="@{'/ciudad-ruta/' + ${cr.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/ciudad-ruta/crear}">Asociar nueva ruta a ciudad</a>
+    <br/>
+    <a th:href="@{/ciudad/list}">Volver a ciudades</a>
+</body>
+</html>

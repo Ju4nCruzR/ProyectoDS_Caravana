@@ -31,14 +31,14 @@ public class CiudadRutaController {
     @GetMapping("/list")
     public ModelAndView listarTodas() {
         List<CiudadRuta> asociaciones = ciudadRutaService.listarTodas();
-        return new ModelAndView("ciudadruta-list")
+        return new ModelAndView("ciudadRuta-list")
                 .addObject("asociaciones", asociaciones);
     }
 
     // Caso 2: Mostrar formulario de asociación
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioAsociar() {
-        return new ModelAndView("ciudadruta-crear")
+        return new ModelAndView("ciudadRuta-crear")
                 .addObject("ciudades", ciudadRepository.findAll())
                 .addObject("rutas", rutaRepository.findAll());
     }
@@ -67,7 +67,7 @@ public class CiudadRutaController {
     public ModelAndView verAsociacion(@PathVariable Long id) {
         CiudadRuta cr = ciudadRutaService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
-        return new ModelAndView("ciudadruta-detalle").addObject("ciudadruta", cr);
+        return new ModelAndView("ciudadRuta-detalle").addObject("ciudadruta", cr);
     }
 
 }
