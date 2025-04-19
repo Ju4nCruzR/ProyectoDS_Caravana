@@ -5,12 +5,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CaravanaProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Juego;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Producto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
@@ -20,6 +22,7 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepositor
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JuegoRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JugadorRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.ProductoRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.RutaRepository;
@@ -48,6 +51,9 @@ public class CaravanaService {
 
     @Autowired
     private JugadorRepository jugadorRepository;
+
+    @Autowired
+    private JuegoRepository juegoRepository;
 
     public Caravana crearCaravana(Caravana caravana) {
         return caravanaRepository.save(caravana);
@@ -223,8 +229,36 @@ public class CaravanaService {
         return caravana.getProductos();
     }
 
+    @Transactional
     public void eliminarCaravana(Long id) {
-        caravanaRepository.deleteById(id);
+        Caravana caravana = caravanaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        // 1. Eliminar CaravanaProducto
+        caravanaProductoRepository.deleteAll(caravana.getProductos());
+
+        // 2. Quitar caravana de los juegos
+        List<Juego> juegosConCaravana = juegoRepository.findAll().stream()
+                .filter(j -> j.getCaravanas().contains(caravana))
+                .toList();
+        for (Juego juego : juegosConCaravana) {
+            juego.getCaravanas().remove(caravana);
+            juegoRepository.save(juego);
+        }
+
+        // 3. Quitar jugadores de los juegos y luego eliminarlos
+        List<Jugador> jugadores = jugadorRepository.findByCaravana(caravana);
+        for (Jugador jugador : jugadores) {
+            List<Juego> juegosDelJugador = juegoRepository.findByJugadoresContains(jugador);
+            for (Juego juego : juegosDelJugador) {
+                juego.getJugadores().remove(jugador);
+                juegoRepository.save(juego);
+            }
+            jugadorRepository.delete(jugador); // Ya sin referencias
+        }
+
+        // 4. Finalmente, eliminar la caravana
+        caravanaRepository.delete(caravana);
     }
 
     public Jugador agregarJugador(Long caravanaId, String nombre, Jugador.Rol rol) {
