@@ -1,14 +1,18 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.controller;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CiudadService;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CiudadService;
 
 @Controller
 @RequestMapping("/ciudad")
@@ -61,7 +65,16 @@ public class CiudadController {
         return "redirect:/ciudad/" + id;
     }
 
-    // Caso 5: Eliminar ciudad
+    // Caso 5: Confirmación antes de eliminar ciudad
+    @GetMapping("/{id}/eliminar")
+    public ModelAndView mostrarConfirmacionEliminar(@PathVariable Long id) {
+        Ciudad ciudad = ciudadService.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+        return new ModelAndView("ciudad-eliminar")
+                .addObject("ciudad", ciudad);
+    }
+
+    // Caso 5 (POST): Eliminar ciudad
     @PostMapping("/{id}/eliminar")
     public String eliminarCiudad(@PathVariable Long id) {
         ciudadService.eliminarCiudad(id);
