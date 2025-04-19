@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto</title>
+</head>
+<body>
+    <h1>Detalle del Producto</h1>
+
+    <p><strong>ID:</strong> <span th:text="${producto.id}"></span></p>
+    <p><strong>Nombre:</strong> <span th:text="${producto.nombreProducto}"></span></p>
+    <p><strong>Factor Oferta:</strong> <span th:text="${producto.factorOfertaProducto}"></span></p>
+    <p><strong>Factor Demanda:</strong> <span th:text="${producto.factorDemandaProducto}"></span></p>
+
+    <p>
+        <a th:href="@{'/producto/' + ${producto.id} + '/editar'}">✏️ Editar</a> |
+        <a th:href="@{'/producto/' + ${producto.id} + '/asociaciones'}">🔗 Ver asociaciones</a> |
+        <a href="/producto/list">← Volver</a>
+    </p>
+</body>
+</html>

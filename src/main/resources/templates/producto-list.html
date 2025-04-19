@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Productos</title>
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+
+    <a href="/producto/crear">➕ Crear nuevo producto</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Factor Oferta</th>
+                <th>Factor Demanda</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="producto : ${productos}">
+                <td th:text="${producto.id}">ID</td>
+                <td th:text="${producto.nombreProducto}">Nombre</td>
+                <td th:text="${producto.factorOfertaProducto}">Oferta</td>
+                <td th:text="${producto.factorDemandaProducto}">Demanda</td>
+                <td>
+                    <a th:href="@{'/producto/' + ${producto.id}}">👁 Ver</a> |
+                    <a th:href="@{'/producto/' + ${producto.id} + '/editar'}">✏️ Editar</a> |
+                    <form th:action="@{'/producto/' + ${producto.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">🗑 Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
