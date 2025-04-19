@@ -1,6 +1,7 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,10 +16,10 @@ public class CiudadProducto {
 
     private int stockProducto;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Ciudad ciudad;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Producto producto;
 
     public CiudadProducto() {

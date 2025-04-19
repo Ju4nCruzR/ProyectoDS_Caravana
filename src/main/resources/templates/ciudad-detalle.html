@@ -12,31 +12,27 @@
 
     <hr/>
 
-    <h2>Productos Disponibles</h2>
+    <h2>Productos disponibles:</h2>
     <ul>
-        <li th:each="cp : ${ciudad.productosDisponibles}" 
-            th:text="${cp.producto.nombreProducto + ' (Stock: ' + cp.stockProducto + ')'}">
+        <li th:each="cp : ${productos}">
+            <span th:text="${cp.producto.nombreProducto}"></span> -
+            <span th:text="${cp.stockProducto}"></span> unidades
         </li>
     </ul>
 
-    <h2>Servicios Disponibles</h2>
+    <h2>Servicios disponibles:</h2>
     <ul>
-        <li th:each="cs : ${ciudad.serviciosDisponibles}" 
-            th:text="${cs.servicio.tipo + ' - $' + cs.servicio.precioServicio}">
+        <li th:each="cs : ${servicios}">
+            <span th:text="${cs.servicio.tipo}"></span> -
+            <span th:text="${cs.servicio.precioServicio} + ' monedas'"></span>
         </li>
     </ul>
 
-    <h2>Rutas que Salen de la Ciudad</h2>
+    <h2>Rutas asociadas:</h2>
     <ul>
-        <li th:each="cr : ${ciudad.rutasAsociadas}" 
-            th:text="${'→ ' + cr.ruta.ciudadDestino.nombreCiudad + ' (Distancia: ' + cr.ruta.distanciaRuta + ')'}">
-        </li>
-    </ul>
-
-    <h2>Rutas que Llegan a la Ciudad</h2>
-    <ul>
-        <li th:each="r : ${ciudad.rutasDestino}" 
-            th:text="${'← Desde ' + r.ciudadOrigen.nombreCiudad + ' (Distancia: ' + r.distanciaRuta + ')'}">
+        <li th:each="cr : ${rutas}">
+            <span th:text="'Hacia ' + ${cr.ruta.ciudadDestino.nombreCiudad}"></span>
+            <span th:if="${cr.ruta.esSeguraRuta}"> (Segura) </span>
         </li>
     </ul>
 

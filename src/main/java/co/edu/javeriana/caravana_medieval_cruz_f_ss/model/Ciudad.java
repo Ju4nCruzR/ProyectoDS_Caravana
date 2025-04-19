@@ -1,5 +1,6 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -20,33 +21,37 @@ public class Ciudad {
     private double impuestosDeEntradaCiudad;
 
     @OneToMany(mappedBy = "ciudad")
-    private List<CiudadProducto> productosDisponibles;
+    private List<CiudadProducto> productosDisponibles = new ArrayList<>();
 
     @OneToMany(mappedBy = "ciudad")
-    private List<CiudadServicio> serviciosDisponibles;
+    private List<CiudadServicio> serviciosDisponibles = new ArrayList<>();
 
     @OneToMany(mappedBy = "ciudadOrigen", fetch = FetchType.EAGER)
-    private List<Ruta> rutasOrigen;
+    private List<Ruta> rutasOrigen = new ArrayList<>();
 
     @OneToMany(mappedBy = "ciudadDestino")
-    private List<Ruta> rutasDestino;
+    private List<Ruta> rutasDestino = new ArrayList<>();
 
     @OneToMany(mappedBy = "ciudad")
-    private List<CiudadRuta> rutasAsociadas;
+    private List<CiudadRuta> rutasAsociadas = new ArrayList<>();
 
     public Ciudad() {
+        // listas ya inicializadas arriba
     }
 
-    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad, List<CiudadProducto> productosDisponibles,
-            List<Ruta> rutasDestino, List<Ruta> rutasOrigen, List<CiudadServicio> serviciosDisponibles,
+    public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad,
+            List<CiudadProducto> productosDisponibles,
+            List<Ruta> rutasDestino,
+            List<Ruta> rutasOrigen,
+            List<CiudadServicio> serviciosDisponibles,
             List<CiudadRuta> rutasAsociadas) {
         this.impuestosDeEntradaCiudad = impuestosDeEntradaCiudad;
         this.nombreCiudad = nombreCiudad;
-        this.productosDisponibles = productosDisponibles;
-        this.rutasDestino = rutasDestino;
-        this.rutasOrigen = rutasOrigen;
-        this.serviciosDisponibles = serviciosDisponibles;
-        this.rutasAsociadas = rutasAsociadas;
+        this.productosDisponibles = new ArrayList<>(productosDisponibles);
+        this.rutasDestino = new ArrayList<>(rutasDestino);
+        this.rutasOrigen = new ArrayList<>(rutasOrigen);
+        this.serviciosDisponibles = new ArrayList<>(serviciosDisponibles);
+        this.rutasAsociadas = new ArrayList<>(rutasAsociadas);
     }
 
     public long getId() {

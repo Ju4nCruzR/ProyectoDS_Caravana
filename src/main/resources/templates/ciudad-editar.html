@@ -7,19 +7,113 @@
 <body>
     <h1 th:text="'Editar Ciudad: ' + ${ciudad.nombreCiudad}"></h1>
 
-    <form th:action="@{'/ciudad/' + ${ciudad.id} + '/editar'}" method="post" th:object="${ciudad}">
-        <label for="nombreCiudad">Nombre:</label>
-        <input type="text" id="nombreCiudad" th:field="*{nombreCiudad}" required />
-        <br/><br/>
+    <form th:action="@{'/ciudad/' + ${ciudad.id} + '/editar'}" th:object="${ciudad}" method="post">
+        <!-- Nombre y tarifa -->
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombreCiudad}" placeholder="Nombre" /><br>
 
-        <label for="impuestosDeEntradaCiudad">Impuestos de Entrada:</label>
-        <input type="number" id="impuestosDeEntradaCiudad" th:field="*{impuestosDeEntradaCiudad}" step="0.01" required />
-        <br/><br/>
+        <label>Tarifa de entrada:</label>
+        <input type="number" step="0.01" th:field="*{impuestosDeEntradaCiudad}" placeholder="Tarifa" /><br><br>
 
-        <button type="submit">Guardar Cambios</button>
+        <!-- Productos disponibles -->
+        <h3>Productos disponibles:</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Nombre</th>
+                    <th>Precio Base</th>
+                    <th>Peso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="producto : ${todosLosProductos}">
+                    <td>
+                        <input type="checkbox" name="productoIds" th:value="${producto.id}"
+                               th:checked="${#lists.contains(productoIdsSeleccionados, producto.id)}" />
+                    </td>
+                    <td th:text="${producto.nombreProducto}"></td>
+                    <td th:text="${producto.precioBaseProducto} + ' $'"></td>
+                    <td th:text="${producto.pesoProducto} + ' kg'"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Servicios disponibles -->
+        <h3>Servicios disponibles:</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Tipo</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="servicio : ${todosLosServicios}">
+                    <td>
+                        <input type="checkbox" name="servicioIds" th:value="${servicio.id}"
+                               th:checked="${#lists.contains(servicioIdsSeleccionados, servicio.id)}" />
+                    </td>
+                    <td th:text="${servicio.tipo}"></td>
+                    <td th:text="${servicio.precioServicio} + ' monedas'"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Rutas de salida -->
+        <h3>Rutas de salida:</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Destino</th>
+                    <th>Distancia</th>
+                    <th>¿Segura?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="ruta : ${todasLasRutas}" th:if="${ruta.ciudadOrigen.id == ciudad.id}">
+                    <td>
+                        <input type="checkbox" name="rutaIds" th:value="${ruta.id}"
+                               th:checked="${#lists.contains(rutaIdsSeleccionadas, ruta.id)}" />
+                    </td>
+                    <td th:text="${ruta.ciudadDestino.nombreCiudad}"></td>
+                    <td th:text="${ruta.distanciaRuta} + ' km'"></td>
+                    <td th:text="${ruta.esSeguraRuta ? 'Sí' : 'No'}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Rutas de entrada -->
+        <h3>Rutas de entrada:</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Origen</th>
+                    <th>Distancia</th>
+                    <th>¿Segura?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="ruta : ${todasLasRutas}" th:if="${ruta.ciudadDestino.id == ciudad.id}">
+                    <td>
+                        <input type="checkbox" name="rutaIds" th:value="${ruta.id}"
+                               th:checked="${#lists.contains(rutaIdsSeleccionadas, ruta.id)}" />
+                    </td>
+                    <td th:text="${ruta.ciudadOrigen.nombreCiudad}"></td>
+                    <td th:text="${ruta.distanciaRuta} + ' km'"></td>
+                    <td th:text="${ruta.esSeguraRuta ? 'Sí' : 'No'}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <button type="submit">Guardar</button>
     </form>
 
-    <br/>
+    <br />
     <a th:href="@{/ciudad/list}">Volver a la lista de ciudades</a>
 </body>
 </html>
