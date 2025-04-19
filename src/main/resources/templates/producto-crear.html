@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Crear Producto</title>
 </head>
+
 <body>
     <h1>Crear nuevo producto</h1>
 
@@ -20,10 +22,15 @@
         <input type="number" id="factorDemandaProducto" th:field="*{factorDemandaProducto}" step="0.1" required />
         <br><br>
 
+        <label>Precio Base:</label>
+        <input type="number" th:field="*{precioBaseProducto}" step="0.01" /><br>
+        <br><br>
+
         <button type="submit">Crear Producto</button>
     </form>
 
     <br>
     <a href="/producto/list">← Volver a la lista</a>
 </body>
+
 </html>

@@ -74,26 +74,33 @@ public class CaravanaService {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         Ciudad ciudad = caravana.getCiudadActual();
-
+    
         CiudadProducto cp = ciudadProductoRepository.findByCiudadAndProducto(ciudad, producto)
                 .orElseThrow(() -> new RuntimeException("Producto no disponible en esta ciudad"));
-
+    
         if (cp.getStockProducto() < cantidad)
             throw new RuntimeException("Stock insuficiente");
-
+    
+        double precioTotal = producto.getPrecioBaseProducto() * cantidad;
+    
+        if (caravana.getDineroDisponibleCaravana() < precioTotal)
+            throw new RuntimeException("Dinero insuficiente");
+    
         CaravanaProducto existente = caravanaProductoRepository.findByCaravanaAndProducto(caravana, producto)
                 .orElse(null);
-
+    
         if (existente == null) {
             existente = new CaravanaProducto(caravana, producto, cantidad);
         } else {
             existente.setStockEnCaravana(existente.getStockEnCaravana() + cantidad);
         }
-
+    
         cp.setStockProducto(cp.getStockProducto() - cantidad);
-
+        caravana.setDineroDisponibleCaravana(caravana.getDineroDisponibleCaravana() - precioTotal);
+    
         ciudadProductoRepository.save(cp);
         caravanaProductoRepository.save(existente);
+        caravanaRepository.save(caravana); // guardar los cambios de dinero
     }
 
     public void venderProducto(Long caravanaId, Long productoId, int cantidad) {
