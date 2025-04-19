@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Servicio</title>
+</head>
+<body>
+    <h1>Detalle del Servicio</h1>
+
+    <p><strong>ID:</strong> <span th:text="${servicio.id}"></span></p>
+    <p><strong>Tipo:</strong> <span th:text="${servicio.tipo}"></span></p>
+    <p><strong>Precio:</strong> <span th:text="${servicio.precioServicio}"></span></p>
+
+    <a th:href="@{'/servicio/' + ${servicio.id} + '/editar'}">Editar</a> |
+    <a th:href="@{'/servicio/' + ${servicio.id} + '/asociaciones'}">Ver ciudades asociadas</a> |
+    <a href="/servicio/list">Volver a la lista</a>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ciudades que ofrecen el servicio</title>
+</head>
+<body>
+    <h1>Ciudades donde se ofrece el servicio</h1>
+
+    <p><strong>Servicio:</strong> <span th:text="${servicio.tipo}"></span> - <span th:text="${servicio.precioServicio}"></span></p>
+
+    <ul>
+        <li th:each="asoc : ${asociaciones}" th:text="${asoc.ciudad.nombreCiudad}"></li>
+    </ul>
+
+    <a th:href="@{'/servicio/' + ${servicio.id}}">Volver al detalle</a>
+</body>
+</html>
