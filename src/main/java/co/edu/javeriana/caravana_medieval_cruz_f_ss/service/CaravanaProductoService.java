@@ -49,4 +49,10 @@ public class CaravanaProductoService {
     public List<CaravanaProducto> listarTodos() {
         return caravanaProductoRepository.findAll();
     }
+
+    //caso 7: Buscar por Id
+    public Optional<CaravanaProducto> buscarPorId(Long id) {
+        return caravanaProductoRepository.findById(id);
+    }
+    
 }

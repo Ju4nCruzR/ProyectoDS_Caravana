@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Asociación Ciudad-Ruta</title>
+</head>
+<body>
+    <h1>¿Deseas eliminar esta asociación entre ciudad y ruta?</h1>
+
+    <p><strong>ID:</strong> <span th:text="${ciudadruta.id}"></span></p>
+    <p><strong>Ciudad:</strong> <span th:text="${ciudadruta.ciudad.nombreCiudad}"></span></p>
+    <p><strong>Ruta hacia:</strong> <span th:text="${ciudadruta.ruta.ciudadDestino.nombreCiudad}"></span></p>
+
+    <form th:action="@{'/ciudad-ruta/' + ${ciudadruta.id} + '/eliminar'}" method="post">
+        <button type="submit">Eliminar</button>
+        <a th:href="@{/ciudad-ruta/list}">Cancelar</a>
+    </form>
+</body>
+</html>

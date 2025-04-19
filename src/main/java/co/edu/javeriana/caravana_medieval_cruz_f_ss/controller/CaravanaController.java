@@ -174,6 +174,16 @@ public class CaravanaController {
         return "redirect:/caravana/list";
     }
 
+    // Confirmación antes de eliminar
+    @GetMapping("/{id}/eliminar")
+    public ModelAndView mostrarConfirmacionEliminar(@PathVariable Long id) {
+        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        return new ModelAndView("caravana-eliminar")
+                .addObject("caravana", caravana);
+    }
+
     // Caso 10: agregar jugador
     @PostMapping("/{id}/jugadores")
     public String agregarJugador(@PathVariable Long id,

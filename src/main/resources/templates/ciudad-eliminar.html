@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Ciudad</title>
+</head>
+<body>
+    <h1>¿Estás seguro de que deseas eliminar esta ciudad?</h1>
+
+    <p><strong>ID:</strong> <span th:text="${ciudad.id}"></span></p>
+    <p><strong>Nombre:</strong> <span th:text="${ciudad.nombreCiudad}"></span></p>
+    <p><strong>Impuestos de Entrada:</strong> <span th:text="${ciudad.impuestosDeEntradaCiudad}"></span></p>
+
+    <form th:action="@{'/ciudad/' + ${ciudad.id} + '/eliminar'}" method="post">
+        <button type="submit">Eliminar</button>
+        <a th:href="@{/ciudad/list}">Cancelar</a>
+    </form>
+</body>
+</html>
