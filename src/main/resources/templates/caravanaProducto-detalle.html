@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Producto en Caravana</title>
+</head>
+<body>
+    <h1 th:text="'Detalle del producto: ' + ${caravanaProducto.producto.nombreProducto}"></h1>
+
+    <p><strong>Nombre del producto:</strong> <span th:text="${caravanaProducto.producto.nombreProducto}"></span></p>
+    <p><strong>Stock en la caravana:</strong> <span th:text="${caravanaProducto.stockEnCaravana}"></span></p>
+    <p><strong>Peso por unidad:</strong> <span th:text="${caravanaProducto.producto.pesoProducto} + ' kg'"></span></p>
+    <p><strong>Peso total:</strong> 
+        <span th:text="${caravanaProducto.stockEnCaravana * caravanaProducto.producto.pesoProducto} + ' kg'"></span>
+    </p>
+
+    <form th:action="@{/caravana-producto/detalle}" method="post">
+        <input type="hidden" name="caravanaId" th:value="${caravanaProducto.caravana.id}" />
+        <select name="productoId">
+            <option th:each="cp : ${productos}" th:value="${cp.producto.id}"
+                    th:text="${cp.producto.nombreProducto}"></option>
+        </select>
+        <button type="submit">Ver detalle</button>
+    </form>      
+
+    <br>
+    <a th:href="@{'/caravana/' + ${caravanaProducto.caravana.id}}">Volver al detalle de la caravana</a>
+</body>
+</html>
+

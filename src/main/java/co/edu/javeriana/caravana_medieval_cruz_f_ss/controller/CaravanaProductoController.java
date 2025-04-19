@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
@@ -45,32 +44,31 @@ public class CaravanaProductoController {
                                 .addObject("productos", productos);
         }
 
-        // Caso 2: Formulario para ver detalle de producto en caravana
-        @GetMapping("/detalle")
-        @ResponseBody
-        public CaravanaProducto detalle(@RequestParam Long caravanaId, @RequestParam Long productoId) {
-                Caravana caravana = caravanaRepository.findById(caravanaId)
-                                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
-                Producto producto = productoRepository.findById(productoId)
-                                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        // Caso 2 (GET): Mostrar detalle de producto en la caravana
+        @GetMapping("/caravana/{caravanaId}/producto/{productoId}")
+        public ModelAndView detalleProducto(
+                        @PathVariable Long caravanaId,
+                        @PathVariable Long productoId) {
 
-                return caravanaProductoService.obtenerPorCaravanaYProducto(caravana, producto)
-                                .orElseThrow(() -> new RuntimeException("No encontrado"));
-        }
-
-        // Caso 2: Ver detalle de producto en caravana
-        @PostMapping("/detalle")
-        public ModelAndView detallePost(@RequestParam Long caravanaId, @RequestParam Long productoId) {
                 Caravana caravana = caravanaRepository.findById(caravanaId)
                                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
                 Producto producto = productoRepository.findById(productoId)
                                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
                 CaravanaProducto cp = caravanaProductoService.obtenerPorCaravanaYProducto(caravana, producto)
-                                .orElseThrow(() -> new RuntimeException("No encontrado"));
+                                .orElseThrow(() -> new RuntimeException("Producto no encontrado en la caravana"));
+
+                List<CaravanaProducto> productos = caravanaProductoService.listarPorCaravana(caravana);
 
                 return new ModelAndView("caravanaProducto-detalle")
-                                .addObject("caravanaProducto", cp);
+                                .addObject("caravanaProducto", cp)
+                                .addObject("productos", productos);
+        }
+
+        // Caso 2 (POST): Redirigir al GET con los parámetros correctos
+        @PostMapping("/detalle")
+        public String detallePost(@RequestParam Long caravanaId, @RequestParam Long productoId) {
+                return "redirect:/caravana-producto/caravana/" + caravanaId + "/producto/" + productoId;
         }
 
         // Caso 3: Formulario para actualizar stock
@@ -83,7 +81,7 @@ public class CaravanaProductoController {
                                 .addObject("caravanaProducto", cp);
         }
 
-         // Caso 3: Actualizar stock
+        // Caso 3: Actualizar stock
         @PostMapping("/{id}/actualizar")
         public String actualizarStock(@PathVariable Long id, @RequestParam int nuevoStock) {
                 CaravanaProducto cp = caravanaProductoService.buscarPorId(id)
@@ -105,7 +103,7 @@ public class CaravanaProductoController {
                                 .addObject("caravanaProducto", cp);
         }
 
-         // Caso 4: Eliminar
+        // Caso 4: Eliminar
         @PostMapping("/{id}/eliminar")
         public String eliminar(@PathVariable Long id) {
                 caravanaProductoService.eliminarPorId(id);
