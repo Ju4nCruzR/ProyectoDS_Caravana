@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Rutas</title>
+</head>
+<body>
+    <h1>Lista de Rutas</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Distancia</th>
+                <th>¿Es Segura?</th>
+                <th>Daño</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ruta : ${rutas}">
+                <td th:text="${ruta.id}"></td>
+                <td th:text="${ruta.ciudadOrigen.nombreCiudad}"></td>
+                <td th:text="${ruta.ciudadDestino.nombreCiudad}"></td>
+                <td th:text="${ruta.distanciaRuta} + ' km'"></td>
+                <td th:text="${ruta.esSeguraRuta ? 'Sí' : 'No'}"></td>
+                <td th:text="${ruta.danoRuta}"></td>
+                <td>
+                    <a th:href="@{'/ruta/' + ${ruta.id}}">Ver</a> |
+                    <a th:href="@{'/ruta/' + ${ruta.id} + '/editar'}">Editar</a> |
+                    <form th:action="@{'/ruta/' + ${ruta.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('¿Eliminar esta ruta?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/ruta/crear">+ Crear nueva ruta</a>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Ruta</title>
+</head>
+<body>
+    <h1>Eliminar Ruta</h1>
+
+    <p>¿Estás seguro de que deseas eliminar la siguiente ruta?</p>
+
+    <ul>
+        <li><strong>ID:</strong> <span th:text="${ruta.id}"></span></li>
+        <li><strong>Ciudad Origen:</strong> <span th:text="${ruta.ciudadOrigen.nombreCiudad}"></span></li>
+        <li><strong>Ciudad Destino:</strong> <span th:text="${ruta.ciudadDestino.nombreCiudad}"></span></li>
+        <li><strong>Distancia:</strong> <span th:text="${ruta.distanciaRuta} + ' km'"></span></li>
+        <li><strong>Daño:</strong> <span th:text="${ruta.danoRuta}"></span></li>
+        <li><strong>¿Es segura?:</strong> <span th:text="${ruta.esSeguraRuta ? 'Sí' : 'No'}"></span></li>
+    </ul>
+
+    <form th:action="@{'/ruta/' + ${ruta.id} + '/eliminar'}" method="post">
+        <button type="submit">Sí, eliminar</button>
+        <a href="/ruta/list">Cancelar</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Ruta</title>
+</head>
+<body>
+    <h1>Editar Ruta</h1>
+
+    <form th:action="@{'/ruta/' + ${ruta.id} + '/editar'}" th:object="${ruta}" method="post">
+        <p><strong>ID:</strong> <span th:text="${ruta.id}"></span></p>
+
+        <p>
+            <strong>Ciudad Origen:</strong>
+            <span th:text="${ruta.ciudadOrigen.nombreCiudad}"></span>
+        </p>
+
+        <p>
+            <strong>Ciudad Destino:</strong>
+            <span th:text="${ruta.ciudadDestino.nombreCiudad}"></span>
+        </p>
+
+        <label for="distanciaRuta">Distancia (km):</label>
+        <input type="number" step="0.1" th:field="*{distanciaRuta}" required><br><br>
+
+        <label for="danoRuta">Daño estimado:</label>
+        <input type="number" th:field="*{danoRuta}" required><br><br>
+
+        <label for="esSeguraRuta">¿Es segura?</label>
+        <input type="checkbox" th:field="*{esSeguraRuta}"><br><br>
+
+        <button type="submit">Actualizar Ruta</button>
+    </form>
+
+    <br>
+    <a href="/ruta/list">Volver a la lista</a>
+</body>
+</html>
