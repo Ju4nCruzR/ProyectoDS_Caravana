@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar Caravana</title>
 </head>
+
 <body>
     <h1>Editar Caravana</h1>
 
@@ -25,12 +27,25 @@
 
         <label>Ciudad Actual:</label>
         <select th:field="*{ciudadActual.id}">
-            <option th:each="ciudad : ${ciudades}"
-                    th:value="${ciudad.id}"
-                    th:text="${ciudad.nombreCiudad}">
+            <option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombreCiudad}">
             </option>
         </select>
-        
+
+        <h2>Jugadores en la Caravana</h2>
+
+        <div th:each="jugador, idx : *{jugadores}">
+            <h4 th:text="'Jugador #' + ${idx.index + 1}"></h4>
+            <label>Nombre:</label>
+            <input type="text" th:field="*{jugadores[__${idx.index}__].nombreJugador}" /><br>
+
+            <label>Rol:</label>
+            <select th:field="*{jugadores[__${idx.index}__].rolJugador}">
+                <option value="COMERCIANTE">COMERCIANTE</option>
+                <option value="CARAVANERO">CARAVANERO</option>
+            </select>
+            <br>
+        </div>
+
         <br>
 
         <button type="submit">Guardar Cambios</button>
@@ -38,4 +53,5 @@
 
     <a th:href="@{/caravana/list}">Volver a la lista</a>
 </body>
+
 </html>

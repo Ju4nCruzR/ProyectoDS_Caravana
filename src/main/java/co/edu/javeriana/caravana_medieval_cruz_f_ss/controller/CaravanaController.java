@@ -262,16 +262,20 @@ public class CaravanaController {
 
     // Caso 11: Mostrar formulario de edición
     @GetMapping("/{id}/editar")
-    public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
-        Caravana caravana = caravanaService.buscarCaravanaPorId(id)
-                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
+    Caravana caravana = caravanaService.buscarCaravanaPorId(id)
+            .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
-        List<Ciudad> ciudades = ciudadRepository.findAll();
+    // Forzar la carga de relaciones LAZY
+    caravana.getJugadores().size();
+    caravana.getProductos().size(); // por si acaso
 
-        return new ModelAndView("caravana-editar")
-                .addObject("caravana", caravana)
-                .addObject("ciudades", ciudades);
-    }
+    List<Ciudad> ciudades = ciudadRepository.findAll();
+
+    return new ModelAndView("caravana-editar")
+            .addObject("caravana", caravana)
+            .addObject("ciudades", ciudades);
+}
 
     // Caso 11 (POST): Actualizar caravana
     @PostMapping("/{id}/editar")

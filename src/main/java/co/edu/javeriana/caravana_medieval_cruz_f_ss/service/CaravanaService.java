@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CaravanaProducto;
@@ -271,8 +273,9 @@ public class CaravanaService {
 
     public Caravana actualizarCaravana(Long id, Caravana datos) {
         Caravana caravana = caravanaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Caravana no encontrada"));
 
+        // Actualizar campos básicos
         caravana.setNombreCaravana(datos.getNombreCaravana());
         caravana.setVelocidadCaravana(datos.getVelocidadCaravana());
         caravana.setCapacidadMaximaCargaCaravana(datos.getCapacidadMaximaCargaCaravana());
@@ -280,6 +283,23 @@ public class CaravanaService {
         caravana.setPuntosDeVidaCaravana(datos.getPuntosDeVidaCaravana());
         caravana.setCiudadActual(datos.getCiudadActual());
 
+        // Obtener jugadores actuales y nuevos
+        List<Jugador> jugadoresActuales = jugadorRepository.findByCaravana(caravana);
+        List<Jugador> nuevosJugadores = datos.getJugadores();
+
+        // Actualizar datos de cada jugador existente
+        for (int i = 0; i < jugadoresActuales.size(); i++) {
+            Jugador actual = jugadoresActuales.get(i);
+            Jugador nuevo = nuevosJugadores.get(i);
+
+            actual.setNombreJugador(nuevo.getNombreJugador());
+            actual.setRolJugador(nuevo.getRolJugador());
+        }
+
+        // Guardar todos los jugadores actualizados
+        jugadorRepository.saveAll(jugadoresActuales);
+
+        // Guardar la caravana
         return caravanaRepository.save(caravana);
     }
 
