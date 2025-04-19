@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Asociar Servicio a Ciudad</title>
+</head>
+<body>
+    <h1>Asociar Servicio a Ciudad</h1>
+
+    <form th:action="@{/ciudad-servicio/crear}" method="post">
+        <label for="ciudadId">Ciudad:</label>
+        <select name="ciudadId" id="ciudadId" required>
+            <option value="">--Seleccionar Ciudad--</option>
+            <option th:each="ciudad : ${ciudades}"
+                    th:value="${ciudad.id}"
+                    th:text="${ciudad.nombreCiudad}"></option>
+        </select>
+
+        <br/><br/>
+
+        <label for="servicioId">Servicio:</label>
+        <select name="servicioId" id="servicioId" required>
+            <option value="">--Seleccionar Servicio--</option>
+            <option th:each="servicio : ${servicios}"
+                    th:value="${servicio.id}"
+                    th:text="${servicio.tipo + ' (' + servicio.precioServicio + ' monedas)'}"></option>
+        </select>
+
+        <br/><br/>
+
+        <button type="submit">Asociar Servicio</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/ciudad-servicio/list}">Volver a lista de asociaciones</a>
+</body>
+</html>

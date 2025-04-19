@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Servicio en Ciudad</title>
+</head>
+<body>
+    <h1>Detalle de Ciudad - Servicio</h1>
+
+    <p><strong>ID de Asociación:</strong> <span th:text="${ciudadServicio.id}"></span></p>
+
+    <h2>Ciudad</h2>
+    <p><strong>Nombre:</strong> <span th:text="${ciudadServicio.ciudad.nombreCiudad}"></span></p>
+    <p><strong>Impuestos de Entrada:</strong> <span th:text="${ciudadServicio.ciudad.impuestosDeEntradaCiudad}"></span></p>
+
+    <h2>Servicio</h2>
+    <p><strong>Tipo:</strong> <span th:text="${ciudadServicio.servicio.tipo}"></span></p>
+    <p><strong>Precio:</strong> <span th:text="${ciudadServicio.servicio.precioServicio} + ' monedas'"></span></p>
+    <p><strong>¿Adquirido?:</strong> <span th:text="${ciudadServicio.servicioAdquirido ? 'Sí' : 'No'}"></span></p>
+
+    <br/>
+
+    <!-- Formulario para marcar como adquirido si aún no lo está -->
+    <div th:if="${!ciudadServicio.servicioAdquirido}">
+        <form th:action="@{'/ciudad-servicio/' + ${ciudadServicio.id} + '/adquirir'}" method="post">
+            <button type="submit">Marcar como adquirido</button>
+        </form>
+    </div>
+
+    <br/>
+    <a th:href="@{/ciudad-servicio/list}">Volver a lista de servicios por ciudad</a>
+</body>
+</html>
