@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Juegos</title>
+</head>
+<body>
+    <h1>Lista de Juegos</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tiempo Transcurrido</th>
+                <th>Tiempo Límite</th>
+                <th>Nivel Mínimo de Ganancias</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="juego : ${juegos}">
+                <td th:text="${juego.id}"></td>
+                <td th:text="${juego.tiempoTranscurridoDeJuego + ' min'}"></td>
+                <td th:text="${juego.tiempoLimiteDeJuego + ' min'}"></td>
+                <td th:text="${juego.nivelMinimoGananciasJuego + ' monedas'}"></td>
+                <td>
+                    <a th:href="@{'/juego/' + ${juego.id}}">Ver</a> |
+                    <a th:href="@{'/juego/' + ${juego.id} + '/editar'}">Editar</a> |
+                    <form th:action="@{'/juego/' + ${juego.id} + '/eliminar'}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/juego/crear}">Crear nuevo juego</a>
+</body>
+</html>

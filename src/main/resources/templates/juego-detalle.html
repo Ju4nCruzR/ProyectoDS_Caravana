@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Juego</title>
+</head>
+<body>
+    <h1>Detalle del Juego</h1>
+
+    <p><strong>ID:</strong> <span th:text="${juego.id}"></span></p>
+    <p><strong>Tiempo Transcurrido:</strong> <span th:text="${juego.tiempoTranscurridoDeJuego + ' min'}"></span></p>
+    <p><strong>Tiempo Límite:</strong> <span th:text="${juego.tiempoLimiteDeJuego + ' min'}"></span></p>
+    <p><strong>Ganancia Mínima para Ganar:</strong> <span th:text="${juego.nivelMinimoGananciasJuego + ' monedas'}"></span></p>
+
+    <h3>Acciones</h3>
+
+    <form th:action="@{'/juego/' + ${juego.id} + '/reiniciar-tiempo'}" method="post" style="display:inline;">
+        <button type="submit">Reiniciar Tiempo</button>
+    </form>
+
+    <form th:action="@{'/juego/' + ${juego.id} + '/avanzar-tiempo'}" method="post" style="display:inline;">
+        <input type="number" name="minutos" placeholder="Minutos" min="1" required />
+        <button type="submit">Avanzar Tiempo</button>
+    </form>
+
+    <br/><br/>
+
+    <a th:href="@{'/juego/' + ${juego.id} + '/editar'}">Editar Juego</a> |
+    <a th:href="@{'/juego/' + ${juego.id} + '/caravanas'}">Ver Caravanas</a> |
+    <a th:href="@{'/juego/' + ${juego.id} + '/jugadores'}">Ver Jugadores</a>
+
+    <br/><br/>
+    <a th:href="@{/juego/list}">Volver a lista de juegos</a>
+</body>
+</html>
