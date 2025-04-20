@@ -19,8 +19,8 @@
         <tbody>
             <tr th:each="cp : ${productos}">
                 <td th:text="${cp.id}"></td>
-                <td th:text="${cp.caravana.nombreCaravana}"></td>
-                <td th:text="${cp.producto.nombreProducto}"></td>
+                <td th:text="${cp.nombreCaravana}"></td>
+                <td th:text="${cp.nombreProducto}"></td>
                 <td th:text="${cp.stockEnCaravana}"></td>
             </tr>
         </tbody>

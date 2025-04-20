@@ -17,13 +17,12 @@
         </thead>
         <tbody>
             <tr th:each="cp : ${productos}">
-                <td th:text="${cp.producto.nombreProducto}"></td>
+                <td th:text="${cp.nombreProducto}"></td>
                 <td th:text="${cp.stockEnCaravana}"></td>
                 <td>
-                    <!-- Aquí podrías agregar botones para editar stock o eliminar -->
-                    <form th:action="@{'/caravana-producto/' + ${cp.id} + '/eliminar'}" method="post" style="display:inline;">
-                        <button type="submit">Eliminar</button>
-                    </form>
+                    <a th:href="@{'/caravana-producto/caravana/' + ${caravana.id} + '/producto/' + ${cp.productoId}}">Ver</a> |
+                    <a th:href="@{'/caravana-producto/' + ${cp.id} + '/actualizar'}">Editar</a> |
+                    <a th:href="@{'/caravana-producto/' + ${cp.id} + '/eliminar'}">Eliminar</a>
                 </td>
             </tr>
         </tbody>

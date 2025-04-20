@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Actualizar Stock de Producto</title>
+    <title>Actualizar Stock del Producto</title>
 </head>
 <body>
+    <h1>Actualizar Stock</h1>
 
-    <h1 th:text="'Actualizar stock de: ' + ${caravanaProducto.producto.nombreProducto}"></h1>
+    <p><strong>Producto:</strong> <span th:text="${caravanaProducto.nombreProducto}"></span></p>
+    <p><strong>Stock actual:</strong> <span th:text="${caravanaProducto.stockEnCaravana}"></span></p>
+    <p><strong>Peso por unidad:</strong> <span th:text="${caravanaProducto.pesoProducto} + ' kg'"></span></p>
+    <p><strong>Peso total:</strong> <span th:text="${caravanaProducto.pesoTotal} + ' kg'"></span></p>
 
     <form th:action="@{'/caravana-producto/' + ${caravanaProducto.id} + '/actualizar'}" method="post">
-        <p><strong>Nombre del producto:</strong> <span th:text="${caravanaProducto.producto.nombreProducto}"></span></p>
-        <p><strong>Stock actual:</strong> <span th:text="${caravanaProducto.stockEnCaravana}"></span></p>
-
         <label for="nuevoStock">Nuevo stock:</label>
-        <input type="number" id="nuevoStock" name="nuevoStock" min="0" required />
-
-        <br><br>
+        <input type="number" id="nuevoStock" name="nuevoStock" min="0" th:value="${caravanaProducto.stockEnCaravana}" required />
         <button type="submit">Actualizar</button>
     </form>
 
-    <br>
-    <a th:href="@{'/caravana/' + ${caravanaProducto.caravana.id}}">Volver al detalle de la caravana</a>
-
+    <br/>
+    <a th:href="@{'/caravana-producto/caravana/' + ${caravanaProducto.caravanaId}}">Volver a productos de la caravana</a>
 </body>
 </html>

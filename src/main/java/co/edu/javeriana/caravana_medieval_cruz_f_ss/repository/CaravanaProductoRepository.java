@@ -14,5 +14,6 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Producto;
 public interface CaravanaProductoRepository extends JpaRepository<CaravanaProducto, Long> {
     Optional<CaravanaProducto> findByCaravanaAndProducto(Caravana caravana, Producto producto);
     List<CaravanaProducto> findByProducto(Producto producto);
+    List<CaravanaProducto> findByCaravana(Caravana caravana);
 
 }

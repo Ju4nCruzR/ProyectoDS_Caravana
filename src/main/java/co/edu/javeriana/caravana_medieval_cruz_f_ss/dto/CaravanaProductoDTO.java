@@ -3,21 +3,27 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.dto;
 public class CaravanaProductoDTO {
     private Long id;
     private Long productoId;
+    private Long caravanaId;
+    private String nombreCaravana;
     private String nombreProducto;
     private int stockEnCaravana;
     private double pesoTotal;
+    private double pesoProducto;
     private double precioBaseProducto;
     
     public CaravanaProductoDTO() {
     }
 
-    public CaravanaProductoDTO(Long id, Long productoId, String nombreProducto, int stockEnCaravana, double pesoTotal,
-            double precioBaseProducto) {
+    public CaravanaProductoDTO(Long id, Long productoId, Long caravanaId, String nombreCaravana, String nombreProducto,
+            int stockEnCaravana, double pesoTotal, double pesoProducto, double precioBaseProducto) {
         this.id = id;
         this.productoId = productoId;
+        this.caravanaId = caravanaId;
+        this.nombreCaravana = nombreCaravana;
         this.nombreProducto = nombreProducto;
         this.stockEnCaravana = stockEnCaravana;
         this.pesoTotal = pesoTotal;
+        this.pesoProducto = pesoProducto;
         this.precioBaseProducto = precioBaseProducto;
     }
 
@@ -35,6 +41,22 @@ public class CaravanaProductoDTO {
 
     public void setProductoId(Long productoId) {
         this.productoId = productoId;
+    }
+
+    public Long getCaravanaId() {
+        return caravanaId;
+    }
+
+    public void setCaravanaId(Long caravanaId) {
+        this.caravanaId = caravanaId;
+    }
+
+    public String getNombreCaravana() {
+        return nombreCaravana;
+    }
+
+    public void setNombreCaravana(String nombreCaravana) {
+        this.nombreCaravana = nombreCaravana;
     }
 
     public String getNombreProducto() {
@@ -61,6 +83,14 @@ public class CaravanaProductoDTO {
         this.pesoTotal = pesoTotal;
     }
 
+    public double getPesoProducto() {
+        return pesoProducto;
+    }
+
+    public void setPesoProducto(double pesoProducto) {
+        this.pesoProducto = pesoProducto;
+    }
+
     public double getPrecioBaseProducto() {
         return precioBaseProducto;
     }
@@ -68,8 +98,5 @@ public class CaravanaProductoDTO {
     public void setPrecioBaseProducto(double precioBaseProducto) {
         this.precioBaseProducto = precioBaseProducto;
     }
-    
 
-
-    
 }
