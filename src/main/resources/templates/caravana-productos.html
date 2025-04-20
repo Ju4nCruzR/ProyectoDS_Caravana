@@ -1,36 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <title>Productos de la Caravana</title>
+    <title>Productos en Caravana</title>
 </head>
 
 <body>
-    <h1 th:if="${caravana != null}" th:text="'Productos de la Caravana: ' + ${caravana.nombreCaravana}"></h1>
-    <p th:if="${caravana == null}" style="color: red;">Caravana no disponible.</p>
+    <h1>Productos en la Caravana</h1>
 
     <table border="1">
         <thead>
             <tr>
                 <th>Nombre</th>
+                <th>Precio Base</th>
                 <th>Stock</th>
-                <th>Peso Unitario</th>
                 <th>Peso Total</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="cp : ${productos}">
-                <td th:text="${cp.producto.nombreProducto}"></td>
-                <td th:text="${cp.stockEnCaravana}"></td>
-                <td th:text="${cp.producto.pesoProducto} + ' kg'"></td>
-                <td th:text="${cp.stockEnCaravana * cp.producto.pesoProducto} + ' kg'"></td>
+                <td th:text="${cp.nombreProducto}">Nombre</td>
+                <td th:text="${cp.precioBaseProducto}">Precio</td>
+                <td th:text="${cp.stockEnCaravana}">Stock</td>
+                <td th:text="${cp.pesoTotal}">Total</td>
             </tr>
         </tbody>
     </table>
 
-    <br>
-    <a th:href="@{/caravana/list}">Volver a la lista</a>
+    <br/>
+    <a th:href="@{'/caravana/' + ${caravana.id}}">Volver</a>
 </body>
 
 </html>
