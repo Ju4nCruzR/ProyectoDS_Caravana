@@ -1,15 +1,18 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.service;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Servicio;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadServicioDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.CiudadServicioMapper;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Servicio;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
 
 @Service
 public class CiudadServicioService {
@@ -17,28 +20,28 @@ public class CiudadServicioService {
     @Autowired
     private CiudadServicioRepository ciudadServicioRepository;
 
-    // Caso 1: Listar servicios por ciudad
-    public List<CiudadServicio> listarPorCiudad(Ciudad ciudad) {
-        return ciudadServicioRepository.findByCiudad(ciudad);
+    public List<CiudadServicioDTO> listarPorCiudad(Ciudad ciudad) {
+        return ciudadServicioRepository.findByCiudad(ciudad).stream()
+                .map(CiudadServicioMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    // Caso 2: Listar todas las asociaciones
-    public List<CiudadServicio> listarTodos() {
-        return ciudadServicioRepository.findAll();
+    public List<CiudadServicioDTO> listarTodos() {
+        return ciudadServicioRepository.findAll().stream()
+                .map(CiudadServicioMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    // Caso 3: Ver detalle
-    public Optional<CiudadServicio> buscarPorId(Long id) {
-        return ciudadServicioRepository.findById(id);
+    public Optional<CiudadServicioDTO> buscarPorId(Long id) {
+        return ciudadServicioRepository.findById(id)
+                .map(CiudadServicioMapper::toDTO);
     }
 
-    // Caso 4: Asociar servicio a ciudad
-    public CiudadServicio asociarServicio(Ciudad ciudad, Servicio servicio) {
+    public CiudadServicioDTO asociarServicio(Ciudad ciudad, Servicio servicio) {
         CiudadServicio nueva = new CiudadServicio(ciudad, servicio);
-        return ciudadServicioRepository.save(nueva);
+        return CiudadServicioMapper.toDTO(ciudadServicioRepository.save(nueva));
     }
 
-    // Caso 5: Marcar servicio como adquirido
     public void marcarAdquirido(Long id) {
         CiudadServicio cs = ciudadServicioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Asociación ciudad-servicio no encontrada"));
@@ -47,7 +50,6 @@ public class CiudadServicioService {
         ciudadServicioRepository.save(cs);
     }
 
-    // Caso 6: Eliminar asociación
     public void eliminarPorId(Long id) {
         ciudadServicioRepository.deleteById(id);
     }

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadServicioDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Servicio;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.ServicioRepository;
@@ -34,18 +34,18 @@ public class CiudadServicioController {
     // Caso 1 y 2: Listar todos los servicios por ciudad o general
     @GetMapping("/list")
     public ModelAndView listarTodos() {
-        List<CiudadServicio> asociaciones = ciudadServicioService.listarTodos();
+        List<CiudadServicioDTO> asociaciones = ciudadServicioService.listarTodos();
         return new ModelAndView("ciudadServicioTemplates/ciudadServicio-list")
                 .addObject("asociaciones", asociaciones);
     }
 
     // Caso 3: Ver detalle
-    @GetMapping("/{id}")
     public ModelAndView verDetalle(@PathVariable Long id) {
-        CiudadServicio cs = ciudadServicioService.buscarPorId(id)
+        CiudadServicioDTO dto = ciudadServicioService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
+
         return new ModelAndView("ciudadServicioTemplates/ciudadServicio-detalle")
-                .addObject("ciudadServicio", cs);
+                .addObject("ciudadServicio", dto);
     }
 
     // Caso 4: Mostrar formulario para crear asociación

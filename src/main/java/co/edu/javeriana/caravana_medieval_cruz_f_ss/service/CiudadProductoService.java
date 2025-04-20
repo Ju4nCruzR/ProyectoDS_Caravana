@@ -1,14 +1,18 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadProductoDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.CiudadProductoMapper;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Producto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CiudadProductoService {
@@ -16,34 +20,36 @@ public class CiudadProductoService {
     @Autowired
     private CiudadProductoRepository ciudadProductoRepository;
 
-    // Caso 1: Listar productos de una ciudad
-    public List<CiudadProducto> listarPorCiudad(Ciudad ciudad) {
-        return ciudadProductoRepository.findByCiudad(ciudad);
+    public List<CiudadProductoDTO> listarPorCiudad(Ciudad ciudad) {
+        return ciudadProductoRepository.findByCiudad(ciudad).stream()
+                .map(CiudadProductoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    // Caso 2: Consultar detalle de producto en ciudad
-    public Optional<CiudadProducto> obtenerPorCiudadYProducto(Ciudad ciudad, Producto producto) {
-        return ciudadProductoRepository.findByCiudadAndProducto(ciudad, producto);
+    public Optional<CiudadProductoDTO> obtenerPorCiudadYProducto(Ciudad ciudad, Producto producto) {
+        return ciudadProductoRepository.findByCiudadAndProducto(ciudad, producto)
+                .map(CiudadProductoMapper::toDTO);
     }
 
-    // Caso 3: Actualizar stock
-    public CiudadProducto actualizarStock(CiudadProducto cp, int nuevoStock) {
+    public CiudadProductoDTO actualizarStock(Long id, int nuevoStock) {
+        CiudadProducto cp = ciudadProductoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
+
         cp.setStockProducto(nuevoStock);
-        return ciudadProductoRepository.save(cp);
+        return CiudadProductoMapper.toDTO(ciudadProductoRepository.save(cp));
     }
 
-    // Caso 4: Eliminar producto de ciudad
     public void eliminarPorId(Long id) {
         ciudadProductoRepository.deleteById(id);
     }
 
-    // Caso 5: Agregar producto nuevo a ciudad
-    public CiudadProducto crear(CiudadProducto nuevo) {
-        return ciudadProductoRepository.save(nuevo);
+    public CiudadProductoDTO crear(CiudadProducto nuevo) {
+        return CiudadProductoMapper.toDTO(ciudadProductoRepository.save(nuevo));
     }
 
-    // Caso 6: Listar todo (opcional)
-    public List<CiudadProducto> listarTodos() {
-        return ciudadProductoRepository.findAll();
-    } 
+    public List<CiudadProductoDTO> listarTodos() {
+        return ciudadProductoRepository.findAll().stream()
+                .map(CiudadProductoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
