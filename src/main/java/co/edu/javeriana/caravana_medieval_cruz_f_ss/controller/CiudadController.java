@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadProductoDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadRutaDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadServicioDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadDetalleDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadFormularioDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Producto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
@@ -41,7 +47,7 @@ public class CiudadController {
         @GetMapping("/crear")
         public ModelAndView mostrarFormularioCrear() {
                 return new ModelAndView("ciudadTemplates/ciudad-crear")
-                                .addObject("ciudad", new Ciudad());
+                                .addObject("ciudad", new CiudadFormularioDTO());
         }
 
         // Caso 1 (POST): Crear ciudad
@@ -54,20 +60,18 @@ public class CiudadController {
         // Caso 2: Ver ciudad por ID
         @GetMapping("/{id}")
         public ModelAndView verCiudad(@PathVariable Long id) {
-                Ciudad ciudad = ciudadService.buscarPorId(id)
-                                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
-
+                CiudadDetalleDTO detalle = ciudadService.buscarCiudadPorId(id);
                 return new ModelAndView("ciudadTemplates/ciudad-detalle")
-                                .addObject("ciudad", ciudad)
-                                .addObject("productos", ciudad.getProductosDisponibles())
-                                .addObject("servicios", ciudad.getServiciosDisponibles())
-                                .addObject("rutas", ciudad.getRutasAsociadas());
+                                .addObject("ciudad", detalle.getCiudad())
+                                .addObject("productos", detalle.getProductos())
+                                .addObject("servicios", detalle.getServicios())
+                                .addObject("rutas", detalle.getRutas());
         }
 
         // Caso 3: Listar ciudades
         @GetMapping("/list")
         public ModelAndView listarCiudades() {
-                List<Ciudad> ciudades = ciudadService.listarTodas();
+                List<CiudadDTO> ciudades = ciudadService.listarCiudades();
                 return new ModelAndView("ciudadTemplates/ciudad-list")
                                 .addObject("ciudades", ciudades);
         }
@@ -75,28 +79,25 @@ public class CiudadController {
         // Caso 4: Mostrar formulario de edición
         @GetMapping("/{id}/editar")
         public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
-                Ciudad ciudad = ciudadService.buscarPorId(id)
-                                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                CiudadDetalleDTO detalle = ciudadService.buscarCiudadPorId(id);
+                CiudadDTO ciudad = detalle.getCiudad();
 
-                // Primero declara todas las listas
                 List<Producto> todosLosProductos = productoRepository.findAll();
                 List<Servicio> todosLosServicios = servicioRepository.findAll();
                 List<Ruta> todasLasRutas = rutaRepository.findAll();
 
-                // Luego genera las listas de IDs seleccionados
-                List<Long> productoIdsSeleccionados = ciudad.getProductosDisponibles().stream()
-                                .map(cp -> cp.getProducto().getId())
+                List<Long> productoIdsSeleccionados = detalle.getProductos().stream()
+                                .map(CiudadProductoDTO::getProductoId)
                                 .toList();
 
-                List<Long> servicioIdsSeleccionados = ciudad.getServiciosDisponibles().stream()
-                                .map(cs -> cs.getServicio().getId())
+                List<Long> servicioIdsSeleccionados = detalle.getServicios().stream()
+                                .map(CiudadServicioDTO::getServicioId)
                                 .toList();
 
-                List<Long> rutaIdsSeleccionadas = ciudad.getRutasAsociadas().stream()
-                                .map(cr -> cr.getRuta().getId())
+                List<Long> rutaIdsSeleccionadas = detalle.getRutas().stream()
+                                .map(CiudadRutaDTO::getRutaId)
                                 .toList();
 
-                // Finalmente agrega todo al modelo
                 return new ModelAndView("ciudadTemplates/ciudad-editar")
                                 .addObject("ciudad", ciudad)
                                 .addObject("todosLosProductos", todosLosProductos)
@@ -110,21 +111,21 @@ public class CiudadController {
         // Caso 4 (POST): Actualizar ciudad
         @PostMapping("/{id}/editar")
         public String actualizarCiudad(@PathVariable Long id,
-                        @ModelAttribute Ciudad ciudad,
+                        @ModelAttribute CiudadFormularioDTO dto,
                         @RequestParam(required = false) List<Long> productoIds,
                         @RequestParam(required = false) List<Long> servicioIds,
                         @RequestParam(required = false) List<Long> rutaIds) {
-                ciudadService.actualizarCiudadConAsociaciones(id, ciudad, productoIds, servicioIds, rutaIds);
+
+                ciudadService.actualizarCiudadConAsociaciones(id, dto, productoIds, servicioIds, rutaIds);
                 return "redirect:/ciudad/" + id;
         }
 
         // Caso 5: Confirmación antes de eliminar ciudad
         @GetMapping("/{id}/eliminar")
         public ModelAndView mostrarConfirmacionEliminar(@PathVariable Long id) {
-                Ciudad ciudad = ciudadService.buscarPorId(id)
-                                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                CiudadDetalleDTO detalle = ciudadService.buscarCiudadPorId(id);
                 return new ModelAndView("ciudadTemplates/ciudad-eliminar")
-                                .addObject("ciudad", ciudad);
+                                .addObject("ciudad", detalle.getCiudad());
         }
 
         // Caso 5 (POST): Eliminar ciudad

@@ -2,6 +2,7 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.dto;
 
 public class CiudadServicioDTO {
     private Long id;
+    private Long servicioId;
     private String nombreServicio;
     private double precio;
     private boolean adquirido;
@@ -9,11 +10,12 @@ public class CiudadServicioDTO {
     public CiudadServicioDTO() {
     }
 
-    public CiudadServicioDTO(Long id, String nombreServicio, double precio, boolean adquirido) {
+    public CiudadServicioDTO(boolean adquirido, Long id, Long servicioId, String nombreServicio, double precio) {
+        this.adquirido = adquirido;
         this.id = id;
+        this.servicioId = servicioId;
         this.nombreServicio = nombreServicio;
         this.precio = precio;
-        this.adquirido = adquirido;
     }
 
     public Long getId() {
@@ -22,6 +24,14 @@ public class CiudadServicioDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getServicioId() {
+        return servicioId;
+    }
+
+    public void setServicioId(Long servicioId) {
+        this.servicioId = servicioId;
     }
 
     public String getNombreServicio() {
@@ -47,6 +57,5 @@ public class CiudadServicioDTO {
     public void setAdquirido(boolean adquirido) {
         this.adquirido = adquirido;
     }
-
 
 }

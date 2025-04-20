@@ -20,7 +20,6 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadServicio;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadProductoRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadServicioRepository;
@@ -85,7 +84,7 @@ public class CaravanaController {
                 Ciudad ciudadActual = ciudadRepository.findById(detalle.getCaravana().getId()).orElseThrow();
 
                 List<Ciudad> destinosDisponibles = ciudadActual.getRutasOrigen().stream()
-                                .map(Ruta::getCiudadDestino)
+                                .map(cr -> cr.getRuta().getCiudadDestino()) 
                                 .distinct()
                                 .toList();
 

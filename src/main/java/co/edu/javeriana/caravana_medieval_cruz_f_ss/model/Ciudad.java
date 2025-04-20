@@ -27,10 +27,10 @@ public class Ciudad {
     private List<CiudadServicio> serviciosDisponibles = new ArrayList<>();
 
     @OneToMany(mappedBy = "ciudadOrigen", fetch = FetchType.EAGER)
-    private List<Ruta> rutasOrigen = new ArrayList<>();
+    private List<CiudadRuta> rutasOrigen = new ArrayList<>();
 
     @OneToMany(mappedBy = "ciudadDestino")
-    private List<Ruta> rutasDestino = new ArrayList<>();
+    private List<CiudadRuta> rutasDestino = new ArrayList<>();
 
     @OneToMany(mappedBy = "ciudad")
     private List<CiudadRuta> rutasAsociadas = new ArrayList<>();
@@ -41,8 +41,8 @@ public class Ciudad {
 
     public Ciudad(double impuestosDeEntradaCiudad, String nombreCiudad,
             List<CiudadProducto> productosDisponibles,
-            List<Ruta> rutasDestino,
-            List<Ruta> rutasOrigen,
+            List<CiudadRuta> rutasDestino,
+            List<CiudadRuta> rutasOrigen,
             List<CiudadServicio> serviciosDisponibles,
             List<CiudadRuta> rutasAsociadas) {
         this.impuestosDeEntradaCiudad = impuestosDeEntradaCiudad;
@@ -94,19 +94,19 @@ public class Ciudad {
         this.serviciosDisponibles = serviciosDisponibles;
     }
 
-    public List<Ruta> getRutasOrigen() {
+    public List<CiudadRuta> getRutasOrigen() {
         return rutasOrigen;
     }
 
-    public void setRutasOrigen(List<Ruta> rutasOrigen) {
+    public void setRutasOrigen(List<CiudadRuta> rutasOrigen) {
         this.rutasOrigen = rutasOrigen;
     }
 
-    public List<Ruta> getRutasDestino() {
+    public List<CiudadRuta> getRutasDestino() {
         return rutasDestino;
     }
 
-    public void setRutasDestino(List<Ruta> rutasDestino) {
+    public void setRutasDestino(List<CiudadRuta> rutasDestino) {
         this.rutasDestino = rutasDestino;
     }
 

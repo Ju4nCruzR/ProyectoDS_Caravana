@@ -2,6 +2,7 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.dto;
 
 public class CiudadRutaDTO {
     private Long id;
+    private Long rutaId;
     private String ciudadNombre;
     private String destinoNombre;
     private double distancia;
@@ -10,8 +11,9 @@ public class CiudadRutaDTO {
     public CiudadRutaDTO() {
     }
 
-    public CiudadRutaDTO(Long id, String ciudadNombre, String destinoNombre, double distancia, boolean esSegura) {
+    public CiudadRutaDTO(Long id, Long rutaId, String ciudadNombre, String destinoNombre, double distancia, boolean esSegura) {
         this.id = id;
+        this.rutaId = rutaId;
         this.ciudadNombre = ciudadNombre;
         this.destinoNombre = destinoNombre;
         this.distancia = distancia;
@@ -24,6 +26,14 @@ public class CiudadRutaDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getRutaId() {
+        return rutaId;
+    }
+
+    public void setRutaId(Long rutaId) {
+        this.rutaId = rutaId;
     }
 
     public String getCiudadNombre() {
@@ -58,5 +68,4 @@ public class CiudadRutaDTO {
         this.esSegura = esSegura;
     }
 
-    
 }
