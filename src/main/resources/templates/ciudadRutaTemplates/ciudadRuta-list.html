@@ -21,10 +21,10 @@
         <tbody>
             <tr th:each="cr : ${asociaciones}">
                 <td th:text="${cr.id}"></td>
-                <td th:text="${cr.ciudad.nombreCiudad}"></td>
-                <td th:text="${cr.ruta.ciudadDestino.nombreCiudad}"></td>
-                <td th:text="${cr.ruta.distanciaRuta} + ' km'"></td>
-                <td th:text="${cr.ruta.esSeguraRuta ? 'Sí' : 'No'}"></td>
+                <td th:text="${cr.ciudadNombre}"></td>
+                <td th:text="${cr.destinoNombre}"></td>
+                <td th:text="${cr.distancia} + ' km'"></td>
+                <td th:text="${cr.esSegura ? 'Sí' : 'No'}"></td>
                 <td>
                     <a th:href="@{'/ciudad-ruta/' + ${cr.id}}">Ver</a> |
                     <form th:action="@{'/ciudad-ruta/' + ${cr.id} + '/eliminar'}" method="post" style="display:inline;">

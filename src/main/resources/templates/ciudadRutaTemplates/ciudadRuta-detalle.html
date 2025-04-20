@@ -10,14 +10,12 @@
     <p><strong>ID de la Asociación:</strong> <span th:text="${ciudadruta.id}"></span></p>
 
     <h2>Ciudad de Origen</h2>
-    <p><strong>Nombre:</strong> <span th:text="${ciudadruta.ciudad.nombreCiudad}"></span></p>
-    <p><strong>Impuestos de Entrada:</strong> <span th:text="${ciudadruta.ciudad.impuestosDeEntradaCiudad}"></span></p>
+    <p><strong>Nombre:</strong> <span th:text="${ciudadruta.ciudadNombre}"></span></p>
 
     <h2>Ruta Asociada</h2>
-    <p><strong>Ciudad Destino:</strong> <span th:text="${ciudadruta.ruta.ciudadDestino.nombreCiudad}"></span></p>
-    <p><strong>Distancia:</strong> <span th:text="${ciudadruta.ruta.distanciaRuta} + ' km'"></span></p>
-    <p><strong>¿Es Segura?:</strong> <span th:text="${ciudadruta.ruta.esSeguraRuta ? 'Sí' : 'No'}"></span></p>
-    <p><strong>Daño al Pasar:</strong> <span th:text="${ciudadruta.ruta.danoRuta}"></span></p>
+    <p><strong>Ciudad Destino:</strong> <span th:text="${ciudadruta.destinoNombre}"></span></p>
+    <p><strong>Distancia:</strong> <span th:text="${ciudadruta.distancia} + ' km'"></span></p>
+    <p><strong>¿Es Segura?:</strong> <span th:text="${ciudadruta.esSegura ? 'Sí' : 'No'}"></span></p>
 
     <br/>
     <a th:href="@{/ciudad-ruta/list}">Volver a lista de asociaciones</a>

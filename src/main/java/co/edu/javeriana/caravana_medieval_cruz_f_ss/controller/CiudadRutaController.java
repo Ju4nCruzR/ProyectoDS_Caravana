@@ -53,6 +53,14 @@ public class CiudadRutaController {
     }
 
     // Caso 3: Eliminar asociación
+    @GetMapping("/{id}/eliminar")
+    public ModelAndView confirmarEliminar(@PathVariable Long id) {
+        CiudadRutaDTO dto = ciudadRutaService.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
+        return new ModelAndView("ciudadRutaTemplates/ciudadRuta-eliminar")
+                .addObject("ciudadruta", dto);
+    }
+
     @PostMapping("/{id}/eliminar")
     public String eliminarAsociacion(@PathVariable Long id) {
         ciudadRutaService.eliminarPorId(id);
@@ -66,6 +74,6 @@ public class CiudadRutaController {
                 .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
         return new ModelAndView("ciudadRutaTemplates/ciudadRuta-detalle")
                 .addObject("ciudadruta", dto);
-    }
 
+    }
 }
