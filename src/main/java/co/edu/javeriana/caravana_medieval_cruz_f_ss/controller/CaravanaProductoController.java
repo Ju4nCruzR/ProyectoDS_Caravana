@@ -39,7 +39,7 @@ public class CaravanaProductoController {
 
                 List<CaravanaProducto> productos = caravanaProductoService.listarPorCaravana(caravana);
 
-                return new ModelAndView("caravanaProducto-list")
+                return new ModelAndView("caravanaProductoTemplates/caravanaProducto-list")
                                 .addObject("caravana", caravana)
                                 .addObject("productos", productos);
         }
@@ -60,7 +60,7 @@ public class CaravanaProductoController {
 
                 List<CaravanaProducto> productos = caravanaProductoService.listarPorCaravana(caravana);
 
-                return new ModelAndView("caravanaProducto-detalle")
+                return new ModelAndView("caravanaProductoTemplates/caravanaProducto-detalle")
                                 .addObject("caravanaProducto", cp)
                                 .addObject("productos", productos);
         }
@@ -77,7 +77,7 @@ public class CaravanaProductoController {
                 CaravanaProducto cp = caravanaProductoService.buscarPorId(id)
                                 .orElseThrow(() -> new RuntimeException("CaravanaProducto no encontrado"));
 
-                return new ModelAndView("caravanaProducto-actualizar")
+                return new ModelAndView("caravanaProductoTemplates/caravanaProducto-actualizar")
                                 .addObject("caravanaProducto", cp);
         }
 
@@ -99,7 +99,7 @@ public class CaravanaProductoController {
                 CaravanaProducto cp = caravanaProductoService.buscarPorId(id)
                                 .orElseThrow(() -> new RuntimeException("CaravanaProducto no encontrado"));
 
-                return new ModelAndView("caravanaProducto-eliminar")
+                return new ModelAndView("caravanaProductoTemplates/caravanaProducto-eliminar")
                                 .addObject("caravanaProducto", cp);
         }
 
@@ -113,7 +113,7 @@ public class CaravanaProductoController {
         // Caso 5: Formulario para crear nuevo
         @GetMapping("/crear")
         public ModelAndView mostrarFormularioCrear() {
-                ModelAndView modelAndView = new ModelAndView("caravanaProducto-crear");
+                ModelAndView modelAndView = new ModelAndView("caravanaProductoTemplates/caravanaProducto-crear");
                 modelAndView.addObject("caravanas", caravanaRepository.findAll());
                 modelAndView.addObject("productos", productoRepository.findAll());
                 return modelAndView;
@@ -139,7 +139,7 @@ public class CaravanaProductoController {
         @GetMapping("/list")
         public ModelAndView listarTodos() {
                 List<CaravanaProducto> lista = caravanaProductoService.listarTodos();
-                return new ModelAndView("caravanaProducto-list-global")
+                return new ModelAndView("caravanaProductoTemplates/caravanaProducto-list-global")
                                 .addObject("productos", lista);
         }
 }

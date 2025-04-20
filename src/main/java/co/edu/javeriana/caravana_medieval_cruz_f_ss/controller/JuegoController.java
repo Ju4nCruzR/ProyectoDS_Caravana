@@ -1,16 +1,21 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Juego;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.JuegoService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/juego")
@@ -22,7 +27,8 @@ public class JuegoController {
     // Caso 1: Mostrar formulario de creación
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioCrear() {
-        return new ModelAndView("juego-crear").addObject("juego", new Juego());
+        return new ModelAndView("juegoTemplates/juego-crear")
+        .addObject("juego", new Juego());
     }
 
     // Caso 1 (POST): Crear juego
@@ -37,14 +43,16 @@ public class JuegoController {
     public ModelAndView verJuego(@PathVariable Long id) {
         Juego juego = juegoService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-        return new ModelAndView("juego-detalle").addObject("juego", juego);
+        return new ModelAndView("juegoTemplates/juego-detalle")
+        .addObject("juego", juego);
     }
 
     // Caso 3: Listar juegos
     @GetMapping("/list")
     public ModelAndView listarJuegos() {
         List<Juego> juegos = juegoService.listarTodos();
-        return new ModelAndView("juego-list").addObject("juegos", juegos);
+        return new ModelAndView("juegoTemplates/juego-list")
+        .addObject("juegos", juegos);
     }
 
     // Caso 4: Mostrar formulario de edición
@@ -52,7 +60,8 @@ public class JuegoController {
     public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
         Juego juego = juegoService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-        return new ModelAndView("juego-editar").addObject("juego", juego);
+        return new ModelAndView("juegoTemplates/juego-editar")
+        .addObject("juego", juego);
     }
 
     // Caso 4 (POST): Editar juego
@@ -87,12 +96,14 @@ public class JuegoController {
     @GetMapping("/{id}/caravanas")
     public ModelAndView verCaravanas(@PathVariable Long id) {
         List<Caravana> caravanas = juegoService.obtenerCaravanas(id);
-        return new ModelAndView("juego-caravanas").addObject("caravanas", caravanas);
+        return new ModelAndView("juegoTemplates/juego-caravanas")
+        .addObject("caravanas", caravanas);
     }
 
     @GetMapping("/{id}/jugadores")
     public ModelAndView verJugadores(@PathVariable Long id) {
         List<Jugador> jugadores = juegoService.obtenerJugadores(id);
-        return new ModelAndView("juego-jugadores").addObject("jugadores", jugadores);
+        return new ModelAndView("juegoTemplates/juego-jugadores")
+        .addObject("jugadores", jugadores);
     }
 }

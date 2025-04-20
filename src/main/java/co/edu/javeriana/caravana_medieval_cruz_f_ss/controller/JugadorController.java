@@ -1,15 +1,19 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.controller;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepository;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.JugadorService;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.JugadorService;
 
 @Controller
 @RequestMapping("/jugador")
@@ -24,7 +28,7 @@ public class JugadorController {
     // Caso 1: Formulario para crear jugador
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioCrear() {
-        return new ModelAndView("jugador-crear")
+        return new ModelAndView("jugadorTemplates/jugador-crear")
                 .addObject("jugador", new Jugador())
                 .addObject("caravanas", caravanaRepository.findAll());
     }
@@ -41,14 +45,16 @@ public class JugadorController {
     public ModelAndView verJugador(@PathVariable Long id) {
         Jugador jugador = jugadorService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
-        return new ModelAndView("jugador-detalle").addObject("jugador", jugador);
+        return new ModelAndView("jugadorTemplates/jugador-detalle")
+        .addObject("jugador", jugador);
     }
 
     // Caso 3: Listar jugadores
     @GetMapping("/list")
     public ModelAndView listarJugadores() {
         List<Jugador> jugadores = jugadorService.listarTodos();
-        return new ModelAndView("jugador-list").addObject("jugadores", jugadores);
+        return new ModelAndView("jugadorTemplates/jugador-list")
+        .addObject("jugadores", jugadores);
     }
 
     // Caso 4: Mostrar formulario de edición
@@ -56,7 +62,7 @@ public class JugadorController {
     public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
         Jugador jugador = jugadorService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
-        return new ModelAndView("jugador-editar")
+        return new ModelAndView("jugadorTemplates/jugador-editar")
                 .addObject("jugador", jugador)
                 .addObject("caravanas", caravanaRepository.findAll());
     }

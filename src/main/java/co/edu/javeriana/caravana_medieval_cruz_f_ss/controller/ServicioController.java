@@ -25,7 +25,7 @@ public class ServicioController {
     // Caso 1: Mostrar formulario de creación
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioCrear() {
-        return new ModelAndView("servicio-crear")
+        return new ModelAndView("servicioTemplates/servicio-crear")
                 .addObject("servicio", new Servicio());
     }
 
@@ -41,7 +41,7 @@ public class ServicioController {
     public ModelAndView verServicio(@PathVariable Long id) {
         Servicio servicio = servicioService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
-        return new ModelAndView("servicio-detalle")
+        return new ModelAndView("servicioTemplates/servicio-detalle")
                 .addObject("servicio", servicio);
     }
 
@@ -49,7 +49,7 @@ public class ServicioController {
     @GetMapping("/list")
     public ModelAndView listarServicios() {
         List<Servicio> servicios = servicioService.listarTodos();
-        return new ModelAndView("servicio-list")
+        return new ModelAndView("servicioTemplates/servicio-list")
                 .addObject("servicios", servicios);
     }
 
@@ -58,7 +58,7 @@ public class ServicioController {
     public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
         Servicio servicio = servicioService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
-        return new ModelAndView("servicio-editar")
+        return new ModelAndView("servicioTemplates/servicio-editar")
                 .addObject("servicio", servicio);
     }
 
@@ -83,7 +83,7 @@ public class ServicioController {
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
         List<CiudadServicio> asociaciones = servicioService.obtenerCiudadesAsociadas(id);
 
-        return new ModelAndView("servicio-asociaciones")
+        return new ModelAndView("servicioTemplates/servicio-asociaciones")
                 .addObject("servicio", servicio)
                 .addObject("asociaciones", asociaciones);
     }

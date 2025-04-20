@@ -39,7 +39,7 @@ public class CiudadProductoController {
 
                 List<CiudadProducto> productos = ciudadProductoService.listarPorCiudad(ciudad);
 
-                return new ModelAndView("ciudadProducto-list")
+                return new ModelAndView("ciudadProductoTemplates/ciudadProducto-list")
                                 .addObject("ciudad", ciudad)
                                 .addObject("productos", productos);
         }
@@ -65,7 +65,7 @@ public class CiudadProductoController {
                                 .findFirst()
                                 .orElseThrow(() -> new RuntimeException("No se encontró el producto"));
 
-                return new ModelAndView("ciudadProducto-actualizar")
+                return new ModelAndView("ciudadProductoTemplates/ciudadProducto-actualizar")
                                 .addObject("ciudadProducto", cp);
         }
 
@@ -87,7 +87,7 @@ public class CiudadProductoController {
                                 .findFirst()
                                 .orElseThrow(() -> new RuntimeException("No se encontró el producto"));
 
-                return new ModelAndView("ciudadProducto-eliminar")
+                return new ModelAndView("ciudadProductoTemplates/ciudadProducto-eliminar")
                                 .addObject("ciudadProducto", cp);
         }
 
@@ -104,7 +104,7 @@ public class CiudadProductoController {
         // Caso 5: Mostrar formulario de creación
         @GetMapping("/crear")
         public ModelAndView mostrarFormularioCrear() {
-                ModelAndView modelAndView = new ModelAndView("ciudadProducto-crear");
+                ModelAndView modelAndView = new ModelAndView("ciudadProductoTemplates/ciudadProducto-crear");
                 modelAndView.addObject("ciudades", ciudadRepository.findAll());
                 modelAndView.addObject("productos", productoRepository.findAll());
                 return modelAndView;
@@ -130,7 +130,7 @@ public class CiudadProductoController {
         @GetMapping("/list")
         public ModelAndView listarTodos() {
                 List<CiudadProducto> lista = ciudadProductoService.listarTodos();
-                return new ModelAndView("ciudadProducto-list-global")
+                return new ModelAndView("ciudadProductoTemplates/ciudadProducto-list-global")
                                 .addObject("productos", lista);
         }
 

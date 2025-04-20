@@ -29,7 +29,7 @@ public class RutaController {
     // Caso 1: Mostrar formulario de creación
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioCrear() {
-        return new ModelAndView("ruta-crear")
+        return new ModelAndView("rutaTemplates/ruta-crear")
                 .addObject("ruta", new Ruta())
                 .addObject("ciudades", ciudadRepository.findAll());
     }
@@ -46,14 +46,16 @@ public class RutaController {
     public ModelAndView verRuta(@PathVariable Long id) {
         Ruta ruta = rutaService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Ruta no encontrada"));
-        return new ModelAndView("ruta-detalle").addObject("ruta", ruta);
+        return new ModelAndView("rutaTemplates/ruta-detalle")
+        .addObject("ruta", ruta);
     }
 
     // Caso 3: Listar todas las rutas
     @GetMapping("/list")
     public ModelAndView listarRutas() {
         List<Ruta> rutas = rutaService.listarTodas();
-        return new ModelAndView("ruta-list").addObject("rutas", rutas);
+        return new ModelAndView("rutaTemplates/ruta-list")
+        .addObject("rutas", rutas);
     }
 
     // Caso 4: Mostrar formulario de edición
@@ -61,7 +63,7 @@ public class RutaController {
     public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
         Ruta ruta = rutaService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Ruta no encontrada"));
-        return new ModelAndView("ruta-editar")
+        return new ModelAndView("rutaTemplates/ruta-editar")
                 .addObject("ruta", ruta)
                 .addObject("ciudades", ciudadRepository.findAll());
     }
@@ -84,20 +86,23 @@ public class RutaController {
     @GetMapping("/origen")
     public ModelAndView filtrarPorCiudadOrigen(@RequestParam Long ciudadId) {
         List<Ruta> rutas = rutaService.buscarPorCiudadOrigen(ciudadId);
-        return new ModelAndView("ruta-filtrada").addObject("rutas", rutas);
+        return new ModelAndView("rutaTemplates/ruta-filtrada")
+        .addObject("rutas", rutas);
     }
 
     // Caso 7: Filtrar por seguridad
     @GetMapping("/seguridad")
     public ModelAndView filtrarPorSeguridad(@RequestParam boolean segura) {
         List<Ruta> rutas = rutaService.filtrarPorSeguridad(segura);
-        return new ModelAndView("ruta-filtrada").addObject("rutas", rutas);
+        return new ModelAndView("rutaTemplates/ruta-filtrada")
+        .addObject("rutas", rutas);
     }
 
     // Caso 8: Buscar entre dos ciudades
     @GetMapping("/entre-ciudades")
     public ModelAndView buscarEntreCiudades(@RequestParam Long origenId, @RequestParam Long destinoId) {
         List<Ruta> rutas = rutaService.buscarEntreCiudades(origenId, destinoId);
-        return new ModelAndView("ruta-filtrada").addObject("rutas", rutas);
+        return new ModelAndView("rutaTemplates/ruta-filtrada")
+        .addObject("rutas", rutas);
     }
 }

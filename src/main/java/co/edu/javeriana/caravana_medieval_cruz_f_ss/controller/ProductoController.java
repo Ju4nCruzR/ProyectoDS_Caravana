@@ -26,7 +26,7 @@ public class ProductoController {
     // Caso 1: Mostrar formulario para crear
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioCrear() {
-        return new ModelAndView("producto-crear")
+        return new ModelAndView("productoTemplates/producto-crear")
                 .addObject("producto", new Producto());
     }
 
@@ -42,14 +42,15 @@ public class ProductoController {
     public ModelAndView verProducto(@PathVariable Long id) {
         Producto producto = productoService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        return new ModelAndView("producto-detalle").addObject("producto", producto);
+        return new ModelAndView("productoTemplates/producto-detalle")
+        .addObject("producto", producto);
     }
 
     // Caso 3: Listar todos los productos
     @GetMapping("/list")
     public ModelAndView listarProductos() {
         List<Producto> productos = productoService.listarTodos();
-        return new ModelAndView("producto-list")
+        return new ModelAndView("productoTemplates/producto-list")
                 .addObject("productos", productos);
     }
 
@@ -58,7 +59,7 @@ public class ProductoController {
     public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
         Producto producto = productoService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        return new ModelAndView("producto-editar")
+        return new ModelAndView("productoTemplates/producto-editar")
                 .addObject("producto", producto);
     }
 
@@ -85,7 +86,7 @@ public class ProductoController {
         List<CiudadProducto> enCiudades = productoService.obtenerCiudadesAsociadas(id);
         List<CaravanaProducto> enCaravanas = productoService.obtenerCaravanasAsociadas(id);
 
-        return new ModelAndView("producto-asociaciones")
+        return new ModelAndView("productoTemplates/producto-asociaciones")
                 .addObject("producto", producto)
                 .addObject("enCiudades", enCiudades)
                 .addObject("enCaravanas", enCaravanas);
