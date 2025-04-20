@@ -40,6 +40,7 @@ public class CiudadServicioController {
     }
 
     // Caso 3: Ver detalle
+    @GetMapping("/{id}")
     public ModelAndView verDetalle(@PathVariable Long id) {
         CiudadServicioDTO dto = ciudadServicioService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));

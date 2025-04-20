@@ -21,10 +21,10 @@
         <tbody>
             <tr th:each="cs : ${asociaciones}">
                 <td th:text="${cs.id}"></td>
-                <td th:text="${cs.ciudad.nombreCiudad}"></td>
-                <td th:text="${cs.servicio.tipo}"></td>
-                <td th:text="${cs.servicio.precioServicio} + ' monedas'"></td>
-                <td th:text="${cs.servicioAdquirido ? 'Sí' : 'No'}"></td>
+                <td th:text="${cs.nombreCiudad}"></td>
+                <td th:text="${cs.nombreServicio}"></td>
+                <td th:text="${cs.precio} + ' monedas'"></td>
+                <td th:text="${cs.adquirido ? 'Sí' : 'No'}"></td>
                 <td>
                     <a th:href="@{'/ciudad-servicio/' + ${cs.id}}">Ver</a> |
                     <form th:action="@{'/ciudad-servicio/' + ${cs.id} + '/eliminar'}" method="post" style="display:inline;">
@@ -41,3 +41,4 @@
     <a th:href="@{/ciudad/list}">Volver a ciudades</a>
 </body>
 </html>
+

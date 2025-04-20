@@ -10,24 +10,20 @@
     <p><strong>ID de Asociación:</strong> <span th:text="${ciudadServicio.id}"></span></p>
 
     <h2>Ciudad</h2>
-    <p><strong>Nombre:</strong> <span th:text="${ciudadServicio.ciudad.nombreCiudad}"></span></p>
-    <p><strong>Impuestos de Entrada:</strong> <span th:text="${ciudadServicio.ciudad.impuestosDeEntradaCiudad}"></span></p>
+    <p><strong>Nombre:</strong> <span th:text="${ciudadServicio.nombreCiudad}"></span></p>
 
     <h2>Servicio</h2>
-    <p><strong>Tipo:</strong> <span th:text="${ciudadServicio.servicio.tipo}"></span></p>
-    <p><strong>Precio:</strong> <span th:text="${ciudadServicio.servicio.precioServicio} + ' monedas'"></span></p>
-    <p><strong>¿Adquirido?:</strong> <span th:text="${ciudadServicio.servicioAdquirido ? 'Sí' : 'No'}"></span></p>
+    <p><strong>Tipo:</strong> <span th:text="${ciudadServicio.nombreServicio}"></span></p>
+    <p><strong>Precio:</strong> <span th:text="${ciudadServicio.precio} + ' monedas'"></span></p>
+    <p><strong>¿Adquirido?:</strong> <span th:text="${ciudadServicio.adquirido ? 'Sí' : 'No'}"></span></p>
 
-    <br/>
-
-    <!-- Formulario para marcar como adquirido si aún no lo está -->
-    <div th:if="${!ciudadServicio.servicioAdquirido}">
+    <div th:if="${!ciudadServicio.adquirido}">
         <form th:action="@{'/ciudad-servicio/' + ${ciudadServicio.id} + '/adquirir'}" method="post">
             <button type="submit">Marcar como adquirido</button>
         </form>
     </div>
 
     <br/>
-    <a th:href="@{/ciudad-servicio/list}">Volver a lista de servicios por ciudad</a>
+    <a th:href="@{/ciudad-servicio/list}">Volver a lista de asociaciones</a>
 </body>
 </html>

@@ -6,16 +6,20 @@ public class CiudadServicioDTO {
     private String nombreServicio;
     private double precio;
     private boolean adquirido;
+    private String nombreCiudad;
+
 
     public CiudadServicioDTO() {
     }
 
-    public CiudadServicioDTO(boolean adquirido, Long id, Long servicioId, String nombreServicio, double precio) {
-        this.adquirido = adquirido;
+    public CiudadServicioDTO(Long id, Long servicioId, String nombreServicio, double precio, boolean adquirido,
+            String nombreCiudad) {
         this.id = id;
         this.servicioId = servicioId;
         this.nombreServicio = nombreServicio;
         this.precio = precio;
+        this.adquirido = adquirido;
+        this.nombreCiudad = nombreCiudad;
     }
 
     public Long getId() {
@@ -58,4 +62,12 @@ public class CiudadServicioDTO {
         this.adquirido = adquirido;
     }
 
+    public String getNombreCiudad() {
+        return nombreCiudad;
+    }
+
+    public void setNombreCiudad(String nombreCiudad) {
+        this.nombreCiudad = nombreCiudad;
+    }
+    
 }
