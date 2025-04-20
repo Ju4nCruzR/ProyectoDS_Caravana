@@ -2,13 +2,18 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaDetalleDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaFormularioDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaProductoDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.CaravanaMapper;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.CaravanaProductoMapper;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CaravanaProducto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
@@ -42,6 +47,7 @@ public class CaravanaService {
 
     @Autowired
     private RutaRepository rutaRepository;
+
     @Autowired
     private ProductoRepository productoRepository;
 
@@ -57,25 +63,35 @@ public class CaravanaService {
     @Autowired
     private JuegoRepository juegoRepository;
 
-    public Caravana crearCaravana(Caravana caravana) {
-        return caravanaRepository.save(caravana);
+    public CaravanaDTO crearCaravanaDesdeFormulario(CaravanaFormularioDTO dto) {
+        Ciudad ciudad = ciudadRepository.findById(dto.getCiudadId())
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+
+        Caravana caravana = new Caravana();
+        aplicarDatosDesdeFormulario(caravana, dto, ciudad);
+
+        return CaravanaMapper.toDTO(caravanaRepository.save(caravana));
     }
 
-    public Optional<Caravana> buscarCaravanaPorId(Long id) {
-        return caravanaRepository.findById(id);
+    public CaravanaDetalleDTO buscarCaravanaPorId(Long id) {
+        Caravana caravana = caravanaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+        return CaravanaMapper.toDetalle(caravana);
     }
 
-    public List<Caravana> listarCaravanas() {
-        return caravanaRepository.findAll();
+    public List<CaravanaDTO> listarCaravanas() {
+        return caravanaRepository.findAll().stream()
+                .map(CaravanaMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Caravana moverCaravana(Long caravanaId, Long ciudadId) {
+    public CaravanaDTO moverCaravana(Long caravanaId, Long ciudadId) {
         Caravana caravana = caravanaRepository.findById(caravanaId)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
         Ciudad nuevaCiudad = ciudadRepository.findById(ciudadId)
                 .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
-        List<Ruta> rutas = rutaRepository.findAll(); // O una forma más filtrada
+        List<Ruta> rutas = rutaRepository.findAll();
         Optional<Ruta> rutaOpt = rutas.stream()
                 .filter(r -> r.getCiudadOrigen().equals(caravana.getCiudadActual()) &&
                         r.getCiudadDestino().equals(nuevaCiudad))
@@ -97,7 +113,36 @@ public class CaravanaService {
         caravana.setCiudadActual(nuevaCiudad);
         caravana.getRutasRecorridas().add(rutaUsada);
 
-        return caravanaRepository.save(caravana);
+        return CaravanaMapper.toDTO(caravanaRepository.save(caravana));
+    }
+
+    public CaravanaDTO actualizarCaravanaDesdeFormulario(Long id, CaravanaFormularioDTO dto) {
+        Caravana caravana = caravanaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+
+        Ciudad ciudad = ciudadRepository.findById(dto.getCiudadId())
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+
+        aplicarDatosDesdeFormulario(caravana, dto, ciudad);
+
+        return CaravanaMapper.toDTO(caravanaRepository.save(caravana));
+    }
+
+    private void aplicarDatosDesdeFormulario(Caravana caravana, CaravanaFormularioDTO dto, Ciudad ciudad) {
+        caravana.setNombreCaravana(dto.getNombreCaravana());
+        caravana.setVelocidadCaravana(dto.getVelocidadCaravana());
+        caravana.setCapacidadMaximaCargaCaravana(dto.getCapacidadMaximaCargaCaravana());
+        caravana.setDineroDisponibleCaravana(dto.getDineroDisponibleCaravana());
+        caravana.setPuntosDeVidaCaravana(dto.getPuntosDeVidaCaravana());
+        caravana.setCiudadActual(ciudad);
+    }
+
+    public List<CaravanaProductoDTO> obtenerProductos(Long caravanaId) {
+        Caravana caravana = caravanaRepository.findById(caravanaId)
+                .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+        return caravana.getProductos().stream()
+                .map(CaravanaProductoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public void comprarProducto(Long caravanaId, Long productoId, int cantidad) {
@@ -118,7 +163,6 @@ public class CaravanaService {
         if (caravana.getDineroDisponibleCaravana() < precioTotal)
             throw new RuntimeException("Dinero insuficiente");
 
-        // Verificación de capacidad de carga
         double pesoActual = caravana.getProductos().stream()
                 .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
                 .sum();
@@ -162,14 +206,11 @@ public class CaravanaService {
 
         double precioTotal = producto.getPrecioBaseProducto() * cantidad;
 
-        // Aumentar el dinero de la caravana
         caravana.setDineroDisponibleCaravana(
                 caravana.getDineroDisponibleCaravana() + precioTotal);
 
-        // Reducir stock en caravana
         cp.setStockEnCaravana(cp.getStockEnCaravana() - cantidad);
 
-        // Aumentar stock en ciudad
         CiudadProducto ciudadProducto = ciudadProductoRepository.findByCiudadAndProducto(ciudad, producto)
                 .orElse(null);
 
@@ -195,21 +236,17 @@ public class CaravanaService {
         Servicio servicio = cs.getServicio();
         double precio = servicio.getPrecioServicio();
 
-        // Validación específica para REPARAR
         if (servicio.getTipo() == Servicio.TipoServicio.REPARAR && caravana.getPuntosDeVidaCaravana() >= 100) {
             throw new RuntimeException("La caravana ya tiene la vida al máximo. No se puede reparar más.");
         }
 
-        // Validación de dinero
         if (caravana.getDineroDisponibleCaravana() < precio) {
             throw new RuntimeException("La caravana no tiene suficiente dinero para adquirir este servicio.");
         }
 
-        // Resta del dinero
         caravana.setDineroDisponibleCaravana(
                 caravana.getDineroDisponibleCaravana() - precio);
 
-        // Aplicación del efecto del servicio
         switch (servicio.getTipo()) {
             case REPARAR -> caravana.setPuntosDeVidaCaravana(100);
             case MEJORAR_CAPACIDAD -> caravana.setCapacidadMaximaCargaCaravana(
@@ -225,7 +262,7 @@ public class CaravanaService {
         caravanaRepository.save(caravana);
     }
 
-    public List<CaravanaProducto> obtenerProductos(Long caravanaId) {
+    public List<CaravanaProducto> obtenerProductosEntidad(Long caravanaId) {
         Caravana caravana = caravanaRepository.findById(caravanaId)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
         return caravana.getProductos();
@@ -236,10 +273,8 @@ public class CaravanaService {
         Caravana caravana = caravanaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
 
-        // 1. Eliminar CaravanaProducto
         caravanaProductoRepository.deleteAll(caravana.getProductos());
 
-        // 2. Quitar caravana de los juegos
         List<Juego> juegosConCaravana = juegoRepository.findAll().stream()
                 .filter(j -> j.getCaravanas().contains(caravana))
                 .toList();
@@ -248,7 +283,6 @@ public class CaravanaService {
             juegoRepository.save(juego);
         }
 
-        // 3. Quitar jugadores de los juegos y luego eliminarlos
         List<Jugador> jugadores = jugadorRepository.findByCaravana(caravana);
         for (Jugador jugador : jugadores) {
             List<Juego> juegosDelJugador = juegoRepository.findByJugadoresContains(jugador);
@@ -256,10 +290,9 @@ public class CaravanaService {
                 juego.getJugadores().remove(jugador);
                 juegoRepository.save(juego);
             }
-            jugadorRepository.delete(jugador); // Ya sin referencias
+            jugadorRepository.delete(jugador);
         }
 
-        // 4. Finalmente, eliminar la caravana
         caravanaRepository.delete(caravana);
     }
 
@@ -269,38 +302,6 @@ public class CaravanaService {
 
         Jugador jugador = new Jugador(caravana, nombre, rol);
         return jugadorRepository.save(jugador);
-    }
-
-    public Caravana actualizarCaravana(Long id, Caravana datos) {
-        Caravana caravana = caravanaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Caravana no encontrada"));
-
-        // Actualizar campos básicos
-        caravana.setNombreCaravana(datos.getNombreCaravana());
-        caravana.setVelocidadCaravana(datos.getVelocidadCaravana());
-        caravana.setCapacidadMaximaCargaCaravana(datos.getCapacidadMaximaCargaCaravana());
-        caravana.setDineroDisponibleCaravana(datos.getDineroDisponibleCaravana());
-        caravana.setPuntosDeVidaCaravana(datos.getPuntosDeVidaCaravana());
-        caravana.setCiudadActual(datos.getCiudadActual());
-
-        // Obtener jugadores actuales y nuevos
-        List<Jugador> jugadoresActuales = jugadorRepository.findByCaravana(caravana);
-        List<Jugador> nuevosJugadores = datos.getJugadores();
-
-        // Actualizar datos de cada jugador existente
-        for (int i = 0; i < jugadoresActuales.size(); i++) {
-            Jugador actual = jugadoresActuales.get(i);
-            Jugador nuevo = nuevosJugadores.get(i);
-
-            actual.setNombreJugador(nuevo.getNombreJugador());
-            actual.setRolJugador(nuevo.getRolJugador());
-        }
-
-        // Guardar todos los jugadores actualizados
-        jugadorRepository.saveAll(jugadoresActuales);
-
-        // Guardar la caravana
-        return caravanaRepository.save(caravana);
     }
 
 }

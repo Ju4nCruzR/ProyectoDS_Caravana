@@ -11,6 +11,8 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 @Repository
 public interface CiudadRepository extends JpaRepository<Ciudad, Long> {
     
+    Optional<Ciudad> findByNombreCiudad(String nombreCiudad);
+
     @Override
     @EntityGraph(attributePaths = {
         "productosDisponibles.producto",
