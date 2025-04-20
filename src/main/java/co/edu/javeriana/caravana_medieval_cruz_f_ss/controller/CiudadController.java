@@ -9,16 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadDetalleDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadFormularioDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadProductoDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadRutaDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadServicioDTO;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadDetalleDTO;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadFormularioDTO;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Producto;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Servicio;
@@ -52,8 +50,8 @@ public class CiudadController {
 
         // Caso 1 (POST): Crear ciudad
         @PostMapping("/crear")
-        public String crearCiudad(@ModelAttribute Ciudad ciudad) {
-                ciudadService.crearCiudad(ciudad);
+        public String crearCiudad(@ModelAttribute CiudadFormularioDTO dto) {
+                ciudadService.crearCiudad(dto);
                 return "redirect:/ciudad/list";
         }
 
@@ -110,13 +108,8 @@ public class CiudadController {
 
         // Caso 4 (POST): Actualizar ciudad
         @PostMapping("/{id}/editar")
-        public String actualizarCiudad(@PathVariable Long id,
-                        @ModelAttribute CiudadFormularioDTO dto,
-                        @RequestParam(required = false) List<Long> productoIds,
-                        @RequestParam(required = false) List<Long> servicioIds,
-                        @RequestParam(required = false) List<Long> rutaIds) {
-
-                ciudadService.actualizarCiudadConAsociaciones(id, dto, productoIds, servicioIds, rutaIds);
+        public String actualizarCiudad(@PathVariable Long id, @ModelAttribute CiudadFormularioDTO dto) {
+                ciudadService.actualizarCiudadConAsociaciones(id, dto);
                 return "redirect:/ciudad/" + id;
         }
 

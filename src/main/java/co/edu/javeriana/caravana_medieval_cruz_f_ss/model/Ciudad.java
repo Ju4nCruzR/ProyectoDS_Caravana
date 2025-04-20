@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,11 +25,11 @@ public class Ciudad {
     @OneToMany(mappedBy = "ciudad")
     private List<CiudadServicio> serviciosDisponibles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ciudadOrigen", fetch = FetchType.EAGER)
-    private List<CiudadRuta> rutasOrigen = new ArrayList<>();
+    @OneToMany(mappedBy = "ciudadOrigen")
+    private List<CiudadRuta> rutasOrigen;
 
     @OneToMany(mappedBy = "ciudadDestino")
-    private List<CiudadRuta> rutasDestino = new ArrayList<>();
+    private List<CiudadRuta> rutasDestino;
 
     @OneToMany(mappedBy = "ciudad")
     private List<CiudadRuta> rutasAsociadas = new ArrayList<>();

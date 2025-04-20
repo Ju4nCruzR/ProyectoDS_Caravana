@@ -117,16 +117,19 @@ public class DbInitializer implements CommandLineRunner {
         Ciudad origen = ciudades.get(i);
         Ciudad destino1 = ciudades.get(i + 1);
         Ciudad destino2 = ciudades.get(i + 2);
-
+    
         Ruta ruta1 = new Ruta(destino1, origen, 5 + (i % 3), 80 + i, i % 2 == 0);
         Ruta ruta2 = new Ruta(destino2, origen, 6 + (i % 4), 100 + i, i % 3 == 0);
-
-        rutas.add(rutaRepository.save(ruta1));
-        rutas.add(rutaRepository.save(ruta2));
-
-        ciudadRutaRepository.save(new CiudadRuta(origen, ruta1));
-        ciudadRutaRepository.save(new CiudadRuta(origen, ruta2));
-    }
+    
+        ruta1 = rutaRepository.save(ruta1);
+        ruta2 = rutaRepository.save(ruta2);
+    
+        rutas.add(ruta1);
+        rutas.add(ruta2);
+    
+        ciudadRutaRepository.save(new CiudadRuta(origen, ruta1.getCiudadDestino(), ruta1.getCiudadOrigen(), ruta1));
+        ciudadRutaRepository.save(new CiudadRuta(origen, ruta2.getCiudadDestino(), ruta2.getCiudadOrigen(), ruta2));
+    }    
 
     for (Ciudad ciudad : ciudades) {
         for (int i = 0; i < 10; i++) {

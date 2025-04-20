@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadRuta;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadRutaDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.RutaRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CiudadRutaService;
@@ -21,7 +19,7 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CiudadRutaService;
 @Controller
 @RequestMapping("/ciudad-ruta")
 public class CiudadRutaController {
-    
+
     @Autowired
     private CiudadRutaService ciudadRutaService;
 
@@ -34,7 +32,7 @@ public class CiudadRutaController {
     // Caso 1 y 5: Listar todas las asociaciones
     @GetMapping("/list")
     public ModelAndView listarTodas() {
-        List<CiudadRuta> asociaciones = ciudadRutaService.listarTodas();
+        List<CiudadRutaDTO> asociaciones = ciudadRutaService.listarTodas();
         return new ModelAndView("ciudadRutaTemplates/ciudadRuta-list")
                 .addObject("asociaciones", asociaciones);
     }
@@ -50,12 +48,7 @@ public class CiudadRutaController {
     // Caso 2 (POST): Asociar ruta a ciudad
     @PostMapping("/crear")
     public String asociarRuta(@RequestParam Long ciudadId, @RequestParam Long rutaId) {
-        Ciudad ciudad = ciudadRepository.findById(ciudadId)
-                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
-        Ruta ruta = rutaRepository.findById(rutaId)
-                .orElseThrow(() -> new RuntimeException("Ruta no encontrada"));
-
-        ciudadRutaService.asociarRuta(ciudad, ruta);
+        ciudadRutaService.asociarRuta(ciudadId, rutaId);
         return "redirect:/ciudad-ruta/list";
     }
 
@@ -69,9 +62,10 @@ public class CiudadRutaController {
     // Caso 4: Ver detalle
     @GetMapping("/{id}")
     public ModelAndView verAsociacion(@PathVariable Long id) {
-        CiudadRuta cr = ciudadRutaService.buscarPorId(id)
+        CiudadRutaDTO dto = ciudadRutaService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
-        return new ModelAndView("ciudadRutaTemplates/ciudadRuta-detalle").addObject("ciudadruta", cr);
+        return new ModelAndView("ciudadRutaTemplates/ciudadRuta-detalle")
+                .addObject("ciudadruta", dto);
     }
 
 }

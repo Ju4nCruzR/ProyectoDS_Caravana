@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -16,13 +17,23 @@ public class CiudadRuta {
     private Ciudad ciudad;
 
     @ManyToOne
-    private Ruta ruta; 
+    private Ruta ruta;
+
+    @ManyToOne
+    @JoinColumn(name = "ciudad_origen_id")
+    private Ciudad ciudadOrigen;
+
+    @ManyToOne
+    @JoinColumn(name = "ciudad_destino_id")
+    private Ciudad ciudadDestino;
 
     public CiudadRuta() {
     }
 
-    public CiudadRuta(Ciudad ciudad, Ruta ruta) {
+    public CiudadRuta(Ciudad ciudad, Ciudad ciudadDestino, Ciudad ciudadOrigen, Ruta ruta) {
         this.ciudad = ciudad;
+        this.ciudadDestino = ciudadDestino;
+        this.ciudadOrigen = ciudadOrigen;
         this.ruta = ruta;
     }
 
@@ -45,4 +56,22 @@ public class CiudadRuta {
     public void setRuta(Ruta ruta) {
         this.ruta = ruta;
     }
+
+    public Ciudad getCiudadOrigen() {
+        return ciudadOrigen;
+    }
+
+    public void setCiudadOrigen(Ciudad ciudadOrigen) {
+        this.ciudadOrigen = ciudadOrigen;
+    }
+
+    public Ciudad getCiudadDestino() {
+        return ciudadDestino;
+    }
+
+    public void setCiudadDestino(Ciudad ciudadDestino) {
+        this.ciudadDestino = ciudadDestino;
+    }
+
+    
 }
