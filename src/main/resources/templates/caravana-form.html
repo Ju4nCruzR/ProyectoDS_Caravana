@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Crear Caravana</title>
 </head>
+
 <body>
     <h1>Crear Nueva Caravana</h1>
 
     <form th:action="@{/caravana/nueva}" th:object="${caravana}" method="post">
         <label for="nombreCaravana">Nombre:</label>
         <input type="text" id="nombreCaravana" th:field="*{nombreCaravana}" required />
-        <br/>
+        <br />
 
         <label for="velocidadCaravana">Velocidad:</label>
         <input type="number" step="0.1" id="velocidadCaravana" th:field="*{velocidadCaravana}" required />
-        <br/>
+        <br />
 
         <label for="capacidadMaximaCargaCaravana">Capacidad Máxima de Carga:</label>
-        <input type="number" step="0.1" id="capacidadMaximaCargaCaravana" th:field="*{capacidadMaximaCargaCaravana}" required />
-        <br/>
+        <input type="number" step="0.1" id="capacidadMaximaCargaCaravana" th:field="*{capacidadMaximaCargaCaravana}"
+            required />
+        <br />
 
         <label for="dineroDisponibleCaravana">Dinero Disponible:</label>
         <input type="number" step="0.1" id="dineroDisponibleCaravana" th:field="*{dineroDisponibleCaravana}" required />
-        <br/>
+        <br />
 
         <label for="puntosDeVidaCaravana">Puntos de Vida:</label>
         <input type="number" id="puntosDeVidaCaravana" th:field="*{puntosDeVidaCaravana}" required />
-        <br/>
+        <br />
+
+        <label for="ciudadId">Ciudad Actual:</label>
+        <select id="ciudadId" th:field="*{ciudadId}" required>
+            <option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombreCiudad}">
+            </option>
+        </select>
+        <br />
 
         <!-- De momento no pedimos ciudad, jugadores ni productos -->
         <button type="submit">Crear</button>
     </form>
 
-    <br/>
+    <br />
     <a th:href="@{/caravana/list}">Volver a la lista</a>
 </body>
+
 </html>

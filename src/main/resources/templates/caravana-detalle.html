@@ -1,41 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Detalle de Caravana</title>
 </head>
+
 <body>
-    <h1 th:text="'Detalle de Caravana: ' + ${caravana.nombreCaravana}"></h1>
+    <h1 th:text="${caravana.nombreCaravana}">Nombre Caravana</h1>
 
-    <p><strong>ID:</strong> <span th:text="${caravana.id}"></span></p>
-    <p><strong>Velocidad:</strong> <span th:text="${caravana.velocidadCaravana} + ' km/h'"></span></p>
-    <p><strong>Capacidad Máxima de Carga:</strong> <span th:text="${caravana.capacidadMaximaCargaCaravana} + ' kg'"></span></p>
-    <p><strong>Peso actual cargado:</strong> <span th:text="${pesoActualCargado} + ' kg'"></span></p>
-    <p><strong>Dinero Disponible:</strong> <span th:text="${caravana.dineroDisponibleCaravana} + ' CaravaCoins'"></span></p>
-    <p><strong>Puntos de Vida:</strong> <span th:text="${caravana.puntosDeVidaCaravana} + ' hp'"></span></p>
-    <p><strong>Ciudad Actual:</strong> 
-        <span th:text="${caravana.ciudadActual != null ? caravana.ciudadActual.nombreCiudad : 'Sin ciudad'}"></span>
-    </p>
+    <p><strong>Velocidad:</strong> <span th:text="${caravana.velocidadCaravana}"></span></p>
+    <p><strong>Carga Máxima:</strong> <span th:text="${caravana.capacidadMaximaCargaCaravana}"></span></p>
+    <p><strong>Dinero Disponible:</strong> <span th:text="${caravana.dineroDisponibleCaravana}"></span></p>
+    <p><strong>Puntos de Vida:</strong> <span th:text="${caravana.puntosDeVidaCaravana}"></span></p>
+    <p><strong>Ciudad Actual:</strong> <span
+            th:text="${caravana.nombreCiudadActual != null ? caravana.nombreCiudadActual : 'Sin ciudad'}"></span></p>
+    <p><strong>Peso Actual Cargado:</strong> <span th:text="${pesoActualCargado}"></span></p>
 
-    <h2>Productos</h2>
+    <h3>Opciones de la Caravana</h3>
     <ul>
-        <li th:each="cp : ${caravana.productos}" 
-            th:text="${cp.producto.nombreProducto + ' (Stock: ' + cp.stockEnCaravana + ')'}"></li>
-    </ul>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/editar'}">Editar Caravana</a></li>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/comprar'}">Comprar Productos</a></li>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/vender'}">Vender Productos</a></li>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/mover'}">Mover Caravana</a></li>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/jugadores'}">Agregar Jugador</a></li>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/servicio'}">Aplicar Servicio</a></li>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/productos'}">Ver Productos</a></li>
+        <li><a th:href="@{'/caravana/' + ${caravana.id} + '/eliminar'}">Eliminar</a></li>
+    </ul>    
 
-    <h2>Jugadores</h2>
+    <h3>Otras Caravanas</h3>
     <ul>
-        <li th:each="jugador : ${caravana.jugadores}" 
-            th:text="${jugador.nombreJugador + ' (' + jugador.rolJugador + ')'}"></li>
+    <li><a th:href="@{'/caravana' + '/list'}">Volver a la lista de caravanas</a></li>
     </ul>
-
-    <h2>Rutas Recorridas</h2>
-    <ul>
-        <li th:each="ruta : ${caravana.rutasRecorridas}" 
-            th:text="${'→ ' + ruta.ciudadDestino.nombreCiudad}"></li>
-    </ul>
-
-    <br/>
-    <a th:href="@{/caravana/list}">Volver a la lista</a>
 </body>
+
 </html>

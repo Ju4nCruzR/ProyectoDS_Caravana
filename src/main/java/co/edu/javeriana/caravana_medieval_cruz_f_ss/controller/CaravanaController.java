@@ -146,10 +146,16 @@ public class CaravanaController {
         public ModelAndView mostrarFormularioVender(@PathVariable Long id,
                         @RequestParam(value = "error", required = false) String error) {
                 CaravanaDetalleDTO detalle = caravanaService.buscarCaravanaPorId(id);
+
+                double pesoActual = detalle.getProductos().stream()
+                                .mapToDouble(CaravanaProductoDTO::getPesoTotal)
+                                .sum();
+
                 return new ModelAndView("caravana-vender")
                                 .addObject("caravana", detalle.getCaravana())
                                 .addObject("productosEnCaravana", detalle.getProductos())
-                                .addObject("error", error);
+                                .addObject("error", error)
+                                .addObject("pesoActual", pesoActual);
         }
 
         @PostMapping("/{id}/vender")
@@ -256,7 +262,9 @@ public class CaravanaController {
 
                 return new ModelAndView("caravana-editar")
                                 .addObject("caravana", formulario)
-                                .addObject("ciudades", ciudades);
+                                .addObject("ciudades", ciudades)
+                                .addObject("caravanaId", id);
+
         }
 
         @PostMapping("/{id}/editar")

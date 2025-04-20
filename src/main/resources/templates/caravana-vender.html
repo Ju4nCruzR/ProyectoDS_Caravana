@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Vender Producto</title>
 </head>
+
 <body>
     <h1 th:text="'Vender producto - Caravana: ' + ${caravana.nombreCaravana}"></h1>
     <p th:text="'Dinero disponible: $' + ${caravana.dineroDisponibleCaravana} + ' CaravaCoins'"></p>
@@ -13,26 +15,27 @@
 
     <div th:if="${error}">
         <p style="color:red;" th:text="${error}"></p>
-    </div>  
+    </div>
 
     <form th:action="@{'/caravana/' + ${caravana.id} + '/vender'}" method="post">
         <label for="productoId">Selecciona producto:</label>
         <select name="productoId" id="productoId" required>
-            <option th:each="cp : ${productosEnCaravana}" 
-                    th:value="${cp.producto.id}" 
-                    th:text="${cp.producto.nombreProducto + ' (Stock: ' + cp.stockEnCaravana + ') - Precio: $' + cp.producto.precioBaseProducto}">
+            <option th:each="cp : ${productosEnCaravana}" th:value="${cp.productoId}"
+                th:text="${cp.nombreProducto + ' (Stock: ' + cp.stockEnCaravana + ') - Precio: $' + cp.precioBaseProducto}">
             </option>
+
         </select>
-        <br/><br/>
+        <br /><br />
 
         <label for="cantidad">Cantidad a vender:</label>
         <input type="number" name="cantidad" id="cantidad" min="1" required />
-        <br/><br/>
+        <br /><br />
 
         <button type="submit">Vender</button>
     </form>
 
-    <br/>
+    <br />
     <a th:href="@{/caravana/list}">Volver a la lista</a>
 </body>
+
 </html>

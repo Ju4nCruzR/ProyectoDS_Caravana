@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -9,49 +9,38 @@
 <body>
     <h1>Editar Caravana</h1>
 
-    <form th:action="@{'/caravana/' + ${caravana.id} + '/editar'}" th:object="${caravana}" method="post">
-        <label>Nombre:</label>
-        <input type="text" th:field="*{nombreCaravana}" /><br>
+    <form th:action="@{'/caravana/' + ${caravanaId} + '/editar'}" th:object="${caravana}" method="post">
+        <label for="nombreCaravana">Nombre:</label>
+        <input type="text" th:field="*{nombreCaravana}" id="nombreCaravana" required />
+        <br/>
 
-        <label>Velocidad:</label>
-        <input type="number" th:field="*{velocidadCaravana}" step="0.1" /><br>
+        <label for="velocidadCaravana">Velocidad:</label>
+        <input type="number" step="any" th:field="*{velocidadCaravana}" id="velocidadCaravana" required />
+        <br/>
 
-        <label>Capacidad Máxima de Carga:</label>
-        <input type="number" th:field="*{capacidadMaximaCargaCaravana}" step="0.1" /><br>
+        <label for="capacidadMaximaCargaCaravana">Capacidad Máxima de Carga:</label>
+        <input type="number" step="any" th:field="*{capacidadMaximaCargaCaravana}" id="capacidadMaximaCargaCaravana" required />
+        <br/>
 
-        <label>Dinero Disponible:</label>
-        <input type="number" th:field="*{dineroDisponibleCaravana}" step="0.01" /><br>
+        <label for="dineroDisponibleCaravana">Dinero Disponible:</label>
+        <input type="number" step="any" th:field="*{dineroDisponibleCaravana}" id="dineroDisponibleCaravana" required />
+        <br/>
 
-        <label>Puntos de Vida:</label>
-        <input type="number" th:field="*{puntosDeVidaCaravana}" /><br>
+        <label for="puntosDeVidaCaravana">Puntos de Vida:</label>
+        <input type="number" th:field="*{puntosDeVidaCaravana}" id="puntosDeVidaCaravana" required />
+        <br/>
 
-        <label>Ciudad Actual:</label>
-        <select th:field="*{ciudadActual.id}">
-            <option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombreCiudad}">
-            </option>
+        <label for="ciudadId">Ciudad Actual:</label>
+        <select id="ciudadId" th:field="*{ciudadId}">
+            <option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombreCiudad}"></option>
         </select>
+        <br/><br/>
 
-        <h2>Jugadores en la Caravana</h2>
-
-        <div th:each="jugador, idx : *{jugadores}">
-            <h4 th:text="'Jugador #' + ${idx.index + 1}"></h4>
-            <label>Nombre:</label>
-            <input type="text" th:field="*{jugadores[__${idx.index}__].nombreJugador}" /><br>
-
-            <label>Rol:</label>
-            <select th:field="*{jugadores[__${idx.index}__].rolJugador}">
-                <option value="COMERCIANTE">COMERCIANTE</option>
-                <option value="CARAVANERO">CARAVANERO</option>
-            </select>
-            <br>
-        </div>
-
-        <br>
-
-        <button type="submit">Guardar Cambios</button>
+        <button type="submit">Actualizar</button>
     </form>
 
-    <a th:href="@{/caravana/list}">Volver a la lista</a>
+    <br/>
+    <a th:href="@{'/caravana/list'}">Volver a la lista</a>
 </body>
 
 </html>
