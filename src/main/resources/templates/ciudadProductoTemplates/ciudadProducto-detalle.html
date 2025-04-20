@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto en Ciudad</title>
+</head>
+<body>
+    <h1>Detalle del Producto en Ciudad</h1>
+
+    <p><strong>ID de Asociación:</strong> <span th:text="${ciudadProducto.id}"></span></p>
+    <p><strong>Ciudad:</strong> <span th:text="${ciudadProducto.nombreCiudad}"></span></p>
+    <p><strong>Producto:</strong> <span th:text="${ciudadProducto.nombreProducto}"></span></p>
+    <p><strong>Stock Disponible:</strong> <span th:text="${ciudadProducto.stockProducto}"></span></p>
+
+    <br/>
+    <a th:href="@{/ciudad-producto/list}">Ver inventario global</a>
+</body>
+</html>

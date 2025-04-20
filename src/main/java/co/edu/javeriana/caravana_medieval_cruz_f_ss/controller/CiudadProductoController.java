@@ -1,5 +1,7 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadProductoDTO;
@@ -36,25 +37,31 @@ public class CiudadProductoController {
                 Ciudad ciudad = ciudadRepository.findById(ciudadId)
                                 .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
+                List<CiudadProductoDTO> productos = ciudadProductoService.listarPorCiudad(ciudad);
+
                 return new ModelAndView("ciudadProductoTemplates/ciudadProducto-list")
                                 .addObject("ciudad", ciudad)
-                                .addObject("productos", ciudadProductoService.listarPorCiudad(ciudad));
+                                .addObject("productos", productos);
         }
 
         // Caso 2: Ver detalle
-        @GetMapping("/detalle")
-        @ResponseBody
-        public CiudadProductoDTO detalle(@RequestParam Long ciudadId, @RequestParam Long productoId) {
+        @GetMapping("/ciudad/{ciudadId}/producto/{productoId}")
+        public ModelAndView verDetalleProductoEnCiudad(@PathVariable Long ciudadId, @PathVariable Long productoId) {
                 Ciudad ciudad = ciudadRepository.findById(ciudadId)
                                 .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+
                 Producto producto = productoRepository.findById(productoId)
                                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-                return ciudadProductoService.obtenerPorCiudadYProducto(ciudad, producto)
+                CiudadProductoDTO dto = ciudadProductoService.obtenerPorCiudadYProducto(ciudad, producto)
                                 .orElseThrow(() -> new RuntimeException("Producto no registrado en la ciudad"));
+
+                return new ModelAndView("ciudadProductoTemplates/ciudadProducto-detalle")
+                                .addObject("ciudadProducto", dto);
         }
 
         // Caso 3: Mostrar formulario para actualizar stock de un producto en una ciudad
+        @GetMapping("/{id}/actualizar")
         public ModelAndView mostrarFormularioActualizar(@PathVariable Long id) {
                 CiudadProductoDTO dto = ciudadProductoService.listarTodos().stream()
                                 .filter(p -> p.getId().equals(id))
@@ -73,25 +80,36 @@ public class CiudadProductoController {
         }
 
         // Caso 4: Confirmación antes de eliminar producto de una ciudad
-        public ModelAndView mostrarConfirmacionEliminar(@PathVariable Long id) {
-                CiudadProductoDTO dto = ciudadProductoService.listarTodos().stream()
-                                .filter(p -> p.getId().equals(id))
-                                .findFirst()
-                                .orElseThrow(() -> new RuntimeException("No se encontró el producto"));
+        @GetMapping("/ciudad/{ciudadId}/producto/{productoId}/eliminar")
+        public ModelAndView mostrarConfirmacionEliminar(@PathVariable Long ciudadId, @PathVariable Long productoId) {
+                Ciudad ciudad = ciudadRepository.findById(ciudadId)
+                                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+
+                Producto producto = productoRepository.findById(productoId)
+                                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+                CiudadProductoDTO dto = ciudadProductoService.obtenerPorCiudadYProducto(ciudad, producto)
+                                .orElseThrow(() -> new RuntimeException("Producto no registrado en la ciudad"));
 
                 return new ModelAndView("ciudadProductoTemplates/ciudadProducto-eliminar")
-                                .addObject("ciudadProducto", dto);
+                                .addObject("ciudadProducto", dto)
+                                .addObject("ciudadId", ciudadId)
+                                .addObject("productoId", productoId);
         }
 
-        // Caso 4: Eliminar
-        public String eliminar(@PathVariable Long id) {
-                Long ciudadId = ciudadProductoService.listarTodos().stream()
-                                .filter(p -> p.getId().equals(id))
-                                .findFirst()
-                                .map(CiudadProductoDTO::getId) // ajusta si tienes ciudadId
-                                .orElse(0L);
+        @PostMapping("/ciudad/{ciudadId}/producto/{productoId}/eliminar")
+        public String eliminar(@PathVariable Long ciudadId, @PathVariable Long productoId) {
+                Ciudad ciudad = ciudadRepository.findById(ciudadId)
+                                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
-                ciudadProductoService.eliminarPorId(id);
+                Producto producto = productoRepository.findById(productoId)
+                                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+                CiudadProducto cp = ciudadProductoService.obtenerEntidadPorCiudadAndProducto(ciudad, producto)
+                                .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
+
+                ciudadProductoService.eliminarPorId(cp.getId());
+
                 return "redirect:/ciudad-producto/ciudad/" + ciudadId;
         }
 

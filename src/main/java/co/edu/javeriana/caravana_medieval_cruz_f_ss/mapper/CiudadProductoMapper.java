@@ -11,6 +11,8 @@ public class CiudadProductoMapper {
         dto.setProductoId(cp.getProducto().getId());
         dto.setNombreProducto(cp.getProducto().getNombreProducto());
         dto.setStockProducto(cp.getStockProducto());
+        dto.setNombreCiudad(cp.getCiudad().getNombreCiudad()); // ← añadimos esto
         return dto;
     }
+    
 }

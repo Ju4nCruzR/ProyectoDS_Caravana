@@ -52,4 +52,13 @@ public class CiudadProductoService {
                 .map(CiudadProductoMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public Optional<CiudadProducto> obtenerEntidadPorId(Long id) {
+        return ciudadProductoRepository.findById(id);
+    }
+
+    public Optional<CiudadProducto> obtenerEntidadPorCiudadAndProducto(Ciudad ciudad, Producto producto) {
+        return ciudadProductoRepository.findByCiudadAndProducto(ciudad, producto);
+    }
+    
 }
