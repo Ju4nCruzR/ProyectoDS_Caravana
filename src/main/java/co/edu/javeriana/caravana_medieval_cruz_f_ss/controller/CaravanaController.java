@@ -44,7 +44,7 @@ public class CaravanaController {
         @GetMapping("/nueva")
         public ModelAndView mostrarFormularioCrearCaravana() {
                 List<Ciudad> ciudades = ciudadRepository.findAll();
-                return new ModelAndView("caravana-form")
+                return new ModelAndView("caravanaTemplates/caravana-form")
                                 .addObject("caravana", new CaravanaFormularioDTO())
                                 .addObject("ciudades", ciudades);
         }
@@ -58,7 +58,7 @@ public class CaravanaController {
         @GetMapping("/{id}")
         public ModelAndView verCaravana(@PathVariable Long id) {
                 CaravanaDetalleDTO detalle = caravanaService.buscarCaravanaPorId(id);
-                return new ModelAndView("caravana-detalle")
+                return new ModelAndView("caravanaTemplates/caravana-detalle")
                                 .addObject("caravana", detalle.getCaravana())
                                 .addObject("pesoActualCargado", detalle.getProductos() != null
                                                 ? detalle.getProductos().stream().mapToDouble(p -> p.getPesoTotal())
@@ -69,7 +69,7 @@ public class CaravanaController {
         @GetMapping("/list")
         public ModelAndView listarCaravanas() {
                 List<CaravanaDTO> caravanas = caravanaService.listarCaravanas();
-                return new ModelAndView("caravana-list")
+                return new ModelAndView("caravanaTemplates/caravana-list")
                                 .addObject("listaCaravanas", caravanas);
         }
 
@@ -89,7 +89,7 @@ public class CaravanaController {
                                 .distinct()
                                 .toList();
 
-                return new ModelAndView("caravana-mover")
+                return new ModelAndView("caravanaTemplates/caravana-mover")
                                 .addObject("caravana", detalle.getCaravana())
                                 .addObject("ciudades", destinosDisponibles);
         }
@@ -136,7 +136,7 @@ public class CaravanaController {
                                 .mapToDouble(CaravanaProductoDTO::getPesoTotal)
                                 .sum();
 
-                return new ModelAndView("caravana-comprar")
+                return new ModelAndView("caravanaTemplates/caravana-comprar")
                                 .addObject("caravana", detalle.getCaravana())
                                 .addObject("productosDisponibles", productosDisponibles)
                                 .addObject("pesoActual", pesoActual);
@@ -151,7 +151,7 @@ public class CaravanaController {
                                 .mapToDouble(CaravanaProductoDTO::getPesoTotal)
                                 .sum();
 
-                return new ModelAndView("caravana-vender")
+                return new ModelAndView("caravanaTemplates/caravana-vender")
                                 .addObject("caravana", detalle.getCaravana())
                                 .addObject("productosEnCaravana", detalle.getProductos())
                                 .addObject("error", error)
@@ -185,7 +185,7 @@ public class CaravanaController {
 
                         List<CiudadServicio> serviciosDisponibles = ciudadServicioRepository.findByCiudad(ciudad);
 
-                        return new ModelAndView("caravana-servicio")
+                        return new ModelAndView("caravanaTemplates/caravana-servicio")
                                         .addObject("caravana", detalle.getCaravana())
                                         .addObject("serviciosDisponibles", serviciosDisponibles)
                                         .addObject("error", e.getMessage());
@@ -202,7 +202,7 @@ public class CaravanaController {
 
                 List<CiudadServicio> serviciosDisponibles = ciudadServicioRepository.findByCiudad(ciudad);
 
-                return new ModelAndView("caravana-servicio")
+                return new ModelAndView("caravanaTemplates/caravana-servicio")
                                 .addObject("caravana", detalle.getCaravana())
                                 .addObject("serviciosDisponibles", serviciosDisponibles);
         }
@@ -210,7 +210,7 @@ public class CaravanaController {
         @GetMapping("/{id}/productos")
         public ModelAndView verProductos(@PathVariable Long id) {
                 CaravanaDetalleDTO detalle = caravanaService.buscarCaravanaPorId(id);
-                return new ModelAndView("caravana-productos")
+                return new ModelAndView("caravanaTemplates/caravana-productos")
                                 .addObject("caravana", detalle.getCaravana())
                                 .addObject("productos", detalle.getProductos());
         }
@@ -224,7 +224,7 @@ public class CaravanaController {
         @GetMapping("/{id}/eliminar")
         public ModelAndView mostrarConfirmacionEliminar(@PathVariable Long id) {
                 CaravanaDetalleDTO detalle = caravanaService.buscarCaravanaPorId(id);
-                return new ModelAndView("caravana-eliminar")
+                return new ModelAndView("caravanaTemplates/caravana-eliminar")
                                 .addObject("caravana", detalle.getCaravana());
         }
 
@@ -239,7 +239,7 @@ public class CaravanaController {
         @GetMapping("/{id}/jugadores")
         public ModelAndView mostrarFormularioJugador(@PathVariable Long id) {
                 CaravanaDetalleDTO detalle = caravanaService.buscarCaravanaPorId(id);
-                return new ModelAndView("caravana-jugador")
+                return new ModelAndView("caravanaTemplates/caravana-jugador")
                                 .addObject("caravana", detalle.getCaravana());
         }
 
@@ -260,7 +260,7 @@ public class CaravanaController {
                 if (ciudad != null)
                         formulario.setCiudadId(ciudad.getId());
 
-                return new ModelAndView("caravana-editar")
+                return new ModelAndView("caravanaTemplates/caravana-editar")
                                 .addObject("caravana", formulario)
                                 .addObject("ciudades", ciudades)
                                 .addObject("caravanaId", id);
