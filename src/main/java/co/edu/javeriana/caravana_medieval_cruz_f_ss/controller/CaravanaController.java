@@ -26,65 +26,65 @@ public class CaravanaController {
         @Autowired
         private CaravanaService caravanaService;
 
-    @GetMapping("/list")
-    public List<CaravanaDTO> listarCaravanas() {
-        return caravanaService.listarCaravanas();
-    }
+        @PostMapping
+        public void crearCaravana(@RequestBody CaravanaFormularioDTO dto) {
+                caravanaService.crearCaravanaDesdeFormulario(dto);
+        }
 
-    @GetMapping("/{id}")
-    public CaravanaDetalleDTO obtenerCaravana(@PathVariable Long id) {
-        return caravanaService.buscarCaravanaPorId(id);
-    }
+        @GetMapping("/list")
+        public List<CaravanaDTO> listarCaravanas() {
+                return caravanaService.listarCaravanas();
+        }
 
-    @PostMapping("/nueva")
-    public void crearCaravana(@RequestBody CaravanaFormularioDTO dto) {
-        caravanaService.crearCaravanaDesdeFormulario(dto);
-    }
+        @GetMapping("/{id}")
+        public CaravanaDetalleDTO obtenerCaravana(@PathVariable Long id) {
+                return caravanaService.buscarCaravanaPorId(id);
+        }
 
-    @PutMapping("/{id}/editar")
-    public void actualizarCaravana(@PathVariable Long id, @RequestBody CaravanaFormularioDTO dto) {
-        caravanaService.actualizarCaravanaDesdeFormulario(id, dto);
-    }
+        @PutMapping("/{id}/editar")
+        public void actualizarCaravana(@PathVariable Long id, @RequestBody CaravanaFormularioDTO dto) {
+                caravanaService.actualizarCaravanaDesdeFormulario(id, dto);
+        }
 
-    @DeleteMapping("/{id}/eliminar")
-    public void eliminarCaravana(@PathVariable Long id) {
-        caravanaService.eliminarCaravana(id);
-    }
+        @DeleteMapping("/{id}/eliminar")
+        public void eliminarCaravana(@PathVariable Long id) {
+                caravanaService.eliminarCaravana(id);
+        }
 
-    @PostMapping("/{id}/mover")
-    public void moverCaravana(@PathVariable Long id, @RequestParam Long ciudadId) {
-        caravanaService.moverCaravana(id, ciudadId);
-    }
+        @PostMapping("/{id}/mover")
+        public void moverCaravana(@PathVariable Long id, @RequestParam Long ciudadId) {
+                caravanaService.moverCaravana(id, ciudadId);
+        }
 
-    @PostMapping("/{id}/comprar")
-    public void comprarProducto(@PathVariable Long id,
-                                 @RequestParam Long productoId,
-                                 @RequestParam int cantidad) {
-        caravanaService.comprarProducto(id, productoId, cantidad);
-    }
+        @PostMapping("/{id}/comprar")
+        public void comprarProducto(@PathVariable Long id,
+                        @RequestParam Long productoId,
+                        @RequestParam int cantidad) {
+                caravanaService.comprarProducto(id, productoId, cantidad);
+        }
 
-    @PostMapping("/{id}/vender")
-    public void venderProducto(@PathVariable Long id,
-                               @RequestParam Long productoId,
-                               @RequestParam int cantidad) {
-        caravanaService.venderProducto(id, productoId, cantidad);
-    }
+        @PostMapping("/{id}/vender")
+        public void venderProducto(@PathVariable Long id,
+                        @RequestParam Long productoId,
+                        @RequestParam int cantidad) {
+                caravanaService.venderProducto(id, productoId, cantidad);
+        }
 
-    @PostMapping("/{id}/servicio")
-    public void aplicarServicio(@PathVariable Long id, @RequestParam Long servicioId) {
-        caravanaService.aplicarServicio(id, servicioId);
-    }
+        @PostMapping("/{id}/servicio")
+        public void aplicarServicio(@PathVariable Long id, @RequestParam Long servicioId) {
+                caravanaService.aplicarServicio(id, servicioId);
+        }
 
-    @GetMapping("/{id}/productos")
-    public List<CaravanaProductoDTO> verProductos(@PathVariable Long id) {
-        return caravanaService.buscarCaravanaPorId(id).getProductos();
-    }
+        @GetMapping("/{id}/productos")
+        public List<CaravanaProductoDTO> verProductos(@PathVariable Long id) {
+                return caravanaService.buscarCaravanaPorId(id).getProductos();
+        }
 
-    @PostMapping("/{id}/jugadores")
-    public void agregarJugador(@PathVariable Long id,
-                               @RequestParam String nombre,
-                               @RequestParam Jugador.Rol rol) {
-        caravanaService.agregarJugador(id, nombre, rol);
-    }
+        @PostMapping("/{id}/jugadores")
+        public void agregarJugador(@PathVariable Long id,
+                        @RequestParam String nombre,
+                        @RequestParam Jugador.Rol rol) {
+                caravanaService.agregarJugador(id, nombre, rol);
+        }
 
 }

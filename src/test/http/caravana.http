@@ -1,0 +1,54 @@
+
+
+###
+GET http://localhost:8080/caravana/list
+
+###
+GET http://localhost:8080/caravana/3
+
+###
+POST http://localhost:8080/caravana
+Content-Type: application/json
+
+{
+    "nombreCaravana": "Nueva Caravana",
+    "velocidadCaravana": 100,
+    "capacidadMaximaCargaCaravana": 300,
+    "dineroDisponibleCaravana": 2000,
+    "puntosDeVidaCaravana": 50,
+    "ciudadId": 1  
+}
+
+###
+PUT  http://localhost:8080/caravana/2/editar
+Content-Type: application/json
+
+{
+    "nombreCaravana": "Caravana Editada",
+    "velocidadCaravana": 120,
+    "capacidadMaximaCargaCaravana": 350,
+    "dineroDisponibleCaravana": 3000,
+    "puntosDeVidaCaravana": 70,
+    "ciudadId": 1 
+}
+
+###
+DELETE http://localhost:8080/caravana/2/eliminar
+
+###
+POST http://localhost:8080/caravana/3/mover?ciudadId=2
+
+###
+POST http://localhost:8080/caravana/3/comprar?productoId=1&cantidad=2
+
+###
+POST http://localhost:8080/caravana/3/vender?productoId=1&cantidad=1
+
+###
+POST http://localhost:8080/caravana/3/servicio?servicioId=1
+
+###
+GET http://localhost:8080/caravana/3/productos
+
+###
+POST http://localhost:8080/caravana/3/jugadores?nombre=Pedro&rol=CARAVANERO
