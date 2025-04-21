@@ -8,9 +8,9 @@
     <h1>Detalle de la Ruta</h1>
 
     <p><strong>ID:</strong> <span th:text="${ruta.id}"></span></p>
-    <p><strong>Ciudad Origen:</strong> <span th:text="${ruta.ciudadOrigen.nombreCiudad}"></span></p>
-    <p><strong>Ciudad Destino:</strong> <span th:text="${ruta.ciudadDestino.nombreCiudad}"></span></p>
-    <p><strong>Distancia:</strong> <span th:text="${ruta.distanciaRuta} + ' km'"></span></p>
+    <p><strong>Ciudad Origen:</strong> <span th:text="${ruta.origen}"></span></p>
+    <p><strong>Ciudad Destino:</strong> <span th:text="${ruta.destino}"></span></p>
+    <p><strong>Distancia:</strong> <span th:text="${ruta.distanciaRuta + ' km'}"></span></p>
     <p><strong>Daño:</strong> <span th:text="${ruta.danoRuta}"></span></p>
     <p><strong>¿Es Segura?:</strong> <span th:text="${ruta.esSeguraRuta ? 'Sí' : 'No'}"></span></p>
 

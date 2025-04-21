@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filtrar rutas por ciudad de origen</title>
+</head>
+<body>
+    <h1>Filtrar rutas por ciudad de origen</h1>
+
+    <form action="/ruta/filtrar-origen" method="get">
+        <label for="ciudadId">Ciudad origen:</label>
+        <select name="ciudadId" id="ciudadId" required>
+            <option value="" disabled selected>-- Selecciona una ciudad --</option>
+            <option th:each="ciudad : ${ciudades}"
+                    th:value="${ciudad.id}"
+                    th:text="${ciudad.nombreCiudad}"></option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <br>
+    <a href="/ruta/list">Volver a la lista de rutas</a>
+</body>
+</html>

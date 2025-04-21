@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filtrar rutas por seguridad</title>
+</head>
+<body>
+    <h1>Filtrar rutas por seguridad</h1>
+
+    <form action="/ruta/filtrar-seguridad" method="get">
+        <label for="segura">¿La ruta es segura?</label>
+        <select name="segura" id="segura" required>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+    
+
+    <br>
+    <a href="/ruta/list">Volver a la lista de rutas</a>
+</body>
+</html>

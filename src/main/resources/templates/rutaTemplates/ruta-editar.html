@@ -12,12 +12,12 @@
 
         <p>
             <strong>Ciudad Origen:</strong>
-            <span th:text="${ruta.ciudadOrigen.nombreCiudad}"></span>
+            <span th:text="${ruta.ciudadOrigen != null ? ruta.ciudadOrigen.nombreCiudad : 'No definida'}"></span>
         </p>
 
         <p>
             <strong>Ciudad Destino:</strong>
-            <span th:text="${ruta.ciudadDestino.nombreCiudad}"></span>
+            <span th:text="${ruta.ciudadDestino != null ? ruta.ciudadDestino.nombreCiudad : 'No definida'}"></span>
         </p>
 
         <label for="distanciaRuta">Distancia (km):</label>

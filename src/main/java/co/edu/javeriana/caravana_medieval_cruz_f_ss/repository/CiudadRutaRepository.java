@@ -7,5 +7,6 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.CiudadRuta;
 
 @Repository
 public interface CiudadRutaRepository extends JpaRepository<CiudadRuta, Long> {
-    
+    void deleteByRutaId(Long rutaId);
+
 }

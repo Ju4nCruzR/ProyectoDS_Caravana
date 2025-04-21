@@ -6,20 +6,27 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.RutaDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.RutaMapper;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ciudad;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Ruta;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CiudadRutaRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.RutaRepository;
 
 @Service
 public class RutaService {
-    
+
     @Autowired
     private RutaRepository rutaRepository;
 
     @Autowired
     private CiudadRepository ciudadRepository;
+
+    @Autowired
+    private CiudadRutaRepository ciudadRutaRepository;
 
     // 1. Crear ruta
     public Ruta crearRuta(Ruta ruta) {
@@ -27,13 +34,17 @@ public class RutaService {
     }
 
     // 2. Buscar por ID
-    public Optional<Ruta> buscarPorId(Long id) {
-        return rutaRepository.findById(id);
+    public Optional<RutaDTO> buscarPorId(Long id) {
+        return rutaRepository.findById(id)
+                .map(RutaMapper::toDTO);
     }
 
     // 3. Listar todas
-    public List<Ruta> listarTodas() {
-        return rutaRepository.findAll();
+    public List<RutaDTO> listarTodas() {
+        return rutaRepository.findAll()
+                .stream()
+                .map(RutaMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     // 4. Editar ruta
@@ -51,28 +62,43 @@ public class RutaService {
     }
 
     // 5. Eliminar ruta
+    @Transactional
     public void eliminarRuta(Long id) {
+        // 1. Eliminar relaciones primero
+        ciudadRutaRepository.deleteByRutaId(id);
+
+        // 2. Luego eliminar la ruta
         rutaRepository.deleteById(id);
     }
 
     // 6. Filtrar por ciudad origen
-    public List<Ruta> buscarPorCiudadOrigen(Long ciudadId) {
+    public List<RutaDTO> buscarPorCiudadOrigen(Long ciudadId) {
         Ciudad ciudad = ciudadRepository.findById(ciudadId)
                 .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
         return rutaRepository.findAll().stream()
                 .filter(r -> r.getCiudadOrigen().equals(ciudad))
+                .map(RutaMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    // 7. Ver rutas seguras o inseguras
-    public List<Ruta> filtrarPorSeguridad(boolean segura) {
+    // 6.1. Filtrar por ciudad destino
+    public List<RutaDTO> buscarPorCiudadDestino(Long ciudadId) {
+        return rutaRepository.findAll().stream()
+            .filter(r -> r.getCiudadDestino() != null && r.getCiudadDestino().getId() == ciudadId)
+            .map(RutaMapper::toDTO)
+            .toList();
+    }    
+
+    // 7. Filtrar por ciudad seguridad
+    public List<RutaDTO> filtrarPorSeguridad(boolean segura) {
         return rutaRepository.findAll().stream()
                 .filter(r -> r.isEsSeguraRuta() == segura)
-                .collect(Collectors.toList());
+                .map(RutaMapper::toDTO)
+                .toList();
     }
 
     // 8. Rutas entre dos ciudades
-    public List<Ruta> buscarEntreCiudades(Long idOrigen, Long idDestino) {
+    public List<RutaDTO> buscarEntreCiudades(Long idOrigen, Long idDestino) {
         Ciudad origen = ciudadRepository.findById(idOrigen)
                 .orElseThrow(() -> new RuntimeException("Ciudad origen no encontrada"));
         Ciudad destino = ciudadRepository.findById(idDestino)
@@ -80,6 +106,7 @@ public class RutaService {
 
         return rutaRepository.findAll().stream()
                 .filter(r -> r.getCiudadOrigen().equals(origen) && r.getCiudadDestino().equals(destino))
+                .map(RutaMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

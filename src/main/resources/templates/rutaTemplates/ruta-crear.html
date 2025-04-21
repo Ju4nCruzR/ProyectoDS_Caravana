@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Ruta</title>
+</head>
+<body>
+    <h1>Crear Nueva Ruta</h1>
+
+    <form th:action="@{/ruta/crear}" th:object="${ruta}" method="post">
+        <label for="ciudadOrigen">Ciudad Origen:</label>
+        <select th:field="*{ciudadOrigen.id}">
+            <option th:each="ciudad : ${ciudades}" 
+                    th:value="${ciudad.id}" 
+                    th:text="${ciudad.nombreCiudad}"></option>
+        </select><br><br>
+
+        <label for="ciudadDestino">Ciudad Destino:</label>
+        <select th:field="*{ciudadDestino.id}">
+            <option th:each="ciudad : ${ciudades}" 
+                    th:value="${ciudad.id}" 
+                    th:text="${ciudad.nombreCiudad}"></option>
+        </select><br><br>
+
+        <label for="distanciaRuta">Distancia (km):</label>
+        <input type="number" step="0.1" th:field="*{distanciaRuta}" required><br><br>
+
+        <label for="danoRuta">Daño estimado:</label>
+        <input type="number" th:field="*{danoRuta}" required><br><br>
+
+        <label for="esSeguraRuta">¿Es segura?</label>
+        <input type="checkbox" th:field="*{esSeguraRuta}"><br><br>
+
+        <button type="submit">Crear Ruta</button>
+    </form>
+
+    <br>
+    <a href="/ruta/list">Volver a la lista</a>
+</body>
+</html>

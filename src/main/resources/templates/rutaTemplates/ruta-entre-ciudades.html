@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar rutas entre dos ciudades</title>
+</head>
+<body>
+    <h1>Buscar rutas entre dos ciudades</h1>
+
+    <form action="/ruta/entre-ciudades" method="get">
+        <label for="origenId">Ciudad origen:</label>
+        <select name="origenId" id="origenId" required>
+            <option value="" disabled selected>-- Selecciona ciudad origen --</option>
+            <option th:each="ciudad : ${ciudades}"
+                    th:value="${ciudad.id}"
+                    th:text="${ciudad.nombreCiudad}"></option>
+        </select>
+
+        <br><br>
+
+        <label for="destinoId">Ciudad destino:</label>
+        <select name="destinoId" id="destinoId" required>
+            <option value="" disabled selected>-- Selecciona ciudad destino --</option>
+            <option th:each="ciudad : ${ciudades}"
+                    th:value="${ciudad.id}"
+                    th:text="${ciudad.nombreCiudad}"></option>
+        </select>
+
+        <br><br>
+        <button type="submit">Buscar rutas</button>
+    </form>
+
+    <br>
+    <a href="/ruta/list">Volver a la lista de rutas</a>
+</body>
+</html>

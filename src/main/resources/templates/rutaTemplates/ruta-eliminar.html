@@ -11,9 +11,9 @@
 
     <ul>
         <li><strong>ID:</strong> <span th:text="${ruta.id}"></span></li>
-        <li><strong>Ciudad Origen:</strong> <span th:text="${ruta.ciudadOrigen.nombreCiudad}"></span></li>
-        <li><strong>Ciudad Destino:</strong> <span th:text="${ruta.ciudadDestino.nombreCiudad}"></span></li>
-        <li><strong>Distancia:</strong> <span th:text="${ruta.distanciaRuta} + ' km'"></span></li>
+        <li><strong>Ciudad Origen:</strong> <span th:text="${ruta.origen}"></span></li>
+        <li><strong>Ciudad Destino:</strong> <span th:text="${ruta.destino}"></span></li>
+        <li><strong>Distancia:</strong> <span th:text="${ruta.distanciaRuta + ' km'}"></span></li>
         <li><strong>Daño:</strong> <span th:text="${ruta.danoRuta}"></span></li>
         <li><strong>¿Es segura?:</strong> <span th:text="${ruta.esSeguraRuta ? 'Sí' : 'No'}"></span></li>
     </ul>
@@ -24,3 +24,4 @@
     </form>
 </body>
 </html>
+
