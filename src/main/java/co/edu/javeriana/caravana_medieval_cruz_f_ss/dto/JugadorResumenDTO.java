@@ -4,9 +4,11 @@ public class JugadorResumenDTO {
     private Long id;
     private String nombreJugador;
     private String rolJugador;
-    
+
     public JugadorResumenDTO() {
     }
+
+    
 
     public JugadorResumenDTO(Long id, String nombreJugador, String rolJugador) {
         this.id = id;
@@ -38,5 +40,4 @@ public class JugadorResumenDTO {
         this.rolJugador = rolJugador;
     }
 
-    
 }

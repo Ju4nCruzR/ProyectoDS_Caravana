@@ -3,17 +3,29 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.dto;
 import java.util.List;
 
 public class JuegoFormularioDTO {
+    private Long id;
     private int tiempoLimiteDeJuego;
+    private int tiempoTranscurridoDeJuego;
     private double nivelMinimoGananciasJuego;
     private List<Long> caravanaIds;
 
     public JuegoFormularioDTO() {
     }
 
-    public JuegoFormularioDTO(int tiempoLimiteDeJuego, double nivelMinimoGananciasJuego, List<Long> caravanaIds) {
-        this.tiempoLimiteDeJuego = tiempoLimiteDeJuego;
-        this.nivelMinimoGananciasJuego = nivelMinimoGananciasJuego;
+    public JuegoFormularioDTO(List<Long> caravanaIds, Long id, double nivelMinimoGananciasJuego, int tiempoLimiteDeJuego, int tiempoTranscurridoDeJuego) {
         this.caravanaIds = caravanaIds;
+        this.id = id;
+        this.nivelMinimoGananciasJuego = nivelMinimoGananciasJuego;
+        this.tiempoLimiteDeJuego = tiempoLimiteDeJuego;
+        this.tiempoTranscurridoDeJuego = tiempoTranscurridoDeJuego;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getTiempoLimiteDeJuego() {
@@ -22,6 +34,14 @@ public class JuegoFormularioDTO {
 
     public void setTiempoLimiteDeJuego(int tiempoLimiteDeJuego) {
         this.tiempoLimiteDeJuego = tiempoLimiteDeJuego;
+    }
+
+    public int getTiempoTranscurridoDeJuego() {
+        return tiempoTranscurridoDeJuego;
+    }
+    
+    public void setTiempoTranscurridoDeJuego(int tiempoTranscurridoDeJuego) {
+        this.tiempoTranscurridoDeJuego = tiempoTranscurridoDeJuego;
     }
 
     public double getNivelMinimoGananciasJuego() {

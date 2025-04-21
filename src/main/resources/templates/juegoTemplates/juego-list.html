@@ -19,10 +19,10 @@
         </thead>
         <tbody>
             <tr th:each="juego : ${juegos}">
-                <td th:text="${juego.id}"></td>
-                <td th:text="${juego.tiempoTranscurridoDeJuego + ' min'}"></td>
-                <td th:text="${juego.tiempoLimiteDeJuego + ' min'}"></td>
-                <td th:text="${juego.nivelMinimoGananciasJuego + ' monedas'}"></td>
+                <td th:text="${juego.id}">ID</td>
+                <td th:text="${juego.tiempoTranscurridoDeJuego + ' min'}">0 min</td>
+                <td th:text="${juego.tiempoLimiteDeJuego + ' min'}">0 min</td>
+                <td th:text="${juego.nivelMinimoGananciasJuego + ' monedas'}">0 monedas</td>
                 <td>
                     <a th:href="@{'/juego/' + ${juego.id}}">Ver</a> |
                     <a th:href="@{'/juego/' + ${juego.id} + '/editar'}">Editar</a> |

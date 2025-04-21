@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reiniciar Tiempo del Juego</title>
+</head>
+<body>
+    <h1>¿Deseas reiniciar el tiempo del juego?</h1>
+
+    <p>Juego ID: <span th:text="${juego.juego.id}"></span></p>
+    <p>Tiempo actual: <span th:text="${juego.juego.tiempoTranscurridoDeJuego}">0</span> min</p>
+
+    <form th:action="@{'/juego/' + ${juego.juego.id} + '/reiniciar-tiempo'}" method="post">
+        <button type="submit">Sí, reiniciar</button>
+        <a th:href="@{'/juego/' + ${juego.juego.id}}">Cancelar</a>
+    </form>
+</body>
+</html>

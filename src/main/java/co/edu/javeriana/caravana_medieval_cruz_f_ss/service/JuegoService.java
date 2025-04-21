@@ -1,15 +1,21 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.service;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Juego;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JuegoRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JuegoDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JuegoDetalleDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JuegoFormularioDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JuegoResumenDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.JuegoMapper;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Juego;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JuegoRepository;
 
 @Service
 public class JuegoService {
@@ -18,28 +24,33 @@ public class JuegoService {
     private JuegoRepository juegoRepository;
 
     // Caso 1: Crear nuevo juego
-    public Juego crearJuego(Juego juego) {
-        return juegoRepository.save(juego);
+    public JuegoDTO crearJuego(JuegoFormularioDTO dto) {
+        Juego juego = JuegoMapper.fromFormulario(dto);
+        return JuegoMapper.toDTO(juegoRepository.save(juego));
     }
 
     // Caso 2: Ver juego por ID
-    public Optional<Juego> buscarPorId(Long id) {
-        return juegoRepository.findById(id);
+    public Optional<JuegoDetalleDTO> buscarPorId(Long id) {
+        return juegoRepository.findById(id)
+                .map(JuegoMapper::toDetalleDTO);
     }
 
     // Caso 3: Listar todos los juegos
-    public List<Juego> listarTodos() {
-        return juegoRepository.findAll();
+    public List<JuegoResumenDTO> listarTodos() {
+        return juegoRepository.findAll().stream()
+                .map(JuegoMapper::toResumenDTO)
+                .collect(Collectors.toList());
     }
 
     // Caso 4: Editar configuración
-    public Juego actualizarJuego(Long id, Juego nuevosDatos) {
+    public JuegoDTO actualizarJuego(Long id, JuegoFormularioDTO nuevosDatos) {
         Juego juego = juegoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
 
         juego.setNivelMinimoGananciasJuego(nuevosDatos.getNivelMinimoGananciasJuego());
         juego.setTiempoLimiteDeJuego(nuevosDatos.getTiempoLimiteDeJuego());
-        return juegoRepository.save(juego);
+
+        return JuegoMapper.toDTO(juegoRepository.save(juego));
     }
 
     // Caso 5: Eliminar juego
@@ -48,31 +59,43 @@ public class JuegoService {
     }
 
     // Caso 6: Reiniciar tiempo
-    public void reiniciarTiempo(Long id) {
+    public JuegoDetalleDTO reiniciarTiempoYRetornar(Long id) {
         Juego juego = juegoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
+
         juego.setTiempoTranscurridoDeJuego(0);
         juegoRepository.save(juego);
+
+        return JuegoMapper.toDetalleDTO(juego);
     }
 
     // Caso 7: Avanzar tiempo
-    public void avanzarTiempo(Long id, int minutos) {
+    public JuegoDetalleDTO avanzarTiempoYRetornar(Long id, int minutos) {
         Juego juego = juegoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-        juego.setTiempoTranscurridoDeJuego(
-                juego.getTiempoTranscurridoDeJuego() + minutos
-        );
+
+        juego.setTiempoTranscurridoDeJuego(juego.getTiempoTranscurridoDeJuego() + minutos);
         juegoRepository.save(juego);
+
+        return JuegoMapper.toDetalleDTO(juego); // Usamos el objeto actualizado
     }
 
     // Caso 8: Obtener caravanas y jugadores en el juego
     public List<Caravana> obtenerCaravanas(Long juegoId) {
-        return buscarPorId(juegoId).map(Juego::getCaravanas)
+        return juegoRepository.findById(juegoId)
+                .map(Juego::getCaravanas)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
     }
 
     public List<Jugador> obtenerJugadores(Long juegoId) {
-        return buscarPorId(juegoId).map(Juego::getJugadores)
+        return juegoRepository.findById(juegoId)
+                .map(Juego::getJugadores)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
     }
+
+    public Optional<JuegoFormularioDTO> obtenerFormulario(Long id) {
+        return juegoRepository.findById(id)
+                .map(JuegoMapper::toFormularioDTO);
+    }
+
 }
