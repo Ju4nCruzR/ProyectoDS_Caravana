@@ -49,6 +49,7 @@ public class JuegoService {
 
         juego.setNivelMinimoGananciasJuego(nuevosDatos.getNivelMinimoGananciasJuego());
         juego.setTiempoLimiteDeJuego(nuevosDatos.getTiempoLimiteDeJuego());
+        juego.setTiempoTranscurridoDeJuego(nuevosDatos.getTiempoTranscurridoDeJuego());
 
         return JuegoMapper.toDTO(juegoRepository.save(juego));
     }
@@ -59,27 +60,35 @@ public class JuegoService {
     }
 
     // Caso 6: Reiniciar tiempo
-    public JuegoDetalleDTO reiniciarTiempoYRetornar(Long id) {
+    public void reiniciarTiempo(Long id) {
         Juego juego = juegoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-
+            .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
+    
         juego.setTiempoTranscurridoDeJuego(0);
         juegoRepository.save(juego);
-
-        return JuegoMapper.toDetalleDTO(juego);
+    }
+    
+    public JuegoDetalleDTO reiniciarTiempoYRetornar(Long id) {
+        reiniciarTiempo(id); // método que hace la lógica real
+        return buscarPorId(id).orElseThrow(() -> new RuntimeException("Juego no encontrado"));
     }
 
     // Caso 7: Avanzar tiempo
-    public JuegoDetalleDTO avanzarTiempoYRetornar(Long id, int minutos) {
+    public void avanzarTiempo(Long id, int minutos) {
         Juego juego = juegoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-
-        juego.setTiempoTranscurridoDeJuego(juego.getTiempoTranscurridoDeJuego() + minutos);
+            .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
+    
+        int tiempoActual = juego.getTiempoTranscurridoDeJuego();
+        juego.setTiempoTranscurridoDeJuego(tiempoActual + minutos);
+    
         juegoRepository.save(juego);
+    }    
 
-        return JuegoMapper.toDetalleDTO(juego); // Usamos el objeto actualizado
+    public JuegoDetalleDTO avanzarTiempoYRetornar(Long id, int minutos) {
+        avanzarTiempo(id, minutos); // lógica real
+        return buscarPorId(id).orElseThrow(() -> new RuntimeException("Juego no encontrado"));
     }
-
+      
     // Caso 8: Obtener caravanas y jugadores en el juego
     public List<Caravana> obtenerCaravanas(Long juegoId) {
         return juegoRepository.findById(juegoId)

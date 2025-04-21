@@ -4,17 +4,21 @@ import java.util.List;
 
 public class JuegoDetalleDTO {
     private Long id;
-    private JuegoDTO juego;
+    private int tiempoLimiteDeJuego;
+    private int tiempoTranscurridoDeJuego;
+    private double nivelMinimoGananciasJuego;
     private List<CaravanaResumenDTO> caravanas;
     private List<JugadorResumenDTO> jugadores;
-    
+
     public JuegoDetalleDTO() {
     }
 
-    public JuegoDetalleDTO(Long id, JuegoDTO juego, List<CaravanaResumenDTO> caravanas,
-            List<JugadorResumenDTO> jugadores) {
+    public JuegoDetalleDTO(Long id, int tiempoLimiteDeJuego, int tiempoTranscurridoDeJuego, double nivelMinimoGananciasJuego,
+                           List<CaravanaResumenDTO> caravanas, List<JugadorResumenDTO> jugadores) {
         this.id = id;
-        this.juego = juego;
+        this.tiempoLimiteDeJuego = tiempoLimiteDeJuego;
+        this.tiempoTranscurridoDeJuego = tiempoTranscurridoDeJuego;
+        this.nivelMinimoGananciasJuego = nivelMinimoGananciasJuego;
         this.caravanas = caravanas;
         this.jugadores = jugadores;
     }
@@ -22,17 +26,33 @@ public class JuegoDetalleDTO {
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public JuegoDTO getJuego() {
-        return juego;
+    public int getTiempoLimiteDeJuego() {
+        return tiempoLimiteDeJuego;
     }
 
-    public void setJuego(JuegoDTO juego) {
-        this.juego = juego;
+    public void setTiempoLimiteDeJuego(int tiempoLimiteDeJuego) {
+        this.tiempoLimiteDeJuego = tiempoLimiteDeJuego;
+    }
+
+    public int getTiempoTranscurridoDeJuego() {
+        return tiempoTranscurridoDeJuego;
+    }
+
+    public void setTiempoTranscurridoDeJuego(int tiempoTranscurridoDeJuego) {
+        this.tiempoTranscurridoDeJuego = tiempoTranscurridoDeJuego;
+    }
+
+    public double getNivelMinimoGananciasJuego() {
+        return nivelMinimoGananciasJuego;
+    }
+
+    public void setNivelMinimoGananciasJuego(double nivelMinimoGananciasJuego) {
+        this.nivelMinimoGananciasJuego = nivelMinimoGananciasJuego;
     }
 
     public List<CaravanaResumenDTO> getCaravanas() {
@@ -50,6 +70,4 @@ public class JuegoDetalleDTO {
     public void setJugadores(List<JugadorResumenDTO> jugadores) {
         this.jugadores = jugadores;
     }
-
-    
 }

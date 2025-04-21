@@ -5,15 +5,15 @@
     <title>Avanzar Tiempo del Juego</title>
 </head>
 <body>
-    <h1>Avanzar Tiempo - Juego ID <span th:text="${juego.juego.id}"></span></h1>
+    <h1>Avanzar Tiempo - Juego ID <span th:text="${juego.id}"></span></h1>
 
-    <form th:action="@{'/juego/' + ${juego.juego.id} + '/avanzar-tiempo'}" method="post">
+    <form th:action="@{'/juego/' + ${juego.id} + '/avanzar-tiempo'}" method="post">
         <label for="minutos">Minutos a avanzar:</label>
         <input type="number" id="minutos" name="minutos" required min="1">
         <button type="submit">Avanzar</button>
     </form>
 
     <br/>
-    <a th:href="@{'/juego/' + ${juego.juego.id}}">Volver al detalle</a>
+    <a th:href="@{'/juego/' + ${juego.id}}">Volver al detalle</a>
 </body>
 </html>

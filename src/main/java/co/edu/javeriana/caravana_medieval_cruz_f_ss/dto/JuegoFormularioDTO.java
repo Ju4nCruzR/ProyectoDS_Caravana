@@ -5,14 +5,14 @@ import java.util.List;
 public class JuegoFormularioDTO {
     private Long id;
     private int tiempoLimiteDeJuego;
-    private int tiempoTranscurridoDeJuego;
+    private Integer tiempoTranscurridoDeJuego;
     private double nivelMinimoGananciasJuego;
     private List<Long> caravanaIds;
 
     public JuegoFormularioDTO() {
     }
 
-    public JuegoFormularioDTO(List<Long> caravanaIds, Long id, double nivelMinimoGananciasJuego, int tiempoLimiteDeJuego, int tiempoTranscurridoDeJuego) {
+    public JuegoFormularioDTO(List<Long> caravanaIds, Long id, double nivelMinimoGananciasJuego, int tiempoLimiteDeJuego, Integer tiempoTranscurridoDeJuego) {
         this.caravanaIds = caravanaIds;
         this.id = id;
         this.nivelMinimoGananciasJuego = nivelMinimoGananciasJuego;
@@ -36,13 +36,7 @@ public class JuegoFormularioDTO {
         this.tiempoLimiteDeJuego = tiempoLimiteDeJuego;
     }
 
-    public int getTiempoTranscurridoDeJuego() {
-        return tiempoTranscurridoDeJuego;
-    }
     
-    public void setTiempoTranscurridoDeJuego(int tiempoTranscurridoDeJuego) {
-        this.tiempoTranscurridoDeJuego = tiempoTranscurridoDeJuego;
-    }
 
     public double getNivelMinimoGananciasJuego() {
         return nivelMinimoGananciasJuego;
@@ -58,6 +52,14 @@ public class JuegoFormularioDTO {
 
     public void setCaravanaIds(List<Long> caravanaIds) {
         this.caravanaIds = caravanaIds;
+    }
+
+    public Integer getTiempoTranscurridoDeJuego() {
+        return tiempoTranscurridoDeJuego;
+    }
+
+    public void setTiempoTranscurridoDeJuego(Integer tiempoTranscurridoDeJuego) {
+        this.tiempoTranscurridoDeJuego = tiempoTranscurridoDeJuego;
     }
 
     

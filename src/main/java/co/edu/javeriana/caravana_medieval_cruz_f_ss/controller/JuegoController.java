@@ -26,23 +26,20 @@ public class JuegoController {
     @Autowired
     private JuegoService juegoService;
 
-    // Caso 1: Mostrar formulario de creación
+    // Crear juego
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioCrear() {
-        ModelAndView modelAndView = new ModelAndView("juegoTemplates/juego-crear");
-        modelAndView.addObject("juego", new JuegoFormularioDTO()); // ← Aquí se incluye el objeto esperado por el
-                                                                   // formulario
-        return modelAndView;
+        return new ModelAndView("juegoTemplates/juego-crear")
+                .addObject("juego", new JuegoFormularioDTO());
     }
 
-    // Caso 1 (POST): Crear juego
     @PostMapping("/crear")
     public String crearJuego(@ModelAttribute("juego") JuegoFormularioDTO juegoDTO) {
         juegoService.crearJuego(juegoDTO);
         return "redirect:/juego/list";
     }
 
-    // Caso 2: Ver detalle de un juego
+    // Ver detalle
     @GetMapping("/{id}")
     public ModelAndView verJuego(@PathVariable Long id) {
         JuegoDetalleDTO dto = juegoService.buscarPorId(id)
@@ -51,7 +48,7 @@ public class JuegoController {
                 .addObject("juego", dto);
     }
 
-    // Caso 3: Listar juegos
+    // Listar juegos
     @GetMapping("/list")
     public ModelAndView listarJuegos() {
         List<JuegoResumenDTO> juegos = juegoService.listarTodos();
@@ -59,29 +56,26 @@ public class JuegoController {
                 .addObject("juegos", juegos);
     }
 
-    // Caso 4: Mostrar formulario de edición
+    // Editar juego
     @GetMapping("/{id}/editar")
     public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
         JuegoFormularioDTO dto = juegoService.obtenerFormulario(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-
         return new ModelAndView("juegoTemplates/juego-editar")
-                .addObject("juego", dto); // <- debe estar como "juego"
+                .addObject("juego", dto);
     }
 
-    // Caso 4 (POST): Editar juego
     @PostMapping("/{id}/editar")
     public String editarJuego(@PathVariable Long id, @ModelAttribute JuegoFormularioDTO dto) {
         juegoService.actualizarJuego(id, dto);
         return "redirect:/juego/" + id;
     }
 
-    // Caso 5: Eliminar juego
+    // Eliminar juego
     @GetMapping("/{id}/eliminar")
     public ModelAndView confirmarEliminacion(@PathVariable Long id) {
         JuegoDetalleDTO juego = juegoService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-
         return new ModelAndView("juegoTemplates/juego-eliminar")
                 .addObject("juego", juego);
     }
@@ -92,12 +86,11 @@ public class JuegoController {
         return "redirect:/juego/list";
     }
 
-    // Caso 6: Reiniciar tiempo
+    // Reiniciar tiempo
     @GetMapping("/{id}/reiniciar-tiempo")
     public ModelAndView mostrarConfirmacionReinicio(@PathVariable Long id) {
         JuegoDetalleDTO juego = juegoService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-
         return new ModelAndView("juegoTemplates/juego-reiniciar-tiempo")
                 .addObject("juego", juego);
     }
@@ -105,15 +98,15 @@ public class JuegoController {
     @PostMapping("/{id}/reiniciar-tiempo")
     public ModelAndView reiniciarTiempo(@PathVariable Long id) {
         JuegoDetalleDTO juego = juegoService.reiniciarTiempoYRetornar(id);
-        return new ModelAndView("juegoTemplates/juego-detalle").addObject("juego", juego);
+        return new ModelAndView("juegoTemplates/juego-detalle")
+                .addObject("juego", juego);
     }
 
-    // Caso 7: Avanzar tiempo
+    // Avanzar tiempo
     @GetMapping("/{id}/avanzar-tiempo")
     public ModelAndView mostrarFormularioAvanzarTiempo(@PathVariable Long id) {
         JuegoDetalleDTO juego = juegoService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
-
         return new ModelAndView("juegoTemplates/juego-avanzar-tiempo")
                 .addObject("juego", juego);
     }
@@ -121,10 +114,11 @@ public class JuegoController {
     @PostMapping("/{id}/avanzar-tiempo")
     public ModelAndView avanzarTiempo(@PathVariable Long id, @RequestParam int minutos) {
         JuegoDetalleDTO juego = juegoService.avanzarTiempoYRetornar(id, minutos);
-        return new ModelAndView("juegoTemplates/juego-detalle").addObject("juego", juego);
+        return new ModelAndView("juegoTemplates/juego-detalle")
+                .addObject("juego", juego);
     }
 
-    // Caso 8: Ver caravanas y jugadores
+    // Ver caravanas
     @GetMapping("/{id}/caravanas")
     public ModelAndView verCaravanas(@PathVariable Long id) {
         List<Caravana> caravanas = juegoService.obtenerCaravanas(id);
@@ -132,6 +126,7 @@ public class JuegoController {
                 .addObject("caravanas", caravanas);
     }
 
+    // Ver jugadores
     @GetMapping("/{id}/jugadores")
     public ModelAndView verJugadores(@PathVariable Long id) {
         List<Jugador> jugadores = juegoService.obtenerJugadores(id);

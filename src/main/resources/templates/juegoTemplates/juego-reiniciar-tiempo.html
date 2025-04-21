@@ -7,12 +7,12 @@
 <body>
     <h1>¿Deseas reiniciar el tiempo del juego?</h1>
 
-    <p>Juego ID: <span th:text="${juego.juego.id}"></span></p>
-    <p>Tiempo actual: <span th:text="${juego.juego.tiempoTranscurridoDeJuego}">0</span> min</p>
+    <p>Juego ID: <span th:text="${juego.id}"></span></p>
+    <p>Tiempo actual: <span th:text="${juego.tiempoTranscurridoDeJuego}">0</span> min</p>
 
-    <form th:action="@{'/juego/' + ${juego.juego.id} + '/reiniciar-tiempo'}" method="post">
+    <form th:action="@{'/juego/' + ${juego.id} + '/reiniciar-tiempo'}" method="post">
         <button type="submit">Sí, reiniciar</button>
-        <a th:href="@{'/juego/' + ${juego.juego.id}}">Cancelar</a>
+        <a th:href="@{'/juego/' + ${juego.id}}">Cancelar</a>
     </form>
 </body>
 </html>

@@ -28,27 +28,30 @@ public class JuegoMapper {
         dto.setTiempoTranscurridoDeJuego(juego.getTiempoTranscurridoDeJuego());
         dto.setTiempoLimiteDeJuego(juego.getTiempoLimiteDeJuego());
         dto.setNivelMinimoGananciasJuego(juego.getNivelMinimoGananciasJuego());
-    
+
         String descripcion = "Juego #" + juego.getId() +
                 " - Tiempo transcurrido: " + juego.getTiempoTranscurridoDeJuego() + " min" +
                 ", Tiempo límite: " + juego.getTiempoLimiteDeJuego() + " min" +
                 ", Nivel mínimo: " + juego.getNivelMinimoGananciasJuego();
         dto.setDescripcion(descripcion);
         return dto;
-    }    
+    }
 
     public static JuegoDetalleDTO toDetalleDTO(Juego juego) {
         JuegoDetalleDTO dto = new JuegoDetalleDTO();
-        dto.setJuego(toDTO(juego));
+        dto.setId(juego.getId());
+        dto.setTiempoLimiteDeJuego(juego.getTiempoLimiteDeJuego());
+        dto.setTiempoTranscurridoDeJuego(juego.getTiempoTranscurridoDeJuego());
+        dto.setNivelMinimoGananciasJuego(juego.getNivelMinimoGananciasJuego());
 
         List<CaravanaResumenDTO> caravanas = juego.getCaravanas().stream()
-            .map(CaravanaMapper::toResumen)
-            .collect(Collectors.toList());
+                .map(CaravanaMapper::toResumen)
+                .collect(Collectors.toList());
         dto.setCaravanas(caravanas);
 
         List<JugadorResumenDTO> jugadores = juego.getJugadores().stream()
-            .map(JugadorMapper::toResumen)
-            .collect(Collectors.toList());
+                .map(JugadorMapper::toResumen)
+                .collect(Collectors.toList());
         dto.setJugadores(jugadores);
 
         return dto;
@@ -56,12 +59,23 @@ public class JuegoMapper {
 
     public static Juego fromFormulario(JuegoFormularioDTO dto) {
         Juego juego = new Juego();
+    
+        // Verifica de forma segura si el ID es distinto de null
+        Long id = dto.getId();
+        if (id != null && !id.equals(0L)) {
+            juego.setId(id);
+        }
+    
         juego.setNivelMinimoGananciasJuego(dto.getNivelMinimoGananciasJuego());
         juego.setTiempoLimiteDeJuego(dto.getTiempoLimiteDeJuego());
-        juego.setTiempoTranscurridoDeJuego(0); // <--- Este valor se inicializa a 0
-        return juego;
-    }
     
+        // Evita el warning de unboxing con tiempoTranscurrido
+        Integer tiempoTranscurrido = dto.getTiempoTranscurridoDeJuego();
+        juego.setTiempoTranscurridoDeJuego(tiempoTranscurrido != null ? tiempoTranscurrido : 0);
+    
+        return juego;
+    }    
+
     public static JuegoFormularioDTO toFormularioDTO(Juego juego) {
         JuegoFormularioDTO dto = new JuegoFormularioDTO();
         dto.setId(juego.getId());
@@ -69,6 +83,6 @@ public class JuegoMapper {
         dto.setTiempoLimiteDeJuego(juego.getTiempoLimiteDeJuego());
         dto.setTiempoTranscurridoDeJuego(juego.getTiempoTranscurridoDeJuego());
         return dto;
+
     }
-    
 }

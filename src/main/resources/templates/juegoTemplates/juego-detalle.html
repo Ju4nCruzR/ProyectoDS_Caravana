@@ -7,10 +7,10 @@
 <body>
     <h1>Detalle del Juego</h1>
 
-    <p><strong>ID del juego:</strong> <span th:text="${juego.juego.id}">1</span></p>
-    <p><strong>Tiempo límite de juego:</strong> <span th:text="${juego.juego.tiempoLimiteDeJuego}">0</span> minutos</p>
-    <p><strong>Tiempo transcurrido:</strong> <span th:text="${juego.juego.tiempoTranscurridoDeJuego}">0</span> minutos</p>
-    <p><strong>Nivel mínimo de ganancias:</strong> <span th:text="${juego.juego.nivelMinimoGananciasJuego}">0</span> monedas</p>
+    <p><strong>ID del juego:</strong> <span th:text="${juego.id}">1</span></p>
+    <p><strong>Tiempo límite de juego:</strong> <span th:text="${juego.tiempoLimiteDeJuego}">0</span> minutos</p>
+    <p><strong>Tiempo transcurrido:</strong> <span th:text="${juego.tiempoTranscurridoDeJuego}">0</span> minutos</p>
+    <p><strong>Nivel mínimo de ganancias:</strong> <span th:text="${juego.nivelMinimoGananciasJuego}">0</span> monedas</p>
 
     <h2>Caravanas</h2>
     <ul>
@@ -28,15 +28,13 @@
 
     <h2>Acciones del Juego</h2>
 
-    <!-- Formulario para avanzar tiempo -->
-    <form th:action="@{'/juego/' + ${juego.juego.id} + '/avanzar-tiempo'}" method="post">
+    <form th:action="@{'/juego/' + ${juego.id} + '/avanzar-tiempo'}" method="post">
         <label for="minutos">Avanzar tiempo (minutos):</label>
         <input type="number" name="minutos" id="minutos" required min="1">
         <button type="submit">Avanzar</button>
     </form>
-    
-    <!-- Formulario para reiniciar tiempo -->
-    <form th:action="@{'/juego/' + ${juego.juego.id} + '/reiniciar-tiempo'}" method="post" style="margin-top: 10px;">
+
+    <form th:action="@{'/juego/' + ${juego.id} + '/reiniciar-tiempo'}" method="post" style="margin-top: 10px;">
         <button type="submit">Reiniciar Tiempo</button>
     </form>
 
