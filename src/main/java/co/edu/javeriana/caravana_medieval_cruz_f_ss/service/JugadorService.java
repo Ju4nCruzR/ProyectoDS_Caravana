@@ -1,65 +1,87 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.service;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepository;
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JugadorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JugadorDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JugadorResumenDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.JugadorMapper;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador.Rol;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JugadorRepository;
+
 @Service
 public class JugadorService {
-    
+
     @Autowired
     private JugadorRepository jugadorRepository;
 
     @Autowired
     private CaravanaRepository caravanaRepository;
 
-    // Caso 1: Crear jugador
-    public Jugador crearJugador(Jugador jugador) {
-        return jugadorRepository.save(jugador);
+    // Crear jugador
+    public JugadorDTO crearJugador(JugadorDTO dto) {
+        Jugador jugador = fromDTO(dto);
+        jugador = jugadorRepository.save(jugador);
+        return JugadorMapper.toDTO(jugador);
     }
 
-    // Caso 2: Ver jugador por ID
-    public Optional<Jugador> buscarPorId(Long id) {
-        return jugadorRepository.findById(id);
+    // Buscar jugador por ID
+    public Optional<JugadorDTO> buscarPorId(Long id) {
+        return jugadorRepository.findById(id)
+                .map(JugadorMapper::toDTO);
     }
 
-    // Caso 3: Listar todos
-    public List<Jugador> listarTodos() {
-        return jugadorRepository.findAll();
+    // Listar todos los jugadores
+    public List<JugadorDTO> listarTodos() {
+        return jugadorRepository.findAll().stream()
+                .map(JugadorMapper::toDTO)
+                .toList();
     }
 
-    // Caso 4: Editar jugador
-    public Jugador actualizarJugador(Long id, Jugador datos) {
+    // Actualizar jugador
+    public JugadorDTO actualizarJugador(Long id, JugadorDTO datos) {
         Jugador jugador = jugadorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
 
         jugador.setNombreJugador(datos.getNombreJugador());
-        jugador.setRolJugador(datos.getRolJugador());
+        jugador.setRolJugador(Rol.valueOf(datos.getRolJugador()));
 
-        if (datos.getCaravana() != null) {
-            Caravana caravana = caravanaRepository.findById(datos.getCaravana().getId())
+        if (datos.getCaravanaId() != null) {
+            Caravana caravana = caravanaRepository.findById(datos.getCaravanaId())
                     .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
             jugador.setCaravana(caravana);
         }
 
-        return jugadorRepository.save(jugador);
+        jugador = jugadorRepository.save(jugador);
+        return JugadorMapper.toDTO(jugador);
     }
 
-    // Caso 5: Eliminar jugador
+    // Eliminar jugador
     public void eliminarJugador(Long id) {
         jugadorRepository.deleteById(id);
     }
 
-    // Caso 6: Listar jugadores por caravana
-    public List<Jugador> listarPorCaravana(Caravana caravana) {
+    // Listar jugadores por caravana
+    public List<JugadorResumenDTO> listarPorCaravana(Long caravanaId) {
         return jugadorRepository.findAll().stream()
-                .filter(j -> j.getCaravana() != null && j.getCaravana().equals(caravana))
+                .filter(j -> j.getCaravana() != null && j.getCaravana().getId() == caravanaId)
+                .map(JugadorMapper::toResumen)
                 .toList();
+    }
+
+    // Conversión manual DTO → Entidad
+    private Jugador fromDTO(JugadorDTO dto) {
+        Caravana caravana = null;
+        if (dto.getCaravanaId() != null) {
+            caravana = caravanaRepository.findById(dto.getCaravanaId())
+                    .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
+        }
+        return new Jugador(caravana, dto.getNombreJugador(), Rol.valueOf(dto.getRolJugador()));
     }
 }

@@ -11,70 +11,79 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JugadorDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.JugadorService;
 
 @Controller
 @RequestMapping("/jugador")
 public class JugadorController {
-    
+
     @Autowired
     private JugadorService jugadorService;
 
     @Autowired
     private CaravanaRepository caravanaRepository;
 
-    // Caso 1: Formulario para crear jugador
+    // Formulario para crear jugador
     @GetMapping("/crear")
     public ModelAndView mostrarFormularioCrear() {
         return new ModelAndView("jugadorTemplates/jugador-crear")
-                .addObject("jugador", new Jugador())
+                .addObject("jugador", new JugadorDTO())
                 .addObject("caravanas", caravanaRepository.findAll());
     }
 
-    // Caso 1 (POST): Crear jugador
+    // Crear jugador
     @PostMapping("/crear")
-    public String crearJugador(@ModelAttribute Jugador jugador) {
-        jugadorService.crearJugador(jugador);
+    public String crearJugador(@ModelAttribute JugadorDTO jugadorDTO) {
+        jugadorService.crearJugador(jugadorDTO);
         return "redirect:/jugador/list";
     }
 
-    // Caso 2: Ver jugador
+    // Ver jugador
     @GetMapping("/{id}")
     public ModelAndView verJugador(@PathVariable Long id) {
-        Jugador jugador = jugadorService.buscarPorId(id)
+        JugadorDTO jugador = jugadorService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
         return new ModelAndView("jugadorTemplates/jugador-detalle")
-        .addObject("jugador", jugador);
+                .addObject("jugador", jugador);
     }
 
-    // Caso 3: Listar jugadores
+    // Listar jugadores
     @GetMapping("/list")
     public ModelAndView listarJugadores() {
-        List<Jugador> jugadores = jugadorService.listarTodos();
+        List<JugadorDTO> jugadores = jugadorService.listarTodos();
         return new ModelAndView("jugadorTemplates/jugador-list")
-        .addObject("jugadores", jugadores);
+                .addObject("jugadores", jugadores);
     }
 
-    // Caso 4: Mostrar formulario de edición
+    // Formulario de edición
     @GetMapping("/{id}/editar")
     public ModelAndView mostrarFormularioEditar(@PathVariable Long id) {
-        Jugador jugador = jugadorService.buscarPorId(id)
+        JugadorDTO jugador = jugadorService.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
         return new ModelAndView("jugadorTemplates/jugador-editar")
                 .addObject("jugador", jugador)
                 .addObject("caravanas", caravanaRepository.findAll());
     }
 
-    // Caso 4 (POST): Editar jugador
+    // Editar jugador
     @PostMapping("/{id}/editar")
-    public String editarJugador(@PathVariable Long id, @ModelAttribute Jugador jugador) {
-        jugadorService.actualizarJugador(id, jugador);
+    public String editarJugador(@PathVariable Long id, @ModelAttribute JugadorDTO jugadorDTO) {
+        jugadorService.actualizarJugador(id, jugadorDTO);
         return "redirect:/jugador/" + id;
     }
 
-    // Caso 5: Eliminar jugador
+    // Mostrar vista de confirmación para eliminar jugador
+    @GetMapping("/{id}/eliminar")
+    public ModelAndView confirmarEliminarJugador(@PathVariable Long id) {
+        JugadorDTO jugador = jugadorService.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
+        return new ModelAndView("jugadorTemplates/jugador-eliminar")
+                .addObject("jugador", jugador);
+    }
+
+    // Eliminar jugador
     @PostMapping("/{id}/eliminar")
     public String eliminarJugador(@PathVariable Long id) {
         jugadorService.eliminarJugador(id);

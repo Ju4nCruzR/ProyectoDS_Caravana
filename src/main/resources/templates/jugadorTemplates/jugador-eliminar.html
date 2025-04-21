@@ -10,7 +10,8 @@
     <p><strong>ID:</strong> <span th:text="${jugador.id}"></span></p>
     <p><strong>Nombre:</strong> <span th:text="${jugador.nombreJugador}"></span></p>
     <p><strong>Rol:</strong> <span th:text="${jugador.rolJugador}"></span></p>
-    <p><strong>Caravana:</strong> <span th:text="${jugador.caravana.nombreCaravana}"></span></p>
+    <p><strong>Caravana:</strong> <span th:text="${jugador.nombreCaravana != null ? jugador.nombreCaravana : 'Sin caravana'}"></span></p>
+    
 
     <form th:action="@{'/jugador/' + ${jugador.id} + '/eliminar'}" method="post">
         <button type="submit">Eliminar</button>

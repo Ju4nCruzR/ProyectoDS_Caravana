@@ -10,9 +10,7 @@
     <p><strong>ID:</strong> <span th:text="${jugador.id}"></span></p>
     <p><strong>Nombre:</strong> <span th:text="${jugador.nombreJugador}"></span></p>
     <p><strong>Rol:</strong> <span th:text="${jugador.rolJugador}"></span></p>
-    <p><strong>Caravana:</strong> 
-        <span th:text="${jugador.caravana != null ? jugador.caravana.nombreCaravana : 'Sin caravana'}"></span>
-    </p>
+    <p><strong>Caravana:</strong> <span th:text="${jugador.nombreCaravana != null ? jugador.nombreCaravana : 'Sin caravana'}"></span> </p>    
 
     <br/>
     <a th:href="@{'/jugador/' + ${jugador.id} + '/editar'}">Editar</a> |
