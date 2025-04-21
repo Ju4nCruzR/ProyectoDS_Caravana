@@ -35,7 +35,7 @@ public class CiudadRutaController {
                 .orElseThrow(() -> new RuntimeException("Asociación no encontrada"));
     }
 
-    // Crear nueva asociación (POST sin /crear)
+    // Crear nueva asociación 
     @PostMapping
     public void asociarRuta(@RequestParam Long ciudadId, @RequestParam Long rutaId) {
         ciudadRutaService.asociarRuta(ciudadId, rutaId);
