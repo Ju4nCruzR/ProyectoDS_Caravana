@@ -7,7 +7,7 @@
 <body>
     <h1>Ciudades donde se ofrece el servicio</h1>
 
-    <p><strong>Servicio:</strong> <span th:text="${servicio.tipo}"></span> - <span th:text="${servicio.precioServicio}"></span></p>
+    <p><strong>Servicio:</strong> <span th:text="${servicio.tipoServicio}"></span> - <span th:text="${servicio.precioServicio}"></span></p>
 
     <ul>
         <li th:each="asoc : ${asociaciones}" th:text="${asoc.ciudad.nombreCiudad}"></li>

@@ -8,7 +8,7 @@
     <h1>Detalle del Servicio</h1>
 
     <p><strong>ID:</strong> <span th:text="${servicio.id}"></span></p>
-    <p><strong>Tipo:</strong> <span th:text="${servicio.tipo}"></span></p>
+    <p><strong>Tipo:</strong> <span th:text="${servicio.tipoServicio}"></span></p>
     <p><strong>Precio:</strong> <span th:text="${servicio.precioServicio}"></span></p>
 
     <a th:href="@{'/servicio/' + ${servicio.id} + '/editar'}">Editar</a> |
