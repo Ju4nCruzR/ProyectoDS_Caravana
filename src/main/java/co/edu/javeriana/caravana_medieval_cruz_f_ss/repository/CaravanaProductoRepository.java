@@ -15,5 +15,6 @@ public interface CaravanaProductoRepository extends JpaRepository<CaravanaProduc
     Optional<CaravanaProducto> findByCaravanaAndProducto(Caravana caravana, Producto producto);
     List<CaravanaProducto> findByProducto(Producto producto);
     List<CaravanaProducto> findByCaravana(Caravana caravana);
+    void deleteAllByProducto(Producto producto);
 
 }

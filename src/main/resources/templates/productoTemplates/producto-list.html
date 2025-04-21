@@ -32,12 +32,11 @@
                 <td>
                     <a th:href="@{'/producto/' + ${producto.id}}">👁 Ver</a> |
                     <a th:href="@{'/producto/' + ${producto.id} + '/editar'}">✏️ Editar</a> |
-                    <form th:action="@{'/producto/' + ${producto.id} + '/eliminar'}" method="post" style="display:inline;">
-                        <button type="submit">🗑 Eliminar</button>
-                    </form>
+                    <a th:href="@{'/producto/' + ${producto.id} + '/eliminar'}">🗑 Eliminar</a>
                 </td>
             </tr>
         </tbody>
     </table>
 </body>
 </html>
+

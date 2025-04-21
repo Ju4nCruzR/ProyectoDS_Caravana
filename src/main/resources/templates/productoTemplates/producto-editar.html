@@ -21,7 +21,11 @@
         <br><br>
 
         <label>Precio Base:</label>
-        <input type="number" th:field="*{precioBaseProducto}" step="0.01" /><br>
+        <input type="number" th:field="*{precioBaseProducto}" step="0.01" />
+        <br><br>
+
+        <label>Peso:</label>
+        <input type="number" th:field="*{pesoProducto}" step="0.01" />
         <br><br>
 
         <button type="submit">Guardar Cambios</button>
@@ -31,3 +35,4 @@
     <a th:href="@{'/producto/' + ${producto.id}}">← Volver al detalle</a>
 </body>
 </html>
+

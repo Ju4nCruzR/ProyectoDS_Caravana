@@ -8,22 +8,22 @@
     <h1>Asociaciones de <span th:text="${producto.nombreProducto}"></span></h1>
 
     <h2>Ciudades donde está disponible</h2>
-<ul>
-    <li th:if="${enCiudades.empty}">Ninguna ciudad asociada</li>
-    <li th:each="cp : ${enCiudades}">
-        <span th:text="${cp.ciudad.nombreCiudad}"></span>
-        (Stock: <span th:text="${cp.stockProducto}"></span>)
-    </li>
-</ul>
+    <ul>
+        <li th:if="${enCiudades.empty}">Ninguna ciudad asociada</li>
+        <li th:each="cp : ${enCiudades}">
+            <span th:text="${cp.nombreCiudad}"></span>
+            (Stock: <span th:text="${cp.stockProducto}"></span>)
+        </li>
+    </ul>
 
-<h2>Caravanas que lo llevan</h2>
-<ul>
-    <li th:if="${enCaravanas.empty}">Ninguna caravana lo transporta</li>
-    <li th:each="cp : ${enCaravanas}">
-        <span th:text="${cp.caravana.nombreCaravana}"></span>
-        (Stock: <span th:text="${cp.stockEnCaravana}"></span>)
-    </li>
-</ul>
+    <h2>Caravanas que lo llevan</h2>
+    <ul>
+        <li th:if="${enCaravanas.empty}">Ninguna caravana lo transporta</li>
+        <li th:each="cp : ${enCaravanas}">
+            <span th:text="${cp.nombreCaravana}"></span>
+            (Stock: <span th:text="${cp.stockEnCaravana}"></span>)
+        </li>
+    </ul>
 
     <br>
     <a th:href="@{'/producto/' + ${producto.id}}">← Volver al detalle del producto</a>

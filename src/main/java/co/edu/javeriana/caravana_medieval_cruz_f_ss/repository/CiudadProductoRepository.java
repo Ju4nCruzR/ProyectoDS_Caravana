@@ -15,4 +15,6 @@ public interface CiudadProductoRepository extends JpaRepository<CiudadProducto, 
     Optional<CiudadProducto> findByCiudadAndProducto(Ciudad ciudad, Producto producto);
     List<CiudadProducto> findByCiudad(Ciudad ciudad);
     List<CiudadProducto> findByProducto(Producto producto);
+    void deleteAllByProducto(Producto producto);
+
 }

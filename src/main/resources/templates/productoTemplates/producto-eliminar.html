@@ -11,6 +11,8 @@
     <p><strong>Nombre:</strong> <span th:text="${producto.nombreProducto}"></span></p>
     <p><strong>Factor Demanda:</strong> <span th:text="${producto.factorDemandaProducto}"></span></p>
     <p><strong>Factor Oferta:</strong> <span th:text="${producto.factorOfertaProducto}"></span></p>
+    <p><strong>Precio Base:</strong> <span th:text="${producto.precioBaseProducto}"></span></p>
+    <p><strong>Peso:</strong> <span th:text="${producto.pesoProducto}"></span></p>
 
     <form th:action="@{'/producto/' + ${producto.id} + '/eliminar'}" method="post">
         <button type="submit">Eliminar</button>
