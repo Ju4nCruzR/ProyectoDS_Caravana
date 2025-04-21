@@ -1,0 +1,35 @@
+###
+GET http://localhost:8080/producto/list
+
+###
+GET http://localhost:8080/producto/1
+
+###
+POST http://localhost:8080/producto
+Content-Type: application/json
+
+{
+    "nombre": "Nuevo Producto",
+    "peso": 2.0,
+    "valorCompra": 10.0,
+    "valorVenta": 15.0,
+    "valorInicial": 8.0
+}
+
+###
+PUT http://localhost:8080/producto/1
+Content-Type: application/json
+
+{
+    "nombre": "Producto Editado",
+    "peso": 1.8,
+    "valorCompra": 12.0,
+    "valorVenta": 18.0,
+    "valorInicial": 9.0
+}
+
+###
+DELETE http://localhost:8080/producto/1
+
+###
+GET http://localhost:8080/producto/1/asociaciones

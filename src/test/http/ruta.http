@@ -1,0 +1,52 @@
+###
+GET http://localhost:8080/ruta/list
+
+###
+GET http://localhost:8080/ruta/1
+
+###
+POST http://localhost:8080/ruta
+Content-Type: application/json
+
+{
+    "ciudadDestino": {
+        "id": 2
+    },
+    "ciudadOrigen": {
+        "id": 1
+    },
+    "nivelPeligro": 5,
+    "distancia": 80,
+    "esSegura": true
+}
+
+###
+PUT http://localhost:8080/ruta/1
+Content-Type: application/json
+
+{
+    "ciudadDestino": {
+        "id": 3
+    },
+    "ciudadOrigen": {
+        "id": 1
+    },
+    "nivelPeligro": 4,
+    "distancia": 90,
+    "esSegura": false
+}
+
+###
+DELETE http://localhost:8080/ruta/1
+
+###
+GET http://localhost:8080/ruta/filtrar-origen?ciudadId=1
+
+###
+GET http://localhost:8080/ruta/filtrar-destino?ciudadId=2
+
+###
+GET http://localhost:8080/ruta/filtrar-seguridad?segura=true
+
+###
+GET http://localhost:8080/ruta/entre-ciudades?origenId=1&destinoId=2

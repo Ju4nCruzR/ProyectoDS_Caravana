@@ -1,0 +1,20 @@
+###
+GET http://localhost:8080/caravana-producto/list
+
+###
+GET http://localhost:8080/caravana-producto/1
+
+###
+GET http://localhost:8080/caravana-producto/caravana/1
+
+###
+GET http://localhost:8080/caravana-producto/caravana/1/producto/2
+
+###
+POST http://localhost:8080/caravana-producto/crear?caravanaId=1&productoId=2&stock=5
+
+###
+PUT http://localhost:8080/caravana-producto/1/actualizar?nuevoStock=10
+
+###
+DELETE http://localhost:8080/caravana-producto/1/eliminar

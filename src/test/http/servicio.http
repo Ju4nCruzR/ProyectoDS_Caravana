@@ -1,0 +1,29 @@
+###
+GET http://localhost:8080/servicio/list
+
+###
+GET http://localhost:8080/servicio/1
+
+###
+POST http://localhost:8080/servicio
+Content-Type: application/json
+
+{
+    "tipo": "REPARAR",
+    "costo": 300
+}
+
+###
+PUT http://localhost:8080/servicio/1
+Content-Type: application/json
+
+{
+    "tipo": "GUARDIAS",
+    "costo": 450
+}
+
+###
+DELETE http://localhost:8080/servicio/1
+
+###
+GET http://localhost:8080/servicio/1/asociaciones

@@ -1,0 +1,28 @@
+###
+GET http://localhost:8080/jugador/list
+
+###
+GET http://localhost:8080/jugador/1
+
+###
+POST http://localhost:8080/jugador
+Content-Type: application/json
+
+{
+    "nombre": "NuevoJugador",
+    "rol": "CARAVANERO",
+    "caravanaId": 1
+}
+
+###
+PUT http://localhost:8080/jugador/1
+Content-Type: application/json
+
+{
+    "nombre": "JugadorEditado",
+    "rol": "COMERCIANTE",
+    "caravanaId": 1
+}
+
+###
+DELETE http://localhost:8080/jugador/1

@@ -1,0 +1,14 @@
+###
+GET http://localhost:8080/ciudad-servicio/list
+
+###
+GET http://localhost:8080/ciudad-servicio/1
+
+###
+POST http://localhost:8080/ciudad-servicio?ciudadId=1&servicioId=1
+
+###
+POST http://localhost:8080/ciudad-servicio/1/adquirir
+
+###
+DELETE http://localhost:8080/ciudad-servicio/1

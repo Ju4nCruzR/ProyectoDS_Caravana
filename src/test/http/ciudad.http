@@ -1,0 +1,32 @@
+###
+GET http://localhost:8080/ciudad/list
+
+###
+GET http://localhost:8080/ciudad/1
+
+###
+POST http://localhost:8080/ciudad
+Content-Type: application/json
+
+{
+    "nombreCiudad": "Nueva Ciudad",
+    "impuestosDeEntradaCiudad": 2000,
+    "productoIds": [1, 2],
+    "servicioIds": [1],
+    "rutaIds": [1]
+}
+
+###
+PUT http://localhost:8080/ciudad/1/editar
+Content-Type: application/json
+
+{
+    "nombreCiudad": "Ciudad Editada",
+    "impuestosDeEntradaCiudad": 1800,
+    "productoIds": [1],
+    "servicioIds": [2],
+    "rutaIds": [2]
+}
+
+###
+DELETE http://localhost:8080/ciudad/1/eliminar

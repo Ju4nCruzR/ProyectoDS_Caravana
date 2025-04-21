@@ -1,0 +1,47 @@
+###
+GET http://localhost:8080/juego/list
+
+###
+GET http://localhost:8080/juego/1
+
+###
+GET http://localhost:8080/juego/1/formulario
+
+###
+POST http://localhost:8080/juego
+Content-Type: application/json
+
+{
+    "dineroInicial": 5000,
+    "duracionTotalMinutos": 100,
+    "tiempoTranscurrido": 0,
+    "caravanasId": [1, 2],
+    "jugadoresId": [1, 2]
+}
+
+###
+PUT http://localhost:8080/juego/1
+Content-Type: application/json
+
+{
+    "dineroInicial": 6000,
+    "duracionTotalMinutos": 120,
+    "tiempoTranscurrido": 10,
+    "caravanasId": [1],
+    "jugadoresId": [1]
+}
+
+###
+DELETE http://localhost:8080/juego/1
+
+###
+POST http://localhost:8080/juego/1/reiniciar-tiempo
+
+###
+POST http://localhost:8080/juego/1/avanzar-tiempo?minutos=5
+
+###
+GET http://localhost:8080/juego/1/caravanas
+
+###
+GET http://localhost:8080/juego/1/jugadores
