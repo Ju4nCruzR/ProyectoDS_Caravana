@@ -7,16 +7,19 @@ public class CiudadDetalleDTO {
     private List<CiudadProductoDTO> productos;
     private List<CiudadServicioDTO> servicios;
     private List<CiudadRutaDTO> rutas;
+    private List<ServicioDTO> serviciosDisponibles;
+
     
     public CiudadDetalleDTO() {
     }
 
     public CiudadDetalleDTO(CiudadDTO ciudad, List<CiudadProductoDTO> productos, List<CiudadServicioDTO> servicios,
-            List<CiudadRutaDTO> rutas) {
+            List<CiudadRutaDTO> rutas, List<ServicioDTO> serviciosDisponibles) {
         this.ciudad = ciudad;
         this.productos = productos;
         this.servicios = servicios;
         this.rutas = rutas;
+        this.serviciosDisponibles = serviciosDisponibles;
     }
 
     public CiudadDTO getCiudad() {
@@ -49,6 +52,14 @@ public class CiudadDetalleDTO {
 
     public void setRutas(List<CiudadRutaDTO> rutas) {
         this.rutas = rutas;
+    }
+
+    public List<ServicioDTO> getServiciosDisponibles() {
+        return serviciosDisponibles;
+    }
+
+    public void setServiciosDisponibles(List<ServicioDTO> serviciosDisponibles) {
+        this.serviciosDisponibles = serviciosDisponibles;
     }
 
     
