@@ -70,10 +70,23 @@ public class CaravanaProductoService {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     
-        CaravanaProducto cp = new CaravanaProducto(caravana, producto, stock);
+        // Verificamos si ya existe la relación
+        Optional<CaravanaProducto> existenteOpt = caravanaProductoRepository.findByCaravanaAndProducto(caravana, producto);
+    
+        CaravanaProducto cp;
+    
+        if (existenteOpt.isPresent()) {
+            // Si ya existe, se suma al stock
+            cp = existenteOpt.get();
+            cp.setStockEnCaravana(cp.getStockEnCaravana() + stock);
+        } else {
+            // Si no existe, se crea uno nuevo
+            cp = new CaravanaProducto(caravana, producto, stock);
+        }
     
         return CaravanaProductoMapper.toDTO(caravanaProductoRepository.save(cp));
-    }    
+    }
+     
 
     // Caso 6: Listar todos
     public List<CaravanaProductoDTO> listarTodos() {
