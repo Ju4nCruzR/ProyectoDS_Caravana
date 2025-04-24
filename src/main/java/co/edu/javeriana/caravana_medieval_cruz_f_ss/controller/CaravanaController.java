@@ -3,6 +3,7 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaDetalleDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaFormularioDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaProductoDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CaravanaProductoService;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CaravanaService;
 
 @RestController
@@ -25,6 +27,9 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CaravanaService;
 public class CaravanaController {
         @Autowired
         private CaravanaService caravanaService;
+
+        @Autowired
+        private CaravanaProductoService caravanaProductoService;
 
         @PostMapping
         public void crearCaravana(@RequestBody CaravanaFormularioDTO dto) {
@@ -78,6 +83,14 @@ public class CaravanaController {
         @GetMapping("/{id}/productos")
         public List<CaravanaProductoDTO> verProductos(@PathVariable Long id) {
                 return caravanaService.buscarCaravanaPorId(id).getProductos();
+        }
+
+        @DeleteMapping("/{caravanaId}/producto/{productoId}/eliminar")
+        public ResponseEntity<Void> eliminarProductoDeCaravana(
+                        @PathVariable Long caravanaId,
+                        @PathVariable Long productoId) {
+                caravanaProductoService.eliminarProductoDeCaravana(caravanaId, productoId);
+                return ResponseEntity.noContent().build();
         }
 
         @PostMapping("/{id}/jugadores")
