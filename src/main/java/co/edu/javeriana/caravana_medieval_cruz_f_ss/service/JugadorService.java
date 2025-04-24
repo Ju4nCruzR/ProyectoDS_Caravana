@@ -10,9 +10,11 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JugadorDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JugadorResumenDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.mapper.JugadorMapper;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Juego;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Jugador.Rol;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.CaravanaRepository;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JuegoRepository;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.repository.JugadorRepository;
 
 @Service
@@ -23,6 +25,9 @@ public class JugadorService {
 
     @Autowired
     private CaravanaRepository caravanaRepository;
+
+    @Autowired
+    private JuegoRepository juegoRepository;
 
     // Crear jugador
     public JugadorDTO crearJugador(JugadorDTO dto) {
@@ -64,8 +69,20 @@ public class JugadorService {
 
     // Eliminar jugador
     public void eliminarJugador(Long id) {
-        jugadorRepository.deleteById(id);
+    Jugador jugador = jugadorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
+
+    // Buscar juegos que contienen a este jugador
+    List<Juego> juegos = juegoRepository.findByJugadorId(id);
+
+    for (Juego juego : juegos) {
+        juego.getJugadores().removeIf(j -> j.getId() == id);
+        juegoRepository.save(juego);
     }
+
+    // Ahora sí se puede eliminar el jugador
+    jugadorRepository.deleteById(id);
+}
 
     // Listar jugadores por caravana
     public List<JugadorResumenDTO> listarPorCaravana(Long caravanaId) {
