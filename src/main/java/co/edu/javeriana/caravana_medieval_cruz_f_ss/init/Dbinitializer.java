@@ -147,10 +147,10 @@ public class DbInitializer implements CommandLineRunner {
 
     List<Caravana> caravanas = new ArrayList<>();
     Ciudad ciudadInicial = ciudades.get(0);
-    caravanas.add(caravanaRepository.save(new Caravana(400, ciudadInicial, 2500, new ArrayList<>(), "La concentida", new ArrayList<>(), 100, new ArrayList<>(), 35)));
-    caravanas.add(caravanaRepository.save(new Caravana(350, ciudadInicial, 2000, new ArrayList<>(), "Los piratas", new ArrayList<>(), 95, new ArrayList<>(), 30)));
+    caravanas.add(caravanaRepository.save(new Caravana(400, ciudadInicial, 2500, new ArrayList<>(), "La concentida", new ArrayList<>(), 100, new ArrayList<>(), 35, new ArrayList<>())));
+    caravanas.add(caravanaRepository.save(new Caravana(350, ciudadInicial, 2000, new ArrayList<>(), "Los piratas", new ArrayList<>(), 95, new ArrayList<>(), 30, new ArrayList<>())));
     for (int i = 3; i <= 10; i++) {
-        Caravana caravana = new Caravana(300 + i, ciudadInicial, 2000 + (i * 100), new ArrayList<>(), "Caravana" + i, new ArrayList<>(), 90 + i, new ArrayList<>(), 30 + i);
+        Caravana caravana = new Caravana(300 + i, ciudadInicial, 2000 + (i * 100), new ArrayList<>(), "Caravana" + i, new ArrayList<>(), 90 + i, new ArrayList<>(), 30 + i, new ArrayList<>());
         caravanas.add(caravanaRepository.save(caravana));
     }
 

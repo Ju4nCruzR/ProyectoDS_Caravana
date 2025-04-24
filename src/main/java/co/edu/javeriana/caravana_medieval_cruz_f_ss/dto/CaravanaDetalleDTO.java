@@ -7,16 +7,18 @@ public class CaravanaDetalleDTO {
     private List<CaravanaProductoDTO> productos;
     private List<JugadorDTO> jugadores;
     private List<String> rutasRecorridas;
+    private List<ServicioDTO> serviciosAplicados;
 
     public CaravanaDetalleDTO() {
     }
 
     public CaravanaDetalleDTO(CaravanaDTO caravana, List<CaravanaProductoDTO> productos, List<JugadorDTO> jugadores,
-            List<String> rutasRecorridas) {
+            List<String> rutasRecorridas, List<ServicioDTO> serviciosAplicados) {
         this.caravana = caravana;
         this.productos = productos;
         this.jugadores = jugadores;
         this.rutasRecorridas = rutasRecorridas;
+        this.serviciosAplicados = serviciosAplicados;
     }
 
     public CaravanaDTO getCaravana() {
@@ -51,4 +53,13 @@ public class CaravanaDetalleDTO {
         this.rutasRecorridas = rutasRecorridas;
     }
 
+    public List<ServicioDTO> getServiciosAplicados() {
+        return serviciosAplicados;
+    }
+
+    public void setServiciosAplicados(List<ServicioDTO> serviciosAplicados) {
+        this.serviciosAplicados = serviciosAplicados;
+    }
+
+    
 }

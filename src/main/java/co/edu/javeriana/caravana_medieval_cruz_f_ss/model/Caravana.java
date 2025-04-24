@@ -1,5 +1,6 @@
 package co.edu.javeriana.caravana_medieval_cruz_f_ss.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -29,18 +30,21 @@ public class Caravana {
     @OneToMany(mappedBy = "caravana")
     private List<CaravanaProducto> productos;
 
-
     @OneToMany(mappedBy = "caravana")
     private List<Jugador> jugadores;
 
+    @ManyToMany
+    private List<Servicio> serviciosAplicados = new ArrayList<>();
 
     @ManyToMany
-    private List<Ruta> rutasRecorridas; 
-    
+    private List<Ruta> rutasRecorridas;
+
     public Caravana() {
     }
 
-    public Caravana(double capacidadMaximaCargaCaravana, Ciudad ciudadActual, double dineroDisponibleCaravana, List<Jugador> jugadores, String nombreCaravana, List<CaravanaProducto> productos, int puntosDeVidaCaravana, List<Ruta> rutasRecorridas, double velocidadCaravana) {
+    public Caravana(double capacidadMaximaCargaCaravana, Ciudad ciudadActual, double dineroDisponibleCaravana,
+            List<Jugador> jugadores, String nombreCaravana, List<CaravanaProducto> productos, int puntosDeVidaCaravana,
+            List<Ruta> rutasRecorridas, double velocidadCaravana, List<Servicio> serviciosAplicados) {
         this.capacidadMaximaCargaCaravana = capacidadMaximaCargaCaravana;
         this.ciudadActual = ciudadActual;
         this.dineroDisponibleCaravana = dineroDisponibleCaravana;
@@ -50,6 +54,7 @@ public class Caravana {
         this.puntosDeVidaCaravana = puntosDeVidaCaravana;
         this.rutasRecorridas = rutasRecorridas;
         this.velocidadCaravana = velocidadCaravana;
+        this.serviciosAplicados = serviciosAplicados;
     }
 
     public long getId() {
@@ -134,7 +139,17 @@ public class Caravana {
 
     public double calcularPesoActual(Caravana caravana) {
         return caravana.getProductos().stream()
-            .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
-            .sum();
-    }    
+                .mapToDouble(p -> p.getProducto().getPesoProducto() * p.getStockEnCaravana())
+                .sum();
+    }
+
+    public List<Servicio> getServiciosAplicados() {
+        return serviciosAplicados;
+    }
+
+    public void setServiciosAplicados(List<Servicio> serviciosAplicados) {
+        this.serviciosAplicados = serviciosAplicados;
+    }
+
+    
 }

@@ -224,29 +224,31 @@ public class CaravanaService {
         caravanaProductoRepository.save(cp);
         caravanaRepository.save(caravana);
     }
-
     public void aplicarServicio(Long caravanaId, Long servicioId) {
         Caravana caravana = caravanaRepository.findById(caravanaId)
                 .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
         Ciudad ciudad = caravana.getCiudadActual();
-
+    
         CiudadServicio cs = ciudadServicioRepository.findByCiudadAndServicio_Id(ciudad, servicioId)
                 .orElseThrow(() -> new RuntimeException("Servicio no disponible en esta ciudad"));
-
+    
         Servicio servicio = cs.getServicio();
         double precio = servicio.getPrecioServicio();
-
+    
+        if (caravana.getServiciosAplicados().contains(servicio)) {
+            throw new RuntimeException("Este servicio ya fue aplicado a esta caravana.");
+        }
+    
         if (servicio.getTipo() == Servicio.TipoServicio.REPARAR && caravana.getPuntosDeVidaCaravana() >= 100) {
             throw new RuntimeException("La caravana ya tiene la vida al máximo. No se puede reparar más.");
         }
-
+    
         if (caravana.getDineroDisponibleCaravana() < precio) {
             throw new RuntimeException("La caravana no tiene suficiente dinero para adquirir este servicio.");
         }
-
-        caravana.setDineroDisponibleCaravana(
-                caravana.getDineroDisponibleCaravana() - precio);
-
+    
+        caravana.setDineroDisponibleCaravana(caravana.getDineroDisponibleCaravana() - precio);
+    
         switch (servicio.getTipo()) {
             case REPARAR -> caravana.setPuntosDeVidaCaravana(100);
             case MEJORAR_CAPACIDAD -> caravana.setCapacidadMaximaCargaCaravana(
@@ -258,9 +260,13 @@ public class CaravanaService {
                 caravana.setPuntosDeVidaCaravana(nuevosPuntos);
             }
         }
-
+    
+        // 🔐 Registrar que el servicio ya fue aplicado
+        caravana.getServiciosAplicados().add(servicio);
+    
         caravanaRepository.save(caravana);
     }
+    
 
     public List<CaravanaProducto> obtenerProductosEntidad(Long caravanaId) {
         Caravana caravana = caravanaRepository.findById(caravanaId)

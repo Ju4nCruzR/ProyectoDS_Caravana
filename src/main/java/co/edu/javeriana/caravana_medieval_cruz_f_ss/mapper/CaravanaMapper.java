@@ -8,6 +8,7 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaDetalleDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaProductoDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CaravanaResumenDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.JugadorDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.ServicioDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.model.Caravana;
 
 public class CaravanaMapper {
@@ -39,19 +40,24 @@ public class CaravanaMapper {
         detalle.setCaravana(toDTO(caravana));
 
         List<CaravanaProductoDTO> productos = caravana.getProductos().stream()
-            .map(CaravanaProductoMapper::toDTO)
-            .collect(Collectors.toList());
+                .map(CaravanaProductoMapper::toDTO)
+                .collect(Collectors.toList());
         detalle.setProductos(productos);
 
         List<JugadorDTO> jugadores = caravana.getJugadores().stream()
-            .map(JugadorMapper::toDTO)
-            .collect(Collectors.toList());
+                .map(JugadorMapper::toDTO)
+                .collect(Collectors.toList());
         detalle.setJugadores(jugadores);
 
         List<String> rutas = caravana.getRutasRecorridas().stream()
-            .map(r -> r.getCiudadOrigen().getNombreCiudad() + " -> " + r.getCiudadDestino().getNombreCiudad())
-            .collect(Collectors.toList());
+                .map(r -> r.getCiudadOrigen().getNombreCiudad() + " -> " + r.getCiudadDestino().getNombreCiudad())
+                .collect(Collectors.toList());
         detalle.setRutasRecorridas(rutas);
+
+        List<ServicioDTO> serviciosAplicados = caravana.getServiciosAplicados().stream()
+                .map(ServicioMapper::toDTO)
+                .collect(Collectors.toList());
+        detalle.setServiciosAplicados(serviciosAplicados);
 
         return detalle;
     }
