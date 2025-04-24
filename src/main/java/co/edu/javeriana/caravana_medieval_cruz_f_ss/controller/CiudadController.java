@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadDetalleDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadFormularioDTO;
+import co.edu.javeriana.caravana_medieval_cruz_f_ss.dto.CiudadProductoDTO;
 import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CiudadService;
 
 @RestController
@@ -53,4 +54,15 @@ public class CiudadController {
         public void eliminarCiudad(@PathVariable Long id) {
                 ciudadService.eliminarCiudad(id);
         }
+
+        @GetMapping("/{ciudadId}/productos")
+        public List<CiudadProductoDTO> listarProductosDisponiblesPorCiudad(@PathVariable Long ciudadId) {
+            return ciudadService.listarProductosDisponibles(ciudadId);
+        }
+
+        @GetMapping("/{id}/destinos")
+        public List<CiudadDTO> listarDestinosPorCiudad(@PathVariable Long id) {
+                return ciudadService.listarCiudadesDestinoPorOrigen(id);
+        }
+        
 }

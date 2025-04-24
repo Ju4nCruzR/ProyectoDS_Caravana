@@ -22,6 +22,7 @@ public class CaravanaMapper {
         if (caravana.getCiudadActual() != null) {
             dto.setNombreCiudadActual(caravana.getCiudadActual().getNombreCiudad());
         }
+        dto.setCiudadId(caravana.getCiudadActual().getId());
         return dto;
     }
 

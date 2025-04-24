@@ -57,8 +57,8 @@ public class CaravanaController {
         }
 
         @PostMapping("/{id}/mover")
-        public void moverCaravana(@PathVariable Long id, @RequestParam Long ciudadId) {
-                caravanaService.moverCaravana(id, ciudadId);
+        public CaravanaDTO moverCaravana(@PathVariable Long id, @RequestParam Long ciudadId) {
+                return caravanaService.moverCaravana(id, ciudadId);
         }
 
         @PostMapping("/{id}/comprar")

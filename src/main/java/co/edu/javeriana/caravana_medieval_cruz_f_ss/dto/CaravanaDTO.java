@@ -8,12 +8,13 @@ public class CaravanaDTO {
     private double dineroDisponibleCaravana;
     private int puntosDeVidaCaravana;
     private String nombreCiudadActual;
+    private Long ciudadId;
     
     public CaravanaDTO() {
     }
 
     public CaravanaDTO(Long id, String nombreCaravana, double velocidadCaravana, double capacidadMaximaCargaCaravana,
-            double dineroDisponibleCaravana, int puntosDeVidaCaravana, String nombreCiudadActual) {
+            double dineroDisponibleCaravana, int puntosDeVidaCaravana, String nombreCiudadActual, Long ciudadId) {
         this.id = id;
         this.nombreCaravana = nombreCaravana;
         this.velocidadCaravana = velocidadCaravana;
@@ -21,6 +22,7 @@ public class CaravanaDTO {
         this.dineroDisponibleCaravana = dineroDisponibleCaravana;
         this.puntosDeVidaCaravana = puntosDeVidaCaravana;
         this.nombreCiudadActual = nombreCiudadActual;
+        this.ciudadId = ciudadId;
     }
 
     public Long getId() {
@@ -79,5 +81,12 @@ public class CaravanaDTO {
         this.nombreCiudadActual = nombreCiudadActual;
     }
 
-    
+    public Long getCiudadId() {
+        return ciudadId;
+    }
+
+    public void setCiudadId(Long ciudadId) {
+        this.ciudadId = ciudadId;
+    }
+
 }

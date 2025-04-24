@@ -50,7 +50,7 @@ public class CiudadService {
 
     @Autowired
     private ServicioRepository servicioRepository;
-    
+
     @Autowired
     private RutaRepository rutaRepository;
 
@@ -63,20 +63,20 @@ public class CiudadService {
 
     public CiudadDetalleDTO buscarCiudadPorId(Long id) {
         Ciudad ciudad = ciudadRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
         return CiudadMapper.toDetalle(ciudad);
     }
 
     public List<CiudadDTO> listarCiudades() {
         return ciudadRepository.findAll().stream()
-            .map(CiudadMapper::toDTO)
-            .collect(Collectors.toList());
+                .map(CiudadMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public CiudadDTO actualizarCiudadDesdeFormulario(Long id, CiudadFormularioDTO dto) {
         Ciudad ciudad = ciudadRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
         ciudad.setNombreCiudad(dto.getNombreCiudad());
         ciudad.setImpuestosDeEntradaCiudad(dto.getImpuestosDeEntradaCiudad());
@@ -87,7 +87,7 @@ public class CiudadService {
     @Transactional
     public void actualizarCiudadConAsociaciones(Long id, CiudadFormularioDTO dto) {
         Ciudad ciudad = ciudadRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
         ciudad.setNombreCiudad(dto.getNombreCiudad());
         ciudad.setImpuestosDeEntradaCiudad(dto.getImpuestosDeEntradaCiudad());
@@ -98,28 +98,28 @@ public class CiudadService {
 
         if (dto.getProductoIds() != null) {
             List<CiudadProducto> nuevos = dto.getProductoIds().stream()
-                .map(pid -> new CiudadProducto(ciudad, productoRepository.findById(pid)
-                        .orElseThrow(() -> new RuntimeException("Producto no encontrado")), 0))
-                .collect(Collectors.toList());
+                    .map(pid -> new CiudadProducto(ciudad, productoRepository.findById(pid)
+                            .orElseThrow(() -> new RuntimeException("Producto no encontrado")), 0))
+                    .collect(Collectors.toList());
             ciudadProductoRepository.saveAll(nuevos);
         }
 
         if (dto.getServicioIds() != null) {
             List<CiudadServicio> nuevos = dto.getServicioIds().stream()
-                .map(sid -> new CiudadServicio(ciudad, servicioRepository.findById(sid)
-                        .orElseThrow(() -> new RuntimeException("Servicio no encontrado"))))
-                .collect(Collectors.toList());
+                    .map(sid -> new CiudadServicio(ciudad, servicioRepository.findById(sid)
+                            .orElseThrow(() -> new RuntimeException("Servicio no encontrado"))))
+                    .collect(Collectors.toList());
             ciudadServicioRepository.saveAll(nuevos);
         }
 
         if (dto.getRutaIds() != null) {
             List<CiudadRuta> nuevas = dto.getRutaIds().stream()
-                .map(rid -> {
-                    Ruta ruta = rutaRepository.findById(rid)
-                        .orElseThrow(() -> new RuntimeException("Ruta no encontrada"));
-                    return new CiudadRuta(ciudad, ruta.getCiudadDestino(), ruta.getCiudadOrigen(), ruta);
-                })
-                .collect(Collectors.toList());
+                    .map(rid -> {
+                        Ruta ruta = rutaRepository.findById(rid)
+                                .orElseThrow(() -> new RuntimeException("Ruta no encontrada"));
+                        return new CiudadRuta(ciudad, ruta.getCiudadDestino(), ruta.getCiudadOrigen(), ruta);
+                    })
+                    .collect(Collectors.toList());
             ciudadRutaRepository.saveAll(nuevas);
         }
     }
@@ -127,7 +127,7 @@ public class CiudadService {
     @Transactional
     public void eliminarCiudad(Long id) {
         Ciudad ciudad = ciudadRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
         ciudadProductoRepository.deleteAll(ciudad.getProductosDisponibles());
         ciudadServicioRepository.deleteAll(ciudad.getServiciosDisponibles());
@@ -138,28 +138,48 @@ public class CiudadService {
 
     public List<CiudadProductoDTO> obtenerProductos(Long ciudadId) {
         Ciudad ciudad = ciudadRepository.findById(ciudadId)
-            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
         return ciudad.getProductosDisponibles().stream()
-            .map(CiudadProductoMapper::toDTO)
-            .collect(Collectors.toList());
+                .map(CiudadProductoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public List<CiudadServicioDTO> obtenerServicios(Long ciudadId) {
         Ciudad ciudad = ciudadRepository.findById(ciudadId)
-            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
         return ciudad.getServiciosDisponibles().stream()
-            .map(CiudadServicioMapper::toDTO)
-            .collect(Collectors.toList());
+                .map(CiudadServicioMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public List<CiudadRutaDTO> obtenerRutas(Long ciudadId) {
         Ciudad ciudad = ciudadRepository.findById(ciudadId)
-            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
 
         return ciudad.getRutasAsociadas().stream()
-            .map(CiudadRutaMapper::toDTO)
-            .collect(Collectors.toList());
+                .map(CiudadRutaMapper::toDTO)
+                .collect(Collectors.toList());
     }
+
+    public List<CiudadProductoDTO> listarProductosDisponibles(Long ciudadId) {
+        Ciudad ciudad = ciudadRepository.findById(ciudadId)
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+
+        return ciudad.getProductosDisponibles().stream()
+                .map(CiudadProductoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<CiudadDTO> listarCiudadesDestinoPorOrigen(Long ciudadOrigenId) {
+        Ciudad ciudadOrigen = ciudadRepository.findById(ciudadOrigenId)
+            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+    
+        return ciudadOrigen.getRutasOrigen().stream()
+            .map(CiudadRuta::getCiudadDestino) // ✅ CiudadRuta, no Ruta
+            .map(CiudadMapper::toDTO)
+            .toList();
+    }
+    
 }

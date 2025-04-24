@@ -3,6 +3,7 @@ package co.edu.javeriana.caravana_medieval_cruz_f_ss.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ import co.edu.javeriana.caravana_medieval_cruz_f_ss.service.CaravanaProductoServ
 @RequestMapping("/caravana-producto")
 public class CaravanaProductoController {
 
-         @Autowired
+    @Autowired
     private CaravanaProductoService caravanaProductoService;
 
     // Listar productos por caravana
@@ -32,14 +33,14 @@ public class CaravanaProductoController {
     @GetMapping("/caravana/{caravanaId}/producto/{productoId}")
     public CaravanaProductoDTO detalleProducto(@PathVariable Long caravanaId, @PathVariable Long productoId) {
         return caravanaProductoService.obtenerPorCaravanaYProducto(caravanaId, productoId)
-            .orElseThrow(() -> new RuntimeException("Producto no encontrado en la caravana"));
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado en la caravana"));
     }
 
     // Obtener por ID interno
     @GetMapping("/{id}")
     public CaravanaProductoDTO obtenerPorId(@PathVariable Long id) {
         return caravanaProductoService.buscarPorId(id)
-            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     }
 
     // Actualizar stock
@@ -57,9 +58,17 @@ public class CaravanaProductoController {
     // Crear nuevo producto en caravana
     @PostMapping("/crear")
     public void crear(@RequestParam Long caravanaId,
-                      @RequestParam Long productoId,
-                      @RequestParam int stock) {
+            @RequestParam Long productoId,
+            @RequestParam int stock) {
         caravanaProductoService.crear(caravanaId, productoId, stock);
+    }
+
+    @DeleteMapping("/{caravanaId}/producto/{productoId}/eliminar")
+    public ResponseEntity<Void> eliminarProductoDeCaravana(
+            @PathVariable Long caravanaId,
+            @PathVariable Long productoId) {
+        caravanaProductoService.eliminarProductoDeCaravana(caravanaId, productoId);
+        return ResponseEntity.noContent().build();
     }
 
     // Listar todos los productos de todas las caravanas
